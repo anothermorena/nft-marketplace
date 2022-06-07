@@ -1,4 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from 'react-native';
 import { useIsFocused } from '@react-navigation/core';
 
 //the props we are passing in are the background color and the height of the status bar
