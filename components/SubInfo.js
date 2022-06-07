@@ -26,6 +26,7 @@ export const NFTTitle = ({ title, subTitle, titleSize, subTitleSize }) => {
   );
 };
 
+//eth means ether price
 export const EthPrice = ({ price }) => {
   return (
     <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -61,6 +62,7 @@ const ImageCmp = ({ imgUrl, index }) => {
   );
 };
 
+//people here means people interested in the nft
 export const People = () => {
   return (
     <View style={{ flexDirection: "row" }}>
