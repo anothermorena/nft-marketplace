@@ -1,4 +1,8 @@
-import {View,Text} from 'react-native';
+import {useState} from 'react';
+import {View,Text, SafeArea, FlatList} from 'react-native';
+
+//local imports
+import {COLORS, NFTdata} from "../constants";
 
 const Home = () => {
   return (
