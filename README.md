@@ -10,7 +10,7 @@ A marketplace is a platform where vendors can come together to sell their produc
 
 2) User Account Verification via OTP
 
-3) Login with password & email combination used at registration and biometric authentication
+3) Login with password & email combination used at registration or biometric authentication
 
 4) User Profile Management: change account details like names, profile image and passwords
 
