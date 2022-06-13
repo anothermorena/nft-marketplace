@@ -24,9 +24,8 @@ A marketplace is a platform where vendors can come together to sell their produc
 
 9) Add and remove nfts from a wishlist
 
-10) Push notifications on new bids made on a users nft(s).
+10) View Wishlist
 
-11) Pull to refresh trending nfts and the nfts news feed.
 
 
 
