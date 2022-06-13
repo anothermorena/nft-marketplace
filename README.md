@@ -6,22 +6,22 @@ A marketplace is a platform where vendors can come together to sell their produc
 
 # FUNCTIONAL REQUIREMENTS
 
-1) User Account creation (registration/signup)
+1) User Account creation (registration/signup).
 
-2) User Account Verification via OTP
+2) User Account Verification via OTP.
 
-3) Login with password & email combination used at registration or biometric authentication
+3) Login with password & email combination used at registration or biometric authentication.
 
-4) User Profile Management: change account details like names, profile image and passwords
+4) User Profile Management: change account details like names, profile image and passwords.
 
-5) Create nft's
+5) Create nft's.
 
-6) Search nft's
+6) Search nft's.
 
-7) Show trending nft's by number of bids
+7) Show trending nft's by number of bids.
 
-8) Show my bids and nfts to an account holder or user
+8) Show my bids and nfts to an account holder or user.
 
-9) Push notifications on new bids made on a users nft(s)
+9) Push notifications on new bids made on a users nft(s).
 
-10) Pull to refresh trending nfts and the nfts news feed
+10) Pull to refresh trending nfts and the nfts news feed.
