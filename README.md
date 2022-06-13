@@ -22,9 +22,11 @@ A marketplace is a platform where vendors can come together to sell their produc
 
 8) Show my bids and nfts to an account holder or user.
 
-9) Push notifications on new bids made on a users nft(s).
+9) Add and remove nfts from a wishlist
 
-10) Pull to refresh trending nfts and the nfts news feed.
+10) Push notifications on new bids made on a users nft(s).
+
+11) Pull to refresh trending nfts and the nfts news feed.
 
 
 
