@@ -33,11 +33,12 @@ A marketplace is a platform where vendors can come together to sell their produc
 # ACTIVITY DIAGRAM
 ![activity-diagram](https://user-images.githubusercontent.com/20603329/173878759-306034ec-a089-464b-8098-cf29c363c529.png)
 
-# SYSTEM DESIGN
-![system-design](https://user-images.githubusercontent.com/20603329/173878910-a3948562-7c75-499f-a0af-fd74e52e3c56.png)
 
 # ENTITY RELATIONSHIP DIAGRAM
 ![entity relationship diagram](https://user-images.githubusercontent.com/20603329/173879004-866a3b6a-a873-49bc-b8a9-7f5fcd41140f.png)
 
 # CLASS DIAGRAM
 ![class-diagram](https://user-images.githubusercontent.com/20603329/173879075-8a46d184-e4da-4052-a3d6-0bac742f02f2.png)
+
+# SYSTEM DESIGN
+![system-design](https://user-images.githubusercontent.com/20603329/173878910-a3948562-7c75-499f-a0af-fd74e52e3c56.png)
