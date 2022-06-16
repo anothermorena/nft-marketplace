@@ -91,7 +91,7 @@ const Signup = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingWrapper>
-      <View style={{flex:1,padding: 25, paddingTop: StatusBarHeight + 30, backgroundColor: COLORS.white}}>
+      <View style={{flex:1,padding: 25, paddingTop: StatusBarHeight + 10, backgroundColor: COLORS.white}}>
         <StatusBar style="dark" />
         <View style={{flex:1, width:'100%', alignItems:'center'}}>
           <Text style={{fontSize:30, textAlign:'center',fontWeight:'bold', color: COLORS.brand}}>NFT Market Place</Text>
