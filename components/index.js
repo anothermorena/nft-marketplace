@@ -6,6 +6,7 @@ import DetailsDesc from "./DetailsDesc";
 import { RectButton, CircleButton } from "./Button";
 import { SubInfo } from "./SubInfo";
 
+
 export {
     HomeHeader, NFTCard, FocusedStatusBar, DetailsBid, DetailsDesc, RectButton, CircleButton, SubInfo
 }

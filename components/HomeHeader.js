@@ -1,11 +1,12 @@
 import { View, Text, Image, TextInput } from "react-native";
 import { COLORS, FONTS, SIZES, assets } from "../constants";
+import { EvilIcons } from '@expo/vector-icons';
 
 const HomeHeader = ({ onSearch }) => {
   return (
     <View
       style={{
-        backgroundColor: COLORS.primary,
+        backgroundColor: COLORS.brand,
         padding: SIZES.font,
       }}
     >
@@ -33,9 +34,9 @@ const HomeHeader = ({ onSearch }) => {
             resizeMode="contain"
             style={{
               position: "absolute",
-              width: 15,
-              height: 15,
-              bottom: 0,
+              width: 20,
+              height: 20,
+              bottom: -5,
               right: 0,
             }}
           />
@@ -50,7 +51,7 @@ const HomeHeader = ({ onSearch }) => {
             color: COLORS.white,
           }}
         >
-          Hello Victoria 👋
+          Hello Morena 👋
         </Text>
 
         <Text
@@ -70,18 +71,14 @@ const HomeHeader = ({ onSearch }) => {
           style={{
             width: "100%",
             borderRadius: SIZES.font,
-            backgroundColor: COLORS.gray,
+            backgroundColor: COLORS.white,
             flexDirection: "row",
             alignItems: "center",
             paddingHorizontal: SIZES.font,
             paddingVertical: SIZES.small - 2,
           }}
         >
-          <Image
-            source={assets.search}
-            resizeMode="contain"
-            style={{ width: 20, height: 20, marginRight: SIZES.base }}
-          />
+          <EvilIcons  name="search" size={35} color={COLORS.brand}  />
           <TextInput
             placeholder="Search NFTs"
             style={{ flex: 1 }}
