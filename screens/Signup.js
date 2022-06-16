@@ -4,6 +4,10 @@ import { StatusBar } from 'expo-status-bar';
 // formik
 import { Formik } from 'formik';
 
+//yup for formik form validation
+import * as yup from 'yup';
+
+// builtin react native components
 import { View, Text, TouchableOpacity, ActivityIndicator, TextInput} from 'react-native';
 
 // icons
@@ -12,40 +16,44 @@ import { Octicons, Ionicons } from '@expo/vector-icons';
 // keyboard avoiding view
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
-
+// our theme config and other constants
 import { COLORS, Constants } from "../constants";
 
-//get status bar height
+// get status bar height
 const StatusBarHeight = Constants.statusBarHeight;
 
-//import axios
+// API client
 import axios from './../api/axios';
-
-// Async storage
-//import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// credentials context
-//import { CredentialsContext } from './../components/CredentialsContext';
-
 
 const Signup = ({ navigation }) => {
 
+  //Sign up form validation
+  const signupValidationSchema = yup.object().shape({
+    firstName: yup
+      .string()
+      .required('First Name is Required'),
+    lastName: yup
+      .string()
+      .required('Last Name is Required'),
+    email: yup
+      .string()
+      .email("Please enter a valid email")
+      .required('Email Address is Required'),
+    password: yup
+      .string()
+      .min(8, ({ min }) => `Password must be at least ${min} characters`)
+      .required('Password is required')
+  });
+
+  //set initial states
   const [hidePassword, setHidePassword] = useState(true);
   const [message, setMessage] = useState();
   const [messageType, setMessageType] = useState();
 
-  // credentials context
-  //const {storedCredentials, setStoredCredentials} = useContext(CredentialsContext)
-
-  
-    // Form handling
-    const handleSignup = async (credentials, setSubmitting) => {
-
+    //Handle sign up form submission
+    const handleSignup = async (formValues, setSubmitting) => {
+    
       handleMessage(null);
-
-      let name = credentials.name;
-      let email = credentials.email;
-      let password = credentials.password;
 
       const config = {
         headers: {
@@ -53,9 +61,8 @@ const Signup = ({ navigation }) => {
         }
       }
 
-
       try {
-        const response = await axios.post("/api/users", JSON.stringify({ name: name, email: email, hashed_password: password }), config);
+        const response = await axios.post("/api/users", JSON.stringify({ first_name: formValues.firstName, last_name: formValues.lastName, email: formValues.email, profile_image : "", user_status:"UNVERIFIED", hashed_password: formValues.password }), config);
     
         const result = response.data;
         const { status, message, data } = result;
@@ -63,10 +70,9 @@ const Signup = ({ navigation }) => {
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
-          //Signup was successful redirect the user to the account verification page
-          //navigation.navigate('VerifyAccount')
+          //Signup was successful redirect the user to the home page
           navigation.navigate('Home')
-          //persistLogin({ ...data } ,message, status);
+       
         }
         setSubmitting(false);
       
@@ -83,37 +89,23 @@ const Signup = ({ navigation }) => {
       setMessageType(type);
     };
 
-    /* Persisting login after signup
-    const persistLogin = (credentials, message, status) => {
-      AsyncStorage.setItem('flowerCribCredentials', JSON.stringify(credentials))
-        .then(() => {
-          handleMessage(message, status);
-          setStoredCredentials(credentials);
-        })
-        .catch((error) => {
-          handleMessage('Persisting login failed');
-          console.log(error)
-        });
-    };
- 
-    */
-
   return (
     <KeyboardAvoidingWrapper>
       <View style={{flex:1,padding: 25, paddingTop: StatusBarHeight + 30, backgroundColor: COLORS.white}}>
         <StatusBar style="dark" />
         <View style={{flex:1, width:'100%', alignItems:'center'}}>
           <Text style={{fontSize:30, textAlign:'center',fontWeight:'bold', color: COLORS.brand}}>NFT Market Place</Text>
-          <Text style={{fontSize: 18, marginBottom:20, letterSpacing: 1, fontWeight: 'bold', color:COLORS.tertiary}}>Account Signup</Text>
+          <Text style={{fontSize: 18, marginBottom:20, letterSpacing: 1, fontWeight: 'bold', color:COLORS.tertiary}}>Create Account</Text>
 
           <Formik
             initialValues={{ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }}
+            validationSchema={signupValidationSchema}
             onSubmit={(values, { setSubmitting }) => {
               if (
                 values.email == '' ||
                 values.password == '' ||
-                values.name == '' ||
-                values.dateOfBirth == '' ||
+                values.firstName == '' ||
+                values.lastName == '' ||
                 values.confirmPassword == ''
               ) {
                 handleMessage('Please fill in all fields');
@@ -126,7 +118,7 @@ const Signup = ({ navigation }) => {
               }
             }}
           >
-            {({ handleChange, handleBlur, handleSubmit, values, isSubmitting }) => (
+            {({ handleChange, handleBlur, handleSubmit, values, isSubmitting,errors, touched }) => (
               <View style={{width:'90%'}}>
                 <MyTextInput
                   label="First Name"
@@ -137,6 +129,9 @@ const Signup = ({ navigation }) => {
                   value={values.firstName}
                   icon="person"
                 />
+                {touched.firstName && errors.firstName &&
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.firstName}</Text>
+                  }
 
                 <MyTextInput
                   label="Last Name"
@@ -147,6 +142,9 @@ const Signup = ({ navigation }) => {
                   value={values.lastName}
                   icon="person"
                 />
+                 {touched.lastName && errors.lastName &&
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.lastName}</Text>
+                  }
                 <MyTextInput
                   label="Email Address"
                   placeholder="andyj@gmail.com"
@@ -157,6 +155,9 @@ const Signup = ({ navigation }) => {
                   keyboardType="email-address"
                   icon="mail"
                 />
+                 {touched.email && errors.email &&
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
+                  }
 
                 <MyTextInput
                   label="Password"
@@ -171,6 +172,9 @@ const Signup = ({ navigation }) => {
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
                 />
+                {touched.password && errors.password &&
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                  }
                 <MyTextInput
                   label="Confirm Password"
                   placeholder="* * * * * * * *"
@@ -184,6 +188,7 @@ const Signup = ({ navigation }) => {
                   hidePassword={hidePassword}
                   setHidePassword={setHidePassword}
                 />
+                
                 <Text style={{textAlign:'center', fontSize:13, color: messageType == "SUCCESS" ? COLORS.green : COLORS.red}}>{message}</Text>
 
                 {!isSubmitting && (
@@ -193,7 +198,7 @@ const Signup = ({ navigation }) => {
                 )}
                 {isSubmitting && (
                   <TouchableOpacity style={{padding: 15,backgroundColor: COLORS.brand, justifyContent:'center',alignItems:'center', borderRadius:5, marginVertical:5, height:60}} disabled={true}>
-                    <ActivityIndicator size="large" color={primary} />
+                    <ActivityIndicator size="large" color={COLORS.white} />
                   </TouchableOpacity>
                 )}
 

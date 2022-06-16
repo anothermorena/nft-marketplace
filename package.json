@@ -24,7 +24,7 @@
     "react-native-gesture-handler": "~2.2.1",
     "react-native-safe-area-context": "4.2.4",
     "react-native-web": "0.17.7",
-    "styled-components": "^5.3.5"
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
