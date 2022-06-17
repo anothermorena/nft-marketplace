@@ -21,6 +21,7 @@ class UserCreate(UserBase):
     class Config:
         orm_mode = True
 
+
 #inherits from UserBase
 class User(UserBase):
     id: int
@@ -28,3 +29,8 @@ class User(UserBase):
     class Config:
         orm_mode = True
 
+
+#One time pin schema
+class Otp(BaseModel):
+    code : int
+    email: str
