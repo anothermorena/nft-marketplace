@@ -53,7 +53,7 @@ async def delete_otp(email:str, db: orm.Session):
         db.commit()
 
 #this function sends emails to the user
-async def send_email_async(subject: str, email_to: str, body: dict):
+async def send_email_async(subject: str, email_to: str, body: str):
     message = MessageSchema(
         subject=subject,
         recipients=[email_to],

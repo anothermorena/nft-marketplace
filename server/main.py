@@ -31,7 +31,7 @@ async def create_user(user: schemas.UserCreate, db: orm.Session = fastapi.Depend
     subject = 'Account Created Successfully'
     body = {'title':'Account Verification', 'message':'Hi! Welcome to NFT Market Place. Your account verification OTP code is: ' + str(otp_code) + '\n\n  Please use it to activate your account 😜.'}
 
-    await services.send_email_async(subject, user.email, body)
+    await services.send_email_async(subject, user.email, 'Hi! Welcome to NFT Market Place. Your account verification OTP code is: ' + str(otp_code) + '\n\n  Please use it to activate your account 😜.')
 
   
     #user does not exists, create the user
