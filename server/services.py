@@ -22,35 +22,35 @@ async def create_user(user: schemas.UserCreate, db: orm.Session):
     db.commit()
     db.refresh(user_obj)
 
-    #send back the user and a success message
-    return dict(message="User created successfully", status="SUCCESS", data=user_obj)
-
-
-#this function creates a user's one time pin for account verification and password reset
-async def create_otp(email:str, db: orm.Session):
-    #generate a random 4 digit code
-    code = random.randint(1000,9999)
-    otp_obj = models.Otp(code = code, email = email)
-
-    #save the otp to the database
-    db.add(otp_obj)
-    db.commit()
-    db.refresh(otp_obj)
-
-    #send back the code to send it ton the user.
-    return code
-
 
 #this function deletes an existing one time pin before creating another one
 async def delete_otp(email:str, db: orm.Session):
-    old_otp = (db.query(models.Otp)
-        .filter(models.Otp.email == email) #return the one with the specified email
-        .first() #get the first object that comes from it
-    )
-
+    old_otp = (db.query(models.Otp).filter(models.Otp.email == email) .first())
+    
     if old_otp:
         db.delete(old_otp)
         db.commit()
+
+    return 'SUCCESS'
+
+#this function creates a user's one time pin for account verification and password reset
+async def create_otp(email:str, db: orm.Session):
+
+    #delete existing one time pin before creating a new one
+    delete_old_otp = await delete_otp(email,db)
+
+    if delete_old_otp:
+        #generate a random 4 digit code
+        new_otp = random.randint(1000,9999)
+        otp_obj = models.Otp(code = new_otp, email = email)
+
+        #save the otp to the database
+        db.add(otp_obj)
+        db.commit()
+        db.refresh(otp_obj)
+
+        #send back the code to send it ton the user.
+        return new_otp
 
 #this function sends emails to the user
 async def send_email_async(subject: str, email_to: str, body: str):
@@ -63,6 +63,9 @@ async def send_email_async(subject: str, email_to: str, body: str):
     
     fm = FastMail(email_conf)
     await fm.send_message(message, template_name='email.html') 
+    
+    #send back a success message
+    return dict(message="Email sent successfully", status="SUCCESS")
 
 
 
