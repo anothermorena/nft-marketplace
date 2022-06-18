@@ -12,6 +12,9 @@ import { COLORS, Constants } from "../constants";
 // get status bar height
 const StatusBarHeight = Constants.statusBarHeight;
 
+// API client
+import axios from './../api/axios';
+
 
 const Verification = ({route, navigation}) => {
     //get the email the user used to create their account
@@ -80,6 +83,37 @@ const Verification = ({route, navigation}) => {
         setResendStatus('Sending');
         //set the resending email to true
         setResendingEmail(true);
+
+        //make an api call to send a new otp to the user
+        const config = {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+    
+          try {
+            const response = await axios.post("/api/send_otp", JSON.stringify(email), config);
+        
+            const result = response.data;
+            const { status, message } = result;
+    
+            if (status !== 'SUCCESS') {
+              //handleMessage(message, status);
+              console.log(result)
+              setResendStatus('Resend');
+              //set the resending email to true
+              setResendingEmail(false);
+            } else {
+              //Signup was successful redirect the user to the account verification screen
+              navigation.navigate('Home');
+            }
+          
+          } catch (error) {
+            //setSubmitting(false);
+            //handleMessage('An error occurred. Check your network and try again');
+            console.log(error.toJSON());
+      
+          }
     }
 
   return (
@@ -91,7 +125,7 @@ const Verification = ({route, navigation}) => {
             <Ionicons name="mail-open-outline" size={125} color={COLORS.brand} />
         </View>
       </View>
-          <Text style={{fontSize:20, textAlign:'center',fontWeight:'bold',color:COLORS.brand, padding:10}}>Account Verification</Text>
+          <Text style={{fontSize:20, textAlign:'center',fontWeight:'bold',color:COLORS.brand, padding:10}}>Account Created Successfully</Text>
           <Text style={{color:COLORS.gray, fontSize:15,textAlign:'center'}}>Please verify your account using the OTP sent to 
               <Text style={{fontWeight:'bold', fontStyle:'italic'}}>
                   {` ${email}`}  

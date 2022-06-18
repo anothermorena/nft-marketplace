@@ -10,7 +10,7 @@ const ResendTimer = ({activeResend,resendingEmail,resendStatus,timeLeft,targetTi
     <View>
     <View style={{flexDirection:'row', padding:10,justifyContent:'center',alignItems:'center'}}>
  
-         <Text style={{color:COLORS.gray,fontSize:15,textAlign:'center'}}>Didnt receive the email?</Text>
+         <Text style={{color:COLORS.gray,fontSize:15,textAlign:'center'}}>Did'nt receive the email?</Text>
         
          {!resendingEmail && (
             
@@ -25,12 +25,12 @@ const ResendTimer = ({activeResend,resendingEmail,resendStatus,timeLeft,targetTi
              </Text>
          </TouchableOpacity>
          )}
-    {/* If resend email is true disbale the link completely because you are already in the process on resend thr email*/}
+    {/* If resend email is true disable the link completely because you are already in the process to resend the email*/}
         {resendingEmail && (
         <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} disabled>
              <Text 
                 resendStatus={resendStatus}
-                style={{textDecorationLine: 'underline', color: COLORS.brand, fontSize:15, color: resendStatus === 'FAILIED' ? COLORS.red : COLORS.green}}>
+                style={{textDecorationLine: 'underline', color: COLORS.brand, fontSize:15, color: resendStatus === 'FAILED' ? COLORS.red : COLORS.green}}>
                 <ActivityIndicator color={COLORS.brand}/>
              </Text>
          </TouchableOpacity>
