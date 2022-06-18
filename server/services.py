@@ -63,9 +63,9 @@ async def send_email_async(subject: str, email_to: str, body: str):
     
     fm = FastMail(email_conf)
     await fm.send_message(message, template_name='email.html') 
-    
+
     #send back a success message
-    return dict(message="Email sent successfully", status="SUCCESS")
+    return dict(message="Email sent successfully", status="SUCCESS", email= email_to)
 
 
 

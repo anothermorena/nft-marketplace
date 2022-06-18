@@ -4,7 +4,6 @@ import sqlalchemy.orm as orm
 from database import engine, get_db
 import services, schemas, models
 
-
 #create the app object
 app = fastapi.FastAPI()
 

@@ -65,14 +65,16 @@ const Signup = ({ navigation }) => {
         const response = await axios.post("/api/users", JSON.stringify({ first_name: formValues.firstName, last_name: formValues.lastName, email: formValues.email, profile_image : "", user_status:"UNVERIFIED", hashed_password: formValues.password }), config);
     
         const result = response.data;
-        const { status, message, data } = result;
+        const { status, message, email } = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
-          //Signup was successful redirect the user to the home page
-          navigation.navigate('Home')
-       
+          //Signup was successful redirect the user to the account verification screen
+          navigation.navigate('Verification',{
+            email: email
+          
+          })
         }
         setSubmitting(false);
       
