@@ -4,7 +4,7 @@ import {useFonts } from 'expo-font';
 import Home from './screens/Home';
 import Details from './screens/Details';
 import Signup from './screens/Signup';
-import Verification from './screens/LinkVerification';
+import Verification from './screens/OtpVerificationMsg';
 
 
 const Stack = createStackNavigator();
