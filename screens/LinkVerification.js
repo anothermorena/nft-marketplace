@@ -37,8 +37,11 @@ const Verification = ({route, navigation}) => {
     //the timer will be triggered at an interval and we use this variable to monitor that
     let resendTimerInterval;
 
+    //handle error messages
+    const [message, handleMessage] = useState(null);
+
     //function to calculate the time left in the timer
-    //function accepts a final time parameter. This is a value in milli seconds reffereing to when the timer is supposed to end in the future
+    //function accepts a final time parameter. This is a value in milliseconds referring  to when the timer is supposed to end in the future
     const calculateTimeLeft = (finalTime) => { 
         //first we do is to find the difference
         const difference = finalTime - +new Date(); //the + before the new keyword is used to convert the date to a number. It is a shorthand for the syntax 
@@ -92,27 +95,38 @@ const Verification = ({route, navigation}) => {
           }
     
           try {
-            const response = await axios.post("/api/send_otp", JSON.stringify(email), config);
+            const response = await axios.post("/api/send_otp", JSON.stringify({ email: email }), config);
         
             const result = response.data;
             const { status, message } = result;
     
             if (status !== 'SUCCESS') {
-              //handleMessage(message, status);
-              console.log(result)
+  
+              //set the error message from received from api endpoint
+              handleMessage(message);
+
+              //set the resend status to Resend to enable the use to try again just incase the previous attempt did not work
               setResendStatus('Resend');
+
               //set the resending email to true
               setResendingEmail(false);
+
+              //disable the resend button for 30 seconds again
+              triggerTimer();
+
             } else {
-              //Signup was successful redirect the user to the account verification screen
-              navigation.navigate('Home');
+              //Otp email was resent successfully: redirect the user to the otp screen to verify their account
+              navigation.navigate('Otp');
             }
           
           } catch (error) {
-            //setSubmitting(false);
-            //handleMessage('An error occurred. Check your network and try again');
-            console.log(error.toJSON());
-      
+            handleMessage('An error occurred. Check your network and try again');
+            setResendStatus('Resend');
+            //set the resending email to false
+            setResendingEmail(false);
+
+            //disable the resend button for 30 seconds again
+            triggerTimer();
           }
     }
 
@@ -135,6 +149,7 @@ const Verification = ({route, navigation}) => {
             <Text style={{color:COLORS.white, fontSize:16}}>Proceed </Text>
             <Ionicons name="arrow-forward-circle" size={25} color={COLORS.white} />
            </TouchableOpacity>
+           {message && <Text style={{ fontSize: 10, color: 'red' }}>{message}</Text> }
             <ResendTimer 
                 activeResend={activeResend}
                 resendStatus={resendStatus}

@@ -32,5 +32,4 @@ class User(UserBase):
 
 #One time pin schema
 class Otp(BaseModel):
-    code : int
     email: str

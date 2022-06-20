@@ -62,11 +62,12 @@ async def send_email_async(subject: str, email_to: str, body: str):
     )
     
     fm = FastMail(email_conf)
-    await fm.send_message(message, template_name='email.html') 
-
-    #send back a success message
+    await fm.send_message(message, template_name='email.html')
+    #send back a success message        
     return dict(message="Email sent successfully", status="SUCCESS", email= email_to)
 
+    #email was not sent
+    #return dict(message="OTP email was not sent successfully. Please try again", status="FAILED", email= email_to)
 
 
 

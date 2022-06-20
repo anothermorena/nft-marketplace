@@ -38,15 +38,15 @@ async def create_user(user: schemas.UserCreate, db: orm.Session = fastapi.Depend
 
 #send otp end point
 @app.post("/api/send_otp")
-async def send_otp(email: str, db: orm.Session = fastapi.Depends(get_db)):
+async def send_otp(email: schemas.Otp, db: orm.Session = fastapi.Depends(get_db)):
    #create a new one time pin
-   otp_code = await services.create_otp(email,db)
+   otp_code = await services.create_otp(email.email,db)
 
    #send otp
    subject = "New OTP"
    body = 'Your OTP code is: ' + str(otp_code)
 
-   email_status = await services.send_email_async(subject, email, body)
+   email_status = await services.send_email_async(subject, email.email, body)
 
    #send back the email status and message
    return email_status
