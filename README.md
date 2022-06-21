@@ -28,7 +28,8 @@ A marketplace is a platform where vendors can come together to sell their produc
 
 
 # USE CASE DIAGRAM
-![use-case-diagram](https://user-images.githubusercontent.com/20603329/173886130-3781081b-1387-4ce8-949a-9a0de637172f.png)
+![use-case-diagram](https://user-images.githubusercontent.com/20603329/174759217-c1862d40-79b6-4147-b21e-eee590b56c20.png)
+
 
 # ACTIVITY DIAGRAM
 ![activity-diagram](https://user-images.githubusercontent.com/20603329/173878759-306034ec-a089-464b-8098-cf29c363c529.png)
