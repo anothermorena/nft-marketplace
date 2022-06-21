@@ -11,7 +11,6 @@ import { COLORS, Constants } from "../constants";
 // get status bar height
 const StatusBarHeight = Constants.statusBarHeight;
 
-
 const OtpVerification = () => {
     const [code, setCode] = useState('');
     //this will be a boolean which will be true whenever our input field is full
@@ -92,6 +91,7 @@ const OtpVerification = () => {
 
     //function to submit the otp for verification
     const submitOTPVerification = async () => {
+        setVerifying(true);
 
     }
 
@@ -147,8 +147,8 @@ const OtpVerification = () => {
                 )}
 
                 {verifying  && (
-                   <TouchableOpacity disabled={true} style={{backgroundColor:COLORS.lightGreen, flexDirection:'row',padding:15,justifyContent:'center',alignItems:'center',borderRadius:5,marginVertical:5,height:60}} >
-                       <ActivityIndicator size="large" color={COLORS.primary}/>
+                   <TouchableOpacity disabled={true} style={{backgroundColor:COLORS.green, flexDirection:'row',padding:15,justifyContent:'center',alignItems:'center',borderRadius:5,marginVertical:5,height:60}} >
+                       <ActivityIndicator size="large" color={COLORS.white}/>
                    </TouchableOpacity>
                 )}
 
