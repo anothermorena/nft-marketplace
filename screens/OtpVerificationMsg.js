@@ -13,7 +13,7 @@ import { COLORS, Constants } from "../constants";
 const StatusBarHeight = Constants.statusBarHeight;
 
 // API client
-import axios from './../api/axios';
+import axios from '../api/axios';
 
 
 const Verification = ({route, navigation}) => {
