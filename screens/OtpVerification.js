@@ -1,15 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
-import { StyledContainer, TopHalf, BottomHalf, PageTitle, InfoText, EmphasizeText, IconBg, StyledButton, ButtonText, Colors} from '../components/styles';
 import {Octicons,Ionicons} from '@expo/vector-icons';
 import CodeInputField from '../components/CodeInputField';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, TouchableOpacity, Text, View} from 'react-native';
 import ResendTimer from '../components/ResendTimer';
-
 import VerificationModal from '../components/VerificationModal';
+import { COLORS, Constants } from "../constants";
 
-const {brand, green, primary, lightGreen, gray} = Colors;
+// get status bar height
+const StatusBarHeight = Constants.statusBarHeight;
+
 
 const OtpVerification = () => {
     const [code, setCode] = useState('');
@@ -109,21 +110,21 @@ const OtpVerification = () => {
 
   return (
     <KeyboardAvoidingWrapper>
-        <StyledContainer style={{alignItems:'center'}}>
-            <TopHalf>
-                <IconBg>
+        <View style={{alignItems:'center', flex:1,padding:25,paddingTop: StatusBarHeight + 30, backgroundColor: COLORS.white}}>
+            <View style={{flex:1, justifyContent:'center',padding:20}}>
+                <View style={{width:250, height:250, backgroundColor:COLORS.lightGreen,borderRadius:250,justifyContent:'center',alignItems:'center'}}>
                     <StatusBar  style="dark"/>
-                    <Octicons name="lock" size={125} color={brand}/>
-                </IconBg>
-            </TopHalf>
-
-            <BottomHalf>
-                <PageTitle style={{fontSize:25}}>Account Verification </PageTitle>
-                <InfoText> Please enter the 4 digit code sent to 
-                    <EmphasizeText>
+                    <Octicons name="lock" size={125} color={COLORS.brand}/>
+                </View>
+            </View>
+            
+            <View style={{flex:1, justifyContent:'center',padding:20,justifyContent:'space-around'}}>
+                <Text style={{fontSize:25, fontSize:30,textAlign:'center',fontWeight:'bold',color: COLORS.brand, padding:10}}>Account Verification </Text>
+                <Text style={{color:COLORS.gray, fontSize:15,textAlign:'center'}}> Please enter the 4 digit code sent to 
+                    <Text style={{fontWeight:'bold',fontStyle:'italic'}}>
                         {` testmail@gmail.com`}
-                    </EmphasizeText>
-                </InfoText>
+                    </Text>
+                </Text>
 
                 <CodeInputField 
                     setPinReady={setPinReady}
@@ -132,35 +133,35 @@ const OtpVerification = () => {
                     maxLength={MAX_CODE_LENGTH}
                 />
                 {!verifying && pinReady && (
-                    <StyledButton style={{backgroundColor:green, flexDirection:'row'}} onPress={submitOTPVerification}>
-                       <ButtonText>Verify </ButtonText>
-                       <Ionicons name="checkmark-circle" size={25} color={primary}/>
-                   </StyledButton>
+                    <TouchableOpacity style={{backgroundColor:COLORS.green, flexDirection:'row',padding:15,justifyContent:'center',alignItems:'center',borderRadius:5,marginVertical:5,height:60}} onPress={submitOTPVerification}>
+                       <Text style={{color:COLORS.white, fontSize:16}}>Verify </Text>
+                       <Ionicons name="checkmark-circle" size={25} color={COLORS.white}/>
+                   </TouchableOpacity>
                 )}
 
                 {!verifying && !pinReady && (
-                    <StyledButton disabled={true} style={{backgroundColor:lightGreen, flexDirection:'row'}}>
-                       <ButtonText style={{color:gray}}>Verify </ButtonText>
-                       <Ionicons name="checkmark-circle" size={25} color={gray}/>
-                   </StyledButton>
+                    <TouchableOpacity style={{backgroundColor:COLORS.lightGreen, flexDirection:'row',padding:15,justifyContent:'center',alignItems:'center',borderRadius:5,marginVertical:5,height:60}} >
+                      <Text style={{color:COLORS.primary, fontSize:16}}>Verify </Text>
+                       <Ionicons name="checkmark-circle" size={25} color={COLORS.primary}/>
+                    </TouchableOpacity>
                 )}
 
                 {verifying  && (
-                    <StyledButton disabled={true} style={{backgroundColor:lightGreen, flexDirection:'row'}}>
-                       <ActivityIndicator size="large" color={primary}/>
-                   </StyledButton>
+                   <TouchableOpacity disabled={true} style={{backgroundColor:COLORS.lightGreen, flexDirection:'row',padding:15,justifyContent:'center',alignItems:'center',borderRadius:5,marginVertical:5,height:60}} >
+                       <ActivityIndicator size="large" color={COLORS.primary}/>
+                   </TouchableOpacity>
                 )}
 
-        <ResendTimer 
-            activeResend={activeResend}
-            resendStatus={resendStatus}
-            resendingEmail={resendingEmail}
-            timeLeft={timeLeft}
-            targetTime={targetTime}
-            resendEmail={resendEmail}
-        />
+                <ResendTimer 
+                    activeResend={activeResend}
+                    resendStatus={resendStatus}
+                    resendingEmail={resendingEmail}
+                    timeLeft={timeLeft}
+                    targetTime={targetTime}
+                    resendEmail={resendEmail}
+                />
 
-            </BottomHalf>
+            </View>
 
             <VerificationModal 
                 successful = {verificationSuccessful}
@@ -168,7 +169,7 @@ const OtpVerification = () => {
                 modalVisible={modalVisible}
                 persistLoginAfterOTPVerification={persistLoginAfterOTPVerification}
             />
-        </StyledContainer>   
+        </View>   
     </KeyboardAvoidingWrapper>
   )
 }

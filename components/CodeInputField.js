@@ -1,6 +1,7 @@
 import {useState, useRef,useEffect} from 'react';
-import {Pressable, TextInput} from 'react-native';
+import {Pressable, TextInput, View, Text} from 'react-native';
 import { COLORS } from '../constants';
+import { CodeInput, CodeInputFocused } from './StyledComponents';
 
 const CodeInputField = ({setPinReady, code, setCode, maxLength}) => {
     //create  an array with the length of the set max length and fill it with zeroes
@@ -52,7 +53,7 @@ const CodeInputField = ({setPinReady, code, setCode, maxLength}) => {
         //for a digit to be focussed it should be the current digit or is the last digit and the code is full
         const isDigitFocussed = isCurrentDigit || (isLastDigit && isCodeFull);
 
-        const StyledCodeInput = inputContainerIsFocused && isDigitFocussed ?  (<View  style={{borderColor:COLORS.green, minWidth:'15%',borderWidth:2,borderRadius:5, padding:12}}/>) : (<View  style={{borderColor:COLORS.lightGreen, minWidth:'15%',borderWidth:2,borderRadius:5, padding:12}}/>);
+        const StyledCodeInput = inputContainerIsFocused && isDigitFocussed ? CodeInputFocused : CodeInput;
 
 
         return (

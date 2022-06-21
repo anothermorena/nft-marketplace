@@ -5,6 +5,7 @@ import Home from './screens/Home';
 import Details from './screens/Details';
 import Signup from './screens/Signup';
 import Verification from './screens/OtpVerificationMsg';
+import OtpVerification from './screens/OtpVerification';
 
 
 const Stack = createStackNavigator();
@@ -31,10 +32,11 @@ const App = () => {
   
   return (
     <NavigationContainer theme={theme}>
-      <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="Signup">
+      <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="OtpVerification">
         <Stack.Screen name="Home" component={Home}/>
         <Stack.Screen name="Signup" component={Signup}/>
         <Stack.Screen name="Verification" component={Verification}/>
+        <Stack.Screen name="OtpVerification" component={OtpVerification}/>
         <Stack.Screen name="Details" component={Details}/>
       </Stack.Navigator>
     </NavigationContainer>
