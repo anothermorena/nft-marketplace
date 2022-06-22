@@ -8,10 +8,15 @@ import ResendTimer from '../components/ResendTimer';
 import VerificationModal from '../components/VerificationModal';
 import { COLORS, Constants } from "../constants";
 
+// API client
+import axios from '../api/axios';
+
 // get status bar height
 const StatusBarHeight = Constants.statusBarHeight;
 
-const OtpVerification = () => {
+const OtpVerification = ({route, navigation}) => {
+    const { email } = route.params;
+
     const [code, setCode] = useState('');
     //this will be a boolean which will be true whenever our input field is full
     //pin ready can be true or false 
@@ -30,6 +35,9 @@ const OtpVerification = () => {
 
     //store whatever message we receive from our server
     const [requestMessage, setRequestMessage] = useState('');
+
+    //handle error messages
+    const [message, handleMessage] = useState(null);
 
     //this state monitors the state of the resend system
     const [resendingEmail, setResendingEmail] = useState(false);
@@ -77,6 +85,7 @@ const OtpVerification = () => {
         resendTimerInterval = setInterval(() => {
             calculateTimeLeft(finalTime),1000; //this means our function should be called every second 
     });
+
     }
 
     useEffect(() => { 
@@ -95,12 +104,61 @@ const OtpVerification = () => {
 
     }
 
-    //create a resend email async function
+   //create a resend email async function
     const resendEmail = async () => { 
         //set the resend status to sending
         setResendStatus('Sending');
         //set the resending email to true
         setResendingEmail(true);
+
+        //make an api call to send a new otp to the user
+        const config = {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+    
+          try {
+            const response = await axios.post("/api/send_otp", JSON.stringify({ email: email }), config);
+        
+            const result = response.data;
+            const { status, message } = result;
+    
+            if (status !== 'SUCCESS') {
+  
+              //set the error message from received from api endpoint
+              handleMessage(message);
+
+              //set the resend status to Resend to enable the use to try again just incase the previous attempt did not work
+              setResendStatus('Resend');
+
+              //set the resending email to true
+              setResendingEmail(false);
+
+              //disable the resend button for 30 seconds again
+              triggerTimer();
+
+            } else {
+              //Otp email was resent successfully: Tell the user
+              handleMessage('A new OTP was sent to your email. Please also check it in the spam/junk box if you cannot find it in the inbox folder.');
+
+              //set the resend status to Resend to enable the use to try again just incase the previous attempt did not work
+              setResendStatus('Resend');
+
+              //set the resending email to true
+              setResendingEmail(false);
+  
+            }
+          
+          } catch (error) {
+            handleMessage('An error occurred. Check your network and try again');
+            setResendStatus('Resend');
+            //set the resending email to false
+            setResendingEmail(false);
+
+            //disable the resend button for 30 seconds again
+            triggerTimer();
+          }
     }
 
     //persist login after verification
@@ -119,10 +177,10 @@ const OtpVerification = () => {
             </View>
             
             <View style={{flex:1, justifyContent:'center',padding:20,justifyContent:'space-around'}}>
-                <Text style={{fontSize:25, fontSize:30,textAlign:'center',fontWeight:'bold',color: COLORS.brand, padding:10}}>Account Verification </Text>
+                <Text style={{fontSize:25,textAlign:'center',fontWeight:'bold',color: COLORS.brand, padding:10}}>Account Verification </Text>
                 <Text style={{color:COLORS.gray, fontSize:15,textAlign:'center'}}> Please enter the 4 digit code sent to 
                     <Text style={{fontWeight:'bold',fontStyle:'italic'}}>
-                        {` testmail@gmail.com`}
+                        {` ${email}`}
                     </Text>
                 </Text>
 
@@ -151,6 +209,8 @@ const OtpVerification = () => {
                        <ActivityIndicator size="large" color={COLORS.white}/>
                    </TouchableOpacity>
                 )}
+
+                {message && <Text style={{ fontSize: 10, color: 'red' }}>{message}</Text> }
 
                 <ResendTimer 
                     activeResend={activeResend}

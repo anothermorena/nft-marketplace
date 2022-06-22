@@ -1,4 +1,3 @@
-
 //being on the verification page means an email has already been sent to the user after the sign up process
 import React, {useState, useEffect} from 'react';
 import { View, Text,TouchableOpacity } from 'react-native';
@@ -14,7 +13,6 @@ const StatusBarHeight = Constants.statusBarHeight;
 
 // API client
 import axios from '../api/axios';
-
 
 const Verification = ({route, navigation}) => {
     //get the email the user used to create their account
@@ -130,9 +128,16 @@ const Verification = ({route, navigation}) => {
           }
     }
 
+    //take the user to the OTP verification input screen
+    const otpInputScreen = () => {
+      navigation.navigate('OtpVerificationInput',{
+        email: email
+      
+      });
+    }
+
   return (
-    <View style={{flex: 1,alignItems: 'center', padding: 25,paddingTop:StatusBarHeight+30,backgroundColor: COLORS.white}}>
-    <Text style={{fontSize:30, textAlign:'center',fontWeight:'bold', color: COLORS.brand}}>NFT Market Place</Text>
+    <View style={{flex: 1,alignItems: 'center', padding: 25,paddingTop:StatusBarHeight+ 20,backgroundColor: COLORS.white}}>
       <View style={{flex :1, justifyContent: 'center', padding: 20}}>
         <View style={{width:250, height: 250, backgroundColor: COLORS.lightGreen, borderRadius: 250,justifyContent: 'center', alignItems:'center'}}>
             <StatusBar  style="dark"/>
@@ -145,7 +150,7 @@ const Verification = ({route, navigation}) => {
                   {` ${email}`}  
               </Text>
            </Text>
-           <TouchableOpacity onPress={() => {}} style={{backgroundColor: 'green', flexDirection: 'row', padding:15,backgroundColor:COLORS.brand,justifyContent:'center',alignItems:'center',borderRadius:5, marginVertical:5, height:60}}>
+           <TouchableOpacity onPress={otpInputScreen} style={{backgroundColor: 'green', flexDirection: 'row', padding:15,backgroundColor:COLORS.brand,justifyContent:'center',alignItems:'center',borderRadius:5, marginVertical:5, height:60}}>
             <Text style={{color:COLORS.white, fontSize:16}}>Proceed </Text>
             <Ionicons name="arrow-forward-circle" size={25} color={COLORS.white} />
            </TouchableOpacity>
