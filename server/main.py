@@ -20,7 +20,6 @@ async def create_user(user: schemas.UserCreate, db: orm.Session = fastapi.Depend
         #user already exists so raise an exception
         return dict(message="Email already in use", status="FAILED", email=user.email)
 
-
     #user does not exists, create the user
     await services.create_user(user, db)
  
@@ -50,6 +49,38 @@ async def send_otp(email: schemas.Otp, db: orm.Session = fastapi.Depends(get_db)
 
    #send back the email status and message
    return email_status
+
+
+#verify account end point
+@app.patch("/api/verify_account")
+async def verify_account(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(get_db)):
+    #first check if a user with given email exist
+     db_user = await services.get_user_by_email(user.email, db)
+
+    #found the user account
+     if db_user:
+        #check if they have a valid otp
+        otp = await services.get_otp_by_email(user.email, user.otp, db)
+
+        if not otp:
+            return dict(message="The provided OTP is invalid. Please try again", status="FAILED")
+        else:
+            #An otp with that user email exists: verify the users account and update its status
+            if db_user.user_status == "UNVERIFIED":
+                db_user.user_status = "VERIFIED"
+                db.commit()
+                db.refresh(db_user)
+
+                #delete the otp used for verification
+                await services.delete_otp(user.email, db)
+
+                #send back feedback
+                return dict(message="User account verification Successful", status="SUCCESS")
+
+            #user account already verified
+            return dict(message="User account already verified", status="FAILED")
+            
+
 
         
   

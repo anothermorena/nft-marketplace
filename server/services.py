@@ -9,7 +9,12 @@ from config import email_conf
 #this function gets a user by a given email
 async def get_user_by_email(email: str, db: orm.Session):
     #if there is a user with the specified email return that user
-    return db.query(models.User).filter(models.User.email == email).first()
+    db.query(models.User).filter(models.User.email == email).first()
+
+#this function gets an otp by a given email
+async def get_otp_by_email(email: str, otp: int, db: orm.Session):
+    #if there is an otp with the specified email return them
+    return db.query(models.Otp).filter(models.Otp.email == email).filter(models.Otp.code == otp).first()
 
 
 #this function creates a new user
@@ -31,7 +36,6 @@ async def delete_otp(email:str, db: orm.Session):
         db.delete(old_otp)
         db.commit()
 
-    return 'SUCCESS'
 
 #this function creates a user's one time pin for account verification and password reset
 async def create_otp(email:str, db: orm.Session):
@@ -68,6 +72,8 @@ async def send_email_async(subject: str, email_to: str, body: str):
 
     #email was not sent
     #return dict(message="OTP email was not sent successfully. Please try again", status="FAILED", email= email_to)
+
+ 
 
 
 

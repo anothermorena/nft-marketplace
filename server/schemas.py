@@ -33,3 +33,7 @@ class User(UserBase):
 #One time pin schema
 class Otp(BaseModel):
     email: str
+
+#verify OTP Schema
+class VerifyOtp(Otp):
+    otp: int
