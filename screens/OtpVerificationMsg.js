@@ -114,7 +114,7 @@ const Verification = ({route, navigation}) => {
 
             } else {
               //Otp email was resent successfully: redirect the user to the otp screen to verify their account
-              navigation.navigate('Otp');
+              handleMessage("A new otp was sent successfully.");
             }
           
           } catch (error) {

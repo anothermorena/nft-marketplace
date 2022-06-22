@@ -33,10 +33,7 @@ const OtpVerification = ({route, navigation}) => {
     //determine whether the request succeeded or failed
     const [verificationSuccessful, setVerificationSuccessful] = useState(false);
 
-    //store whatever message we receive from our server
-    const [requestMessage, setRequestMessage] = useState('');
-
-    //handle error messages
+     //store whatever message we receive from our server
     const [message, handleMessage] = useState(null);
 
     //this state monitors the state of the resend system
@@ -97,11 +94,53 @@ const OtpVerification = ({route, navigation}) => {
         }
     }, []);
  
+      //api headers config
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
 
     //function to submit the otp for verification
     const submitOTPVerification = async () => {
         setVerifying(true);
 
+        //make an api call to verify the use account
+        try {
+            const response = await axios.patch("/api/verify_account", JSON.stringify({ email: email, otp: code }), config);
+        
+            const result = response.data;
+
+          
+            const { status, message } = result;
+
+            console.log(status);
+            console.log(message);
+    
+            if (status !== 'SUCCESS') {
+              //set the error message from received from api endpoint
+              handleMessage(message);
+
+              //account verification failed: : show the successful verification modal
+              setVerificationSuccessful(false);
+              setModalVisible(true);
+              setVerifying(false);
+           
+            } else {
+              //Account was verified successfully: show the successful verification modal
+              handleMessage(message);
+              setVerificationSuccessful(true);
+              setModalVisible(true);
+              setVerifying(false);
+            }
+          
+          } catch (error) {
+              //something went wrong. 
+              handleMessage('An error occurred. Check your network and try again');
+              setVerificationSuccessful(false);
+              setModalVisible(true);
+              setVerifying(false);
+          }
     }
 
    //create a resend email async function
@@ -112,12 +151,6 @@ const OtpVerification = ({route, navigation}) => {
         setResendingEmail(true);
 
         //make an api call to send a new otp to the user
-        const config = {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
-    
           try {
             const response = await axios.post("/api/send_otp", JSON.stringify({ email: email }), config);
         
@@ -126,7 +159,7 @@ const OtpVerification = ({route, navigation}) => {
     
             if (status !== 'SUCCESS') {
   
-              //set the error message from received from api endpoint
+              //set the error message from received from the api endpoint
               handleMessage(message);
 
               //set the resend status to Resend to enable the use to try again just incase the previous attempt did not work
@@ -210,7 +243,7 @@ const OtpVerification = ({route, navigation}) => {
                    </TouchableOpacity>
                 )}
 
-                {message && <Text style={{ fontSize: 10, color: 'red' }}>{message}</Text> }
+                {message && <Text style={{ fontSize: 10, color: 'red', justifyContent:'center', textAlign:'center'}}>{message}</Text> }
 
                 <ResendTimer 
                     activeResend={activeResend}
@@ -228,6 +261,7 @@ const OtpVerification = ({route, navigation}) => {
                 setModalVisible={setModalVisible}
                 modalVisible={modalVisible}
                 persistLoginAfterOTPVerification={persistLoginAfterOTPVerification}
+                message={message}
             />
         </View>   
     </KeyboardAvoidingWrapper>

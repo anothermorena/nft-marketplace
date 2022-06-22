@@ -9,7 +9,7 @@ from config import email_conf
 #this function gets a user by a given email
 async def get_user_by_email(email: str, db: orm.Session):
     #if there is a user with the specified email return that user
-    db.query(models.User).filter(models.User.email == email).first()
+    return db.query(models.User).filter(models.User.email == email).first()
 
 #this function gets an otp by a given email
 async def get_otp_by_email(email: str, otp: int, db: orm.Session):
@@ -35,6 +35,8 @@ async def delete_otp(email:str, db: orm.Session):
     if old_otp:
         db.delete(old_otp)
         db.commit()
+
+    return "SUCCESS"
 
 
 #this function creates a user's one time pin for account verification and password reset

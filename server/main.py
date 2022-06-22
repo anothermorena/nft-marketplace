@@ -17,7 +17,7 @@ async def create_user(user: schemas.UserCreate, db: orm.Session = fastapi.Depend
     db_user = await services.get_user_by_email(user.email, db)
  
     if db_user:
-        #user already exists so raise an exception
+        #user already exists
         return dict(message="Email already in use", status="FAILED", email=user.email)
 
     #user does not exists, create the user
@@ -57,28 +57,32 @@ async def verify_account(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depe
     #first check if a user with given email exist
      db_user = await services.get_user_by_email(user.email, db)
 
-    #found the user account
-     if db_user:
-        #check if they have a valid otp
-        otp = await services.get_otp_by_email(user.email, user.otp, db)
+    #check if the user account was found
+     if not db_user:
+        #user not found
+        return dict(message="Invalid email or otp.", status="FAILED")
 
-        if not otp:
-            return dict(message="The provided OTP is invalid. Please try again", status="FAILED")
-        else:
-            #An otp with that user email exists: verify the users account and update its status
-            if db_user.user_status == "UNVERIFIED":
-                db_user.user_status = "VERIFIED"
-                db.commit()
-                db.refresh(db_user)
+     #user exists
+     #check if the user have a valid otp
+     otp = await services.get_otp_by_email(user.email, user.otp, db)
 
-                #delete the otp used for verification
-                await services.delete_otp(user.email, db)
+     if not otp:
+         return dict(message="The provided OTP is invalid. Please try again.", status="FAILED")
+     else:
+         #An otp with that user email exists: verify the users account and update its status
+         if db_user.user_status == "UNVERIFIED":
+             db_user.user_status = "VERIFIED"
+             db.commit()
+             db.refresh(db_user)
 
-                #send back feedback
-                return dict(message="User account verification Successful", status="SUCCESS")
+             #delete the otp used for verification
+             await services.delete_otp(user.email, db)
 
-            #user account already verified
-            return dict(message="User account already verified", status="FAILED")
+             #account verification was successful: send back feedback
+             return dict(message="User account verification successful.", status="SUCCESS")
+
+         #user account already verified
+         return dict(message="User account already verified.", status="SUCCESS")
             
 
 
