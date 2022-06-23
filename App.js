@@ -1,47 +1,52 @@
-import {createStackNavigator} from '@react-navigation/stack';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import {useFonts } from 'expo-font';
-import Home from './screens/Home';
-import Details from './screens/Details';
-import Signup from './screens/Signup';
-import Login from './screens/Login';
-import Verification from './screens/OtpVerificationMsg';
-import OtpVerificationInput from './screens/OtpVerificationInput';
+import {useState} from 'react';
 
-const Stack = createStackNavigator();
+//react navigation stack
+import RootStack from './navigators/RootStack';
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: 'transparent',
+//app loading
+import AppLoading  from 'expo-app-loading';
+
+//async storage
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//credentials context
+import { CredentialsContext } from './components/CredentialsContext';
+
+export default function App() {
+  //check if the app is ready using this state. Initial is false
+  //this is to monitor our app readiness
+  const [appReady, setAppReady] = useState(false);
+
+  const [storedCredentials, setStoredCredentials] = useState("");
+
+  const checkLoginCredentials = () => {
+    AsyncStorage.getItem('nftMarketPlace')
+      .then((result) => {
+        if (result !== null) {
+          //set the result as our stored credentials
+          setStoredCredentials(JSON.parse(result));
+        } else {
+          setStoredCredentials(null);
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  //if the app is not ready, return the app loading component
+  if (!appReady) {
+    //startAsync takes a function which runs when our app is opened
+    //onFinish is a function which runs when the app is ready 
+    //if there is an error,the onError function is called to create a new error/warning
+    return <AppLoading startAsync={checkLoginCredentials} onFinish={() => setAppReady(true)} onError={console.warn} />;
   }
-}
 
-const App = () => {
-  //load the fonts we will be using and all other assets our app will use
-  const [loaded] = useFonts({
-    InterBold: require("./assets/fonts/Inter-Bold.ttf"),
-    InterSemiBold: require("./assets/fonts/Inter-SemiBold.ttf"),
-    InterMedium: require("./assets/fonts/Inter-Medium.ttf"),
-    InterRegular: require("./assets/fonts/Inter-Regular.ttf"),
-    InterLight: require("./assets/fonts/Inter-Light.ttf"),
-  });
-
-  if (!loaded) return null;
-  
   return (
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName="Login">
-        <Stack.Screen name="Home" component={Home}/>
-        <Stack.Screen name="Signup" component={Signup}/>
-        <Stack.Screen name="Login" component={Login}/>
-        <Stack.Screen name="Verification" component={Verification}/>
-        <Stack.Screen name="OtpVerificationInput" component={OtpVerificationInput}/>
-        <Stack.Screen name="Details" component={Details}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+    //to able to pass the values that are store with context we can use of the provider that comes with context
+    //once the above is done we can then set the initial values of the context 
+    <CredentialsContext.Provider value={{ storedCredentials, setStoredCredentials }}>
+      <RootStack />
+    </CredentialsContext.Provider>
   );
 }
 
-export default  App;
+

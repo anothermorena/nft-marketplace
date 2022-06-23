@@ -136,7 +136,7 @@ const Login = ({ navigation }) => {
                 <StyledFormArea>
                   <MyTextInput
                     label="Email Address"
-                    placeholder="andyj@gmail.com"
+                    placeholder="hireme@morena.com"
                     placeholderTextColor={COLORS.darkLight}
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
