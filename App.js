@@ -1,11 +1,12 @@
-import {useState} from 'react';
+import {useState, useEffect, useCallback} from 'react';
+
+import { View } from 'react-native';
 
 //react navigation stack
 import RootStack from './navigators/RootStack';
 
 //app loading
-import AppLoading  from 'expo-app-loading';
-
+import * as SplashScreen from 'expo-splash-screen';
 
 //expo secure local storage.
 import * as SecureStore from 'expo-secure-store';
@@ -16,7 +17,7 @@ import { CredentialsContext } from './components/CredentialsContext';
 export default function App() {
   //check if the app is ready using this state. Initial is false
   //this is to monitor our app readiness
-  const [appReady, setAppReady] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
 
   const [storedCredentials, setStoredCredentials] = useState("");
   
@@ -35,19 +36,52 @@ export default function App() {
   };
 
   //if the app is not ready, return the app loading component
-  if (!appReady) {
-    //startAsync takes a function which runs when our app is opened
-    //onFinish is a function which runs when the app is ready 
-    //if there is an error,the onError function is called to create a new error/warning
-    return <AppLoading startAsync={checkLoginCredentials} onFinish={() => setAppReady(true)} onError={console.warn} />;
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // Keep the splash screen visible while we fetch resources
+        await SplashScreen.preventAutoHideAsync();
+        // check if user has stored login credentials in localstorage
+        checkLoginCredentials();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Tell the application to render
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
   }
 
   return (
-    //to able to pass the values that are store with context we can use of the provider that comes with context
-    //once the above is done we can then set the initial values of the context 
-    <CredentialsContext.Provider value={{ storedCredentials, setStoredCredentials }}>
-      <RootStack />
-    </CredentialsContext.Provider>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      {/*
+      
+        //to able to pass the values that are stored with context we make use of the provider that comes with context
+        //once the above is done we can then set the initial values of the context 
+
+      */}
+      <CredentialsContext.Provider value={{ storedCredentials, setStoredCredentials }}>
+        <RootStack />
+      </CredentialsContext.Provider>
+    </View>
+ 
   );
 }
 
