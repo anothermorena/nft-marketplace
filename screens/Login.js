@@ -36,12 +36,11 @@ import { Octicons, Ionicons } from '@expo/vector-icons';
 // keyboard avoiding view
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
-
 //import axios
 import axios from './../api/axios';
 
-// Async storage
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//expo async secure local storage.
+import * as SecureStore from 'expo-secure-store';
 
 // credentials context
 import { CredentialsContext } from './../components/CredentialsContext';
@@ -99,8 +98,8 @@ const Login = ({ navigation }) => {
     };
 
     // Persisting login
-    const persistLogin = (credentials, message, status) => {
-      AsyncStorage.setItem('nftMarketPlace', JSON.stringify(credentials))
+    const persistLogin = async (credentials, message, status) => {
+      await SecureStore.setItemAsync('nftMarketPlace', JSON.stringify(credentials))
         .then(() => {
           //once we are in the then block it means the credentials were successfully stored
           handleMessage(message, status);
@@ -110,6 +109,16 @@ const Login = ({ navigation }) => {
           handleMessage('Persisting login failed');
         });
     };
+
+  //TODO: move this functiotn to the logout page later
+  //log out the user
+  const clearLogin = async () => {
+    await SecureStore.deleteItemAsync('nftMarketPlace')
+      .then(() => {
+        setStoredCredentials("");
+      })
+      .catch((error) => console.log(error));
+  };
   
 
   return (

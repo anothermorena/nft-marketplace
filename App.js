@@ -6,8 +6,9 @@ import RootStack from './navigators/RootStack';
 //app loading
 import AppLoading  from 'expo-app-loading';
 
-//async storage
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//expo secure local storage.
+import * as SecureStore from 'expo-secure-store';
 
 //credentials context
 import { CredentialsContext } from './components/CredentialsContext';
@@ -18,9 +19,10 @@ export default function App() {
   const [appReady, setAppReady] = useState(false);
 
   const [storedCredentials, setStoredCredentials] = useState("");
-
-  const checkLoginCredentials = () => {
-    AsyncStorage.getItem('nftMarketPlace')
+  
+ 
+  const checkLoginCredentials = async () => {
+    await SecureStore.getItemAsync('nftMarketPlace')
       .then((result) => {
         if (result !== null) {
           //set the result as our stored credentials
