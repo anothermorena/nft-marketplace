@@ -5,9 +5,48 @@ import DetailsBid from "./DetailsBid";
 import DetailsDesc from "./DetailsDesc";
 import { RectButton, CircleButton } from "./Button";
 import { SubInfo } from "./SubInfo";
-import {CodeInput, CodeInputsContainer} from "./StyledComponents";
+import {
+    CodeInput, 
+    CodeInputsContainer, 
+    StyledContainer,
+    PageLogo,
+    PageTitle,
+    SubTitle,
+    StyledInputLabel,
+    StyledFormArea,
+    StyledButton,
+    StyledTextInput,
+    LeftIcon,
+    RightIcon,
+    InnerContainer,
+    ButtonText,
+    MsgBox,
+    Line,
+    ExtraView,
+    ExtraText,
+    TextLink,
+    TextLinkContent
+
+} from "./StyledComponents";
 
 
 export {
-    HomeHeader, NFTCard, FocusedStatusBar, DetailsBid, DetailsDesc, RectButton, CircleButton, SubInfo,CodeInput, CodeInputsContainer
+    HomeHeader, NFTCard, FocusedStatusBar, DetailsBid, DetailsDesc, RectButton, CircleButton, SubInfo,CodeInput, CodeInputsContainer,StyledContainer,
+    PageLogo,
+    PageTitle,
+    SubTitle,
+    StyledInputLabel,
+    StyledFormArea,
+    StyledButton,
+    StyledTextInput,
+    LeftIcon,
+    RightIcon,
+    InnerContainer,
+    ButtonText,
+    MsgBox,
+    Line,
+    ExtraView,
+    ExtraText,
+    TextLink,
+    TextLinkContent
 }

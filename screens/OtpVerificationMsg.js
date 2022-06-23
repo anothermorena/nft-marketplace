@@ -100,11 +100,11 @@ const Verification = ({route, navigation}) => {
     
             if (status !== 'SUCCESS') {
   
-              //set the error message from received from api endpoint
+              //set the  message from received from api endpoint
               handleMessage(message);
 
               //set the resend status to Resend to enable the use to try again just incase the previous attempt did not work
-              setResendStatus('Resend');
+              setResendStatus('Failed');
 
               //set the resending email to true
               setResendingEmail(false);

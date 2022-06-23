@@ -3,6 +3,7 @@ import fastapi as fastapi
 import sqlalchemy.orm as orm
 from database import engine, get_db
 import services, schemas, models
+import fastapi.security as security
 
 #create the app object
 app = fastapi.FastAPI()
@@ -85,6 +86,12 @@ async def verify_account(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depe
          return dict(message="User account already verified.", status="SUCCESS")
             
 
+#user login end point
+@app.post("/api/login")
+async def user_login(form_data: security.OAuth2PasswordRequestForm = fastapi.Depends(), db: orm.Session = fastapi.Depends(get_db)):
+    #authenticate the user using the provided credentials
+    user = await services.authenticate_user(form_data.username, form_data.password, db)
+    return user
 
         
   

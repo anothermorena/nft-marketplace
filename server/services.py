@@ -72,8 +72,24 @@ async def send_email_async(subject: str, email_to: str, body: str):
     #send back a success message        
     return dict(message="Email sent successfully", status="SUCCESS", email= email_to)
 
-    #email was not sent
-    #return dict(message="OTP email was not sent successfully. Please try again", status="FAILED", email= email_to)
+
+#function to authenticate the user
+async def authenticate_user(email: str, password: str, db: orm.Session):
+    #first lets check if the user exists
+    user = await get_user_by_email(email=email, db=db)
+
+    #user does not exist: return a generic message back to the user
+    if not user:
+        return dict(message="Username or password incorrect", status="FAILED", data=None)
+
+    #check if the submitted password matches the stored hashed password
+    if not user.verify_password(password):
+        return dict(message="Username or password incorrect", status="FAILED", data=None)
+
+    #login was successful: send back a message to the user
+    return dict(message="User authenticated successfully", status="SUCCESS", data=user)
+
+
 
  
 

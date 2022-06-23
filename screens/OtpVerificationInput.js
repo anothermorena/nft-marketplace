@@ -110,12 +110,8 @@ const OtpVerification = ({route, navigation}) => {
             const response = await axios.patch("/api/verify_account", JSON.stringify({ email: email, otp: code }), config);
         
             const result = response.data;
-
-          
+        
             const { status, message } = result;
-
-            console.log(status);
-            console.log(message);
     
             if (status !== 'SUCCESS') {
               //set the error message from received from api endpoint
@@ -145,53 +141,30 @@ const OtpVerification = ({route, navigation}) => {
 
    //create a resend email async function
     const resendEmail = async () => { 
-        //set the resend status to sending
-        setResendStatus('Sending');
         //set the resending email to true
         setResendingEmail(true);
 
         //make an api call to send a new otp to the user
           try {
-            const response = await axios.post("/api/send_otp", JSON.stringify({ email: email }), config);
-        
-            const result = response.data;
-            const { status, message } = result;
-    
-            if (status !== 'SUCCESS') {
-  
-              //set the error message from received from the api endpoint
-              handleMessage(message);
-
-              //set the resend status to Resend to enable the use to try again just incase the previous attempt did not work
-              setResendStatus('Resend');
-
-              //set the resending email to true
-              setResendingEmail(false);
-
-              //disable the resend button for 30 seconds again
-              triggerTimer();
-
-            } else {
+              await axios.post("/api/send_otp", JSON.stringify({ email: email }), config);
+      
               //Otp email was resent successfully: Tell the user
               handleMessage('A new OTP was sent to your email. Please also check it in the spam/junk box if you cannot find it in the inbox folder.');
 
               //set the resend status to Resend to enable the use to try again just incase the previous attempt did not work
               setResendStatus('Resend');
-
-              //set the resending email to true
-              setResendingEmail(false);
-  
-            }
+              triggerTimer();
           
           } catch (error) {
             handleMessage('An error occurred. Check your network and try again');
-            setResendStatus('Resend');
-            //set the resending email to false
-            setResendingEmail(false);
+            setResendStatus('Failed');
 
             //disable the resend button for 30 seconds again
             triggerTimer();
           }
+          //set the resending email to false
+          setResendingEmail(false);
+          setActiveResend(false);
     }
 
     //persist login after verification

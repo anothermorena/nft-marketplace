@@ -71,6 +71,7 @@ const Signup = ({ navigation }) => {
           handleMessage(message, status);
         } else {
           //Signup was successful redirect the user to the account verification screen
+          //temporaryUserPersist(({firstName, lastName, email} = formValues))
           navigation.navigate('Verification',{
             email: email
           
@@ -85,6 +86,18 @@ const Signup = ({ navigation }) => {
   
       }
     };
+
+    /*persist data that user signs up with temporarily
+    const temporaryUserPersist = async (formValues) => {
+      
+        try {
+          await AsyncStorage.setItem('tempUser', JSON.stringify(formValues));
+        } catch (error) {
+          handleMessage('Error with initial data handling');
+        }
+    };
+
+    */
 
     const handleMessage = (message, type = '') => {
       setMessage(message);
@@ -149,7 +162,7 @@ const Signup = ({ navigation }) => {
                   }
                 <MyTextInput
                   label="Email Address"
-                  placeholder="andyj@gmail.com"
+                  placeholder="hireme@morena.com"
                   placeholderTextColor={COLORS.darkLight}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
