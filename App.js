@@ -19,9 +19,9 @@ export default function App() {
   //this is to monitor our app readiness
   const [appIsReady, setAppIsReady] = useState(false);
 
-  const [storedCredentials, setStoredCredentials] = useState("");
-  
+  const [storedCredentials, setStoredCredentials] = useState(""); 
  
+  //check if user is authenticated
   const checkLoginCredentials = async () => {
     await SecureStore.getItemAsync('nftMarketPlace')
       .then((result) => {
@@ -35,13 +35,13 @@ export default function App() {
       .catch((error) => console.log(error));
   };
 
-  //if the app is not ready, return the app loading component
+  //if the app is not ready, return the app loading splash screen
   useEffect(() => {
     async function prepare() {
       try {
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync();
-        // check if user has stored login credentials in localstorage
+        // check if user has stored login credentials in local storage
         checkLoginCredentials();
       } catch (e) {
         console.warn(e);

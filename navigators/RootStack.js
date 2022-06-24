@@ -11,6 +11,7 @@ import Home from './../screens/Home';
 import Details from './../screens/Details';
 import Signup from './../screens/Signup';
 import Login from './../screens/Login';
+import ResetPasswordRequest from './../screens/ResetPasswordRequest';
 import Verification from './../screens/OtpVerificationMsg';
 import OtpVerificationInput from './../screens/OtpVerificationInput';
 
@@ -67,13 +68,14 @@ const RootStack = () => {
               options={{
                 headerTintColor: COLORS.primary,
               }}
-              name="Login"
-              component={Login}
+              name="ResetPasswordRequest"
+              component={ResetPasswordRequest}
             />
           ) : (
             <>
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="Signup" component={Signup} />
+              <Stack.Screen name="ResetPasswordRequest" component={ResetPasswordRequest} />
               <Stack.Screen name="Details" component={Details}/>
               <Stack.Screen name="Verification" component={Verification}/>
               <Stack.Screen name="OtpVerificationInput" component={OtpVerificationInput}/>

@@ -39,6 +39,13 @@ async def create_user(user: schemas.UserCreate, db: orm.Session = fastapi.Depend
 #send otp end point
 @app.post("/api/send_otp")
 async def send_otp(email: schemas.Otp, db: orm.Session = fastapi.Depends(get_db)):
+   #check if a user withthe provided email exists or not 
+   db_user = await services.get_user_by_email(email.email, db)
+ 
+   if not db_user:
+       #user already exists
+       return dict(message="User with that email address does not exist", status="FAILED")
+
    #create a new one time pin
    otp_code = await services.create_otp(email.email,db)
 
@@ -92,6 +99,8 @@ async def user_login(form_data: security.OAuth2PasswordRequestForm = fastapi.Dep
     #authenticate the user using the provided credentials
     user = await services.authenticate_user(form_data.username, form_data.password, db)
     return user
+
+
 
         
   

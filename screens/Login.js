@@ -27,9 +27,6 @@ import { View, ActivityIndicator } from 'react-native';
 // our theme config and other constants
 import { COLORS, Constants } from "../constants";
 
-// get status bar height
-const StatusBarHeight = Constants.statusBarHeight;
-
 // icons
 import { Octicons, Ionicons } from '@expo/vector-icons';
 

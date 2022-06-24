@@ -11,6 +11,7 @@ export const StyledContainer = styled.View`
   flex: 1;
   padding: 25px;
   padding-top: ${StatusBarHeight + 30}px;
+  padding-bottom: 45px;
   background-color: ${COLORS.white};
 `;
 
