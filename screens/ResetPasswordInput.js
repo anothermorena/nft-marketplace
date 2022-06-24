@@ -56,14 +56,14 @@ const ResetPasswordInput = ({ route, navigation }) => {
         }
 
       try {
-        const response = await axios.post("/api/reset_password", JSON.stringify({ email: email, otp: code, password: formValues.password }), config);
+        const response = await axios.patch("/api/reset_password", JSON.stringify({ email: email, otp: code, password: formValues.password }), config);
         const result = response.data;
-        const { status, message, data } = result;
+        const { status, message } = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
-          //password reset was succesful: redirect the user to the login page
+          //password reset was successful: redirect the user to the login page
           navigation.navigate('Login');
     
         }

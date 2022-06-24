@@ -62,7 +62,7 @@ const RootStack = () => {
               paddingLeft: 20,
             },
           }}
-          initialRouteName="ResetPasswordInput"
+          initialRouteName="ResetPasswordRequest"
         >
           {storedCredentials ? (
             <Stack.Screen

@@ -113,7 +113,6 @@ const Login = ({ navigation }) => {
     await SecureStore.deleteItemAsync('nftMarketPlace')
       .then(() => {
         setStoredCredentials("");
-        console.log("logged out");
       })
       .catch((error) => console.log(error));
   };

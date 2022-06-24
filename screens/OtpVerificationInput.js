@@ -109,7 +109,7 @@ const OtpVerification = ({route, navigation}) => {
         try {
             const response = await axios.patch("/api/verify_otp", JSON.stringify({ email: email, otp: code, request_type: type }), config);
         
-            const result = response?.data;
+            const result = response.data;
         
             const { status, message } = result;
 
@@ -143,8 +143,8 @@ const OtpVerification = ({route, navigation}) => {
               else if (status == 'SUCCESS' && type === "RESET_PASSWORD_REQUEST") {
                 //reset password request was successful: redirect the user to the reset password screen 
                 navigation.navigate('ResetPasswordInput',{
-                    email: email
-                  
+                    email,
+                    code
                   });
             } 
           

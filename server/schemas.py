@@ -38,3 +38,8 @@ class Otp(BaseModel):
 class VerifyOtp(Otp):
     otp: int
     request_type: str
+
+#reset password schema
+class ResetPassword(Otp):
+    otp: int
+    password: str

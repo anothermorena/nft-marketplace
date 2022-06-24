@@ -4,6 +4,7 @@ import sqlalchemy.orm as orm
 from database import engine, get_db
 import services, schemas, models
 import fastapi.security as security
+from passlib.hash import bcrypt
 
 #create the app object
 app = fastapi.FastAPI()
@@ -82,7 +83,7 @@ async def verify_otp(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(
         #if the request is for resetting user password then execute the if block below
         if user.request_type == "RESET_PASSWORD_REQUEST":
             #done: send feedback to the user
-            return dict(message="OTP and user verification successful. Proceed to reset your password.", status="SUCCESS", code=otp)
+            return dict(message="OTP and user verification successful. Proceed to reset your password.", status="SUCCESS")
 
         #request is for account verification
         else:
@@ -108,6 +109,37 @@ async def user_login(form_data: security.OAuth2PasswordRequestForm = fastapi.Dep
     #authenticate the user using the provided credentials
     user = await services.authenticate_user(form_data.username, form_data.password, db)
     return user
+
+#reset password end point
+@app.patch("/api/reset_password")
+async def reset_password(user: schemas.ResetPassword, db: orm.Session = fastapi.Depends(get_db)):
+      #first check if a user with given email exist
+     db_user = await services.get_user_by_email(user.email, db)
+
+    #check if the user account was found
+     if not db_user:
+        #user not found
+        return dict(message="Invalid email or otp.", status="FAILED")
+
+     #user exists
+     #check if the user have a valid otp
+     otp = await services.get_otp_by_email(user.email, user.otp, db)
+
+     if not otp:
+         return dict(message="The provided OTP is invalid. Please try again.", status="FAILED")
+        
+     #everything seems okay: Proceed to reset the user password
+     #first: generate new salt and hash password with an explicit number of rounds, 13 in this case
+     new_hashed_password = bcrypt.using(rounds=13).hash(user.password)
+     db_user.hashed_password = new_hashed_password
+     db.commit()
+     db.refresh(db_user)
+
+     #delete the otp used for password reset
+     await services.delete_otp(user.email, db)
+
+     #password reset was successful: tell the user
+     return dict(message="Your password was reset successfully. You may now log into your account 🙃", status="SUCCESS")
 
 
 
