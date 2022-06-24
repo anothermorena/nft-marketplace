@@ -131,7 +131,9 @@ const Verification = ({route, navigation}) => {
     //take the user to the OTP verification input screen
     const otpInputScreen = () => {
       navigation.navigate('OtpVerificationInput',{
-        email: email
+        email: email,
+        title: 'Account Verification',
+        type:'VERIFY_ACCOUNT'
       
       });
     }

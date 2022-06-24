@@ -15,7 +15,7 @@ import axios from '../api/axios';
 const StatusBarHeight = Constants.statusBarHeight;
 
 const OtpVerification = ({route, navigation}) => {
-    const { email } = route.params;
+    const { email, title, type} = route.params;
 
     const [code, setCode] = useState('');
     //this will be a boolean which will be true whenever our input field is full
@@ -104,39 +104,57 @@ const OtpVerification = ({route, navigation}) => {
     //function to submit the otp for verification
     const submitOTPVerification = async () => {
         setVerifying(true);
-
-        //make an api call to verify the use account
+    
+            //make an api call to verify the use account
         try {
-            const response = await axios.patch("/api/verify_account", JSON.stringify({ email: email, otp: code }), config);
+            const response = await axios.patch("/api/verify_otp", JSON.stringify({ email: email, otp: code, request_type: type }), config);
         
-            const result = response.data;
+            const result = response?.data;
         
             const { status, message } = result;
+
+            /*
+                check what kind of process the user is verifying the otp for and route to the proper api end point response
+                there are only two types of processes that requires an otp: verify account and request password reset
     
-            if (status !== 'SUCCESS') {
+            */
+              if (status !== 'SUCCESS' && type === "VERIFY_ACCOUNT") {
               //set the error message from received from api endpoint
               handleMessage(message);
 
               //account verification failed: : show the successful verification modal
               setVerificationSuccessful(false);
               setModalVisible(true);
-              setVerifying(false);
            
-            } else {
+              }
+              else if (status !== 'SUCCESS' && type === "RESET_PASSWORD_REQUEST") {
+                //set the error message from received from api endpoint
+                // we do not use the modals for password reset. 
+                handleMessage(message);
+             
+              }
+              else if (status == 'SUCCESS' && type === "VERIFY_ACCOUNT") {
               //Account was verified successfully: show the successful verification modal
               handleMessage(message);
               setVerificationSuccessful(true);
               setModalVisible(true);
-              setVerifying(false);
-            }
+             
+              } 
+              else if (status == 'SUCCESS' && type === "RESET_PASSWORD_REQUEST") {
+                //reset password request was successful: redirect the user to the reset password screen 
+                navigation.navigate('ResetPasswordInput',{
+                    email: email
+                  
+                  });
+            } 
           
           } catch (error) {
               //something went wrong. 
               handleMessage('An error occurred. Check your network and try again');
               setVerificationSuccessful(false);
-              setModalVisible(true);
-              setVerifying(false);
           }
+
+          setVerifying(false);
     }
 
    //create a resend email async function
@@ -183,7 +201,7 @@ const OtpVerification = ({route, navigation}) => {
             </View>
             
             <View style={{flex:1, justifyContent:'center',padding:20,justifyContent:'space-around'}}>
-                <Text style={{fontSize:25,textAlign:'center',fontWeight:'bold',color: COLORS.brand, padding:10}}>Account Verification </Text>
+                <Text style={{fontSize:25,textAlign:'center',fontWeight:'bold',color: COLORS.brand, padding:10}}>{title}</Text>
                 <Text style={{color:COLORS.gray, fontSize:15,textAlign:'center'}}> Please enter the 4 digit code sent to 
                     <Text style={{fontWeight:'bold',fontStyle:'italic'}}>
                         {` ${email}`}

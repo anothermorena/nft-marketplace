@@ -37,3 +37,4 @@ class Otp(BaseModel):
 #verify OTP Schema
 class VerifyOtp(Otp):
     otp: int
+    request_type: str

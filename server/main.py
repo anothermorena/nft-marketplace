@@ -60,8 +60,8 @@ async def send_otp(email: schemas.Otp, db: orm.Session = fastapi.Depends(get_db)
 
 
 #verify account end point
-@app.patch("/api/verify_account")
-async def verify_account(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(get_db)):
+@app.patch("/api/verify_otp")
+async def verify_otp(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(get_db)):
     #first check if a user with given email exist
      db_user = await services.get_user_by_email(user.email, db)
 
@@ -76,21 +76,30 @@ async def verify_account(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depe
 
      if not otp:
          return dict(message="The provided OTP is invalid. Please try again.", status="FAILED")
+    #An otp with that user email exists: process the incoming request
      else:
-         #An otp with that user email exists: verify the users account and update its status
-         if db_user.user_status == "UNVERIFIED":
-             db_user.user_status = "VERIFIED"
-             db.commit()
-             db.refresh(db_user)
+        #check the type of process the use executed: account verification or request password reset
+        #if the request is for resetting user password then execute the if block below
+        if user.request_type == "RESET_PASSWORD_REQUEST":
+            #done: send feedback to the user
+            return dict(message="OTP and user verification successful. Proceed to reset your password.", status="SUCCESS", code=otp)
 
-             #delete the otp used for verification
-             await services.delete_otp(user.email, db)
+        #request is for account verification
+        else:
+            # verify the users account and update its status
+            if db_user.user_status == "UNVERIFIED":
+                db_user.user_status = "VERIFIED"
+                db.commit()
+                db.refresh(db_user)
 
-             #account verification was successful: send back feedback
-             return dict(message="User account verification successful.", status="SUCCESS")
+                #delete the otp used for verification
+                await services.delete_otp(user.email, db)
 
-         #user account already verified
-         return dict(message="User account already verified.", status="SUCCESS")
+                #account verification was successful: send back feedback
+                return dict(message="User account verification successful.", status="SUCCESS")
+
+            #user account already verified
+            return dict(message="User account already verified.", status="SUCCESS")
             
 
 #user login end point
@@ -99,6 +108,7 @@ async def user_login(form_data: security.OAuth2PasswordRequestForm = fastapi.Dep
     #authenticate the user using the provided credentials
     user = await services.authenticate_user(form_data.username, form_data.password, db)
     return user
+
 
 
 

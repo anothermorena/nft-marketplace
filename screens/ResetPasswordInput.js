@@ -1,11 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Formik } from 'formik';
-
+import * as yup from 'yup';
 import {
   StyledContainer,
-  PageLogo,
-  PageTitle,
   SubTitle,
   StyledInputLabel,
   StyledFormArea,
@@ -20,62 +18,53 @@ import {
   ExtraView,
   ExtraText,
   TextLink,
-  TextLinkContent
+  TextLinkContent,
+  TopHalf,
+  IconBg
 } from './../components/StyledComponents';
-import { View, ActivityIndicator } from 'react-native';
-
-// our theme config and other constants
-import { COLORS, Constants } from "../constants";
-
-// icons
-import { Octicons, Ionicons } from '@expo/vector-icons';
-
-// keyboard avoiding view
+import { View, Text, ActivityIndicator } from 'react-native';
+import { COLORS } from "../constants";
+import { Octicons, Ionicons , MaterialCommunityIcons} from '@expo/vector-icons';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-
-//import axios
 import axios from './../api/axios';
 
-//expo async secure local storage.
-import * as SecureStore from 'expo-secure-store';
 
-// credentials context
-import { CredentialsContext } from './../components/CredentialsContext';
-
-
-const Login = ({ navigation }) => {
+const ResetPasswordInput = ({ route, navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
 
-    // credentials context
-    const {storedCredentials, setStoredCredentials} = useContext(CredentialsContext);
+    //get the email the user used to create the reset password request and the otp
+    const { email, code } = route.params;
 
-    const handleLogin = async (credentials,setSubmitting) => {
-      //clear the error message whenever the login button is pressed
+    //Password Validation
+    const passwordValidationSchema = yup.object().shape({
+        password: yup
+        .string()
+        .min(8, ({ min }) => `Password must be at least ${min} characters`)
+        .required('Password is required')
+    });
 
-      const requestBody = {
-        body: JSON.stringify(
-          `grant_type=&username=${credentials.email}&password=${credentials.password}&scope=&client_id=&client_secret=`
-        )
-      }
+    const handleResetPassword = async (formValues,setSubmitting) => {
+        //clear the error message when ever the reset password is pressed
+        handleMessage(null);
 
-      const config = {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+        const config = {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      }
 
       try {
-        const response = await axios.post("/api/login", requestBody, config);
+        const response = await axios.post("/api/reset_password", JSON.stringify({ email: email, otp: code, password: formValues.password }), config);
         const result = response.data;
         const { status, message, data } = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
-          //login was successful persist the login
-          persistLogin({ ...data}, message, status);
+          //password reset was succesful: redirect the user to the login page
+          navigation.navigate('Login');
     
         }
         setSubmitting(false);
@@ -83,10 +72,8 @@ const Login = ({ navigation }) => {
       } catch (error) {
         setSubmitting(false);
         handleMessage('An error occurred. Check your network and try again');
-        console.log(error.toJSON());
   
       }
-      
     };
 
     const handleMessage = (message, type = 'FAILED') => {
@@ -94,63 +81,37 @@ const Login = ({ navigation }) => {
       setMessageType(type);
     };
 
-    // Persisting login
-    const persistLogin = async (credentials, message, status) => {
-      await SecureStore.setItemAsync('nftMarketPlace', JSON.stringify(credentials))
-        .then(() => {
-          //once we are in the then block it means the credentials were successfully stored
-          handleMessage(message, status);
-          setStoredCredentials(credentials);
-        })
-        .catch((error) => {
-          handleMessage('Persisting login failed');
-        });
-    };
-
-  //TODO: move this function to the logout page later
-  //log out the user
-  const clearLogin = async () => {
-    await SecureStore.deleteItemAsync('nftMarketPlace')
-      .then(() => {
-        setStoredCredentials("");
-        console.log("logged out");
-      })
-      .catch((error) => console.log(error));
-  };
-  
-
   return (
     <KeyboardAvoidingWrapper>
         <StyledContainer> 
           <StatusBar style="dark" />
           <InnerContainer>
-              <PageLogo resizeMode="cover" source={require("./../assets/images/nft-login-image.png")}/>
-              <PageTitle>NFT Market Place</PageTitle>
-              <SubTitle>Account Login</SubTitle>
+          <TopHalf>
+                <IconBg>
+                    <StatusBar  style="dark"/>
+                    <MaterialCommunityIcons name="lock-reset" size={125} color={COLORS.brand}/>
+                </IconBg>
+            </TopHalf>
+            <SubTitle>Reset Password</SubTitle>
               
             <Formik
-               initialValues={{ email: '', password: '' }}
+               initialValues={{password: '', confirmPassword: ''}}
+               validationSchema={passwordValidationSchema}
                onSubmit={(values, { setSubmitting }) => {
-                 if (values.email == '' || values.password == '') {
+                 if (values.password == '' || values.confirmPassword == '') {
                    handleMessage('Please fill in all fields');
                    setSubmitting(false);
-                 } else {
-                   handleLogin(values, setSubmitting);
+                 }  else if (values.password !== values.confirmPassword) {
+                    handleMessage('Passwords do not match');
+                    setSubmitting(false);
+                  } else {
+                    handleResetPassword(values, setSubmitting);
                  }
                }}
             >
-                {({ handleChange, handleBlur, handleSubmit, values, isSubmitting }) => (
+                {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
                 <StyledFormArea>
-                  <MyTextInput
-                    label="Email Address"
-                    placeholder="hireme@morena.com"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    keyboardType="email-address"
-                    icon="mail"
-                  />
+                
                   <MyTextInput
                     label="Password"
                     placeholder="* * * * * * * *"
@@ -164,12 +125,28 @@ const Login = ({ navigation }) => {
                     hidePassword={hidePassword}
                     setHidePassword={setHidePassword}
                   />
-                  <MsgBox type={messageType}>{message}</MsgBox>
+                   {touched.password && errors.password &&
+                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                  }
 
+                  <MyTextInput
+                    label="Confirm Password"
+                    placeholder="* * * * * * * *"
+                    placeholderTextColor={COLORS.darkLight}
+                    onChangeText={handleChange('confirmPassword')}
+                    onBlur={handleBlur('confirmPassword')}
+                    value={values.confirmPassword}
+                    secureTextEntry={hidePassword}
+                    icon="lock"
+                    isPassword={true}
+                    hidePassword={hidePassword}
+                    setHidePassword={setHidePassword}
+                  />
+                  <MsgBox type={messageType}>{message}</MsgBox>
 
                   {!isSubmitting && (
                     <StyledButton onPress={handleSubmit}>
-                      <ButtonText>Login</ButtonText>
+                      <ButtonText>Reset Password</ButtonText>
                     </StyledButton>
                   )}
                   {isSubmitting && (
@@ -189,14 +166,13 @@ const Login = ({ navigation }) => {
 
                   <ExtraView>
                   <ExtraText> Or </ExtraText>
-                    <TextLink onPress={() => navigation.navigate('ResetPasswordRequest')}>
-                      <TextLinkContent>Reset Password</TextLinkContent>
+                    <TextLink onPress={() => navigation.navigate('Login')}>
+                      <TextLinkContent>Login</TextLinkContent>
                     </TextLink>
                   </ExtraView>
                 
                 </StyledFormArea>
               )}
-            
             </Formik>
           </InnerContainer>
         </StyledContainer>
@@ -214,7 +190,6 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
         </LeftIcon>
         <StyledInputLabel>{label}</StyledInputLabel>
         <StyledTextInput {...props} />
-        {isPassword && (
           <RightIcon
             onPress={() => {
               //toggle the value of the hide password on press
@@ -223,9 +198,8 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
           >
             <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={COLORS.darkLight} />
           </RightIcon>
-        )}
       </View>
     );
   };
 
-export default Login;
+export default ResetPasswordInput;

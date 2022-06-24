@@ -20,6 +20,7 @@ import {
   TextLink,
   TextLinkContent
 } from './../components/StyledComponents';
+import { FocusedStatusBar } from "../components";
 import { View, ActivityIndicator, Text } from 'react-native';
 
 // our theme config and other constants
@@ -63,16 +64,13 @@ const ResetPasswordRequest = ({ navigation }) => {
       try {
         const response = await axios.post("/api/send_otp", JSON.stringify({ email: resetEmail.email }), config);
         const result = response.data;
-        const { status, message, data } = result;
+        const { status, message } = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
-  
           //redirect to otp verification input screen
-          console.log("going");
-
-    
+          navigation.navigate('OtpVerificationInput', {email: resetEmail.email, title: 'Password Reset', type:"RESET_PASSWORD_REQUEST"});
         }
         setSubmitting(false);
       
@@ -89,11 +87,10 @@ const ResetPasswordRequest = ({ navigation }) => {
       setMessageType(type);
     };
 
-
   return (
     <KeyboardAvoidingWrapper>
         <StyledContainer> 
-          <StatusBar style="dark" />
+        <FocusedStatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/>
           <InnerContainer>
               <PageLogo resizeMode="cover" source={require("./../assets/images/nft-login-image.png")}/>
               <PageTitle>NFT Market Place</PageTitle>
