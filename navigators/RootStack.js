@@ -62,7 +62,7 @@ const RootStack = () => {
               paddingLeft: 20,
             },
           }}
-          initialRouteName="ResetPasswordRequest"
+          initialRouteName="Home"
         >
           {storedCredentials ? (
             <Stack.Screen
@@ -74,6 +74,7 @@ const RootStack = () => {
             />
           ) : (
             <>
+              <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="Login" component={Login} />
               <Stack.Screen name="Signup" component={Signup} />
               <Stack.Screen name="ResetPasswordRequest" component={ResetPasswordRequest} />

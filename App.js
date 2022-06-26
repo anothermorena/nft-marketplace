@@ -1,9 +1,11 @@
+import 'react-native-gesture-handler';
 import {useState, useEffect, useCallback} from 'react';
 
 import { View } from 'react-native';
 
 //react navigation stack
 import RootStack from './navigators/RootStack';
+import DrawerStack from './navigators/DrawerStack';
 
 //app loading
 import * as SplashScreen from 'expo-splash-screen';
@@ -78,7 +80,8 @@ export default function App() {
 
       */}
       <CredentialsContext.Provider value={{ storedCredentials, setStoredCredentials }}>
-        <RootStack />
+        <DrawerStack />
+        {/*<RootStack />*/}
       </CredentialsContext.Provider>
     </View>
  

@@ -1,8 +1,8 @@
-import { View, Text, Image, TextInput } from "react-native";
+import { View, Text, Image, TextInput, Pressable } from "react-native";
 import { COLORS, FONTS, SIZES, assets } from "../constants";
 import { EvilIcons } from '@expo/vector-icons';
 
-const HomeHeader = ({ onSearch }) => {
+const HomeHeader = ({ onSearch, navigation }) => {
   return (
     <View
       style={{
@@ -24,22 +24,24 @@ const HomeHeader = ({ onSearch }) => {
         />
 
         <View style={{ width: 45, height: 45 }}>
-          <Image
-            source={assets.person01}
-            resizeMode="contain"
-            style={{ width: "100%", height: "100%" }}
-          />
-          <Image
-            source={assets.badge}
-            resizeMode="contain"
-            style={{
-              position: "absolute",
-              width: 20,
-              height: 20,
-              bottom: -5,
-              right: 0,
-            }}
-          />
+          <Pressable onPress={() => navigation.openDrawer()}>
+            <Image
+              source={assets.person01}
+              resizeMode="contain"
+              style={{ width: "100%", height: "100%" }}
+            />
+            <Image
+              source={assets.badge}
+              resizeMode="contain"
+              style={{
+                position: "absolute",
+                width: 20,
+                height: 20,
+                bottom: -5,
+                right: 0,
+              }}
+            />
+          </Pressable>
         </View>
       </View>
 
@@ -62,7 +64,7 @@ const HomeHeader = ({ onSearch }) => {
             marginTop: SIZES.base / 2,
           }}
         >
-          Let’s find masterpiece 
+          Let’s find a masterpiece 
         </Text>
       </View>
 

@@ -133,7 +133,7 @@ const Signup = ({ navigation }) => {
               }
             }}
           >
-            {({ handleChange, handleBlur, handleSubmit, values, isSubmitting,errors, touched }) => (
+            {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched }) => (
               <View style={{width:'90%'}}>
                 <MyTextInput
                   label="First Name"
