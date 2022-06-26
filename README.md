@@ -10,7 +10,7 @@ A marketplace is a platform where vendors can come together to sell their produc
 
 2) User Account Verification via OTP.
 
-3) Login with password & email combination used at registration or biometric authentication.
+3) Login with password & email combination used at registration.
 
 4) User Profile Management: change account details like names, profile image and passwords.
 
@@ -26,9 +26,11 @@ A marketplace is a platform where vendors can come together to sell their produc
 
 10) View Wishlist
 
+11)Logout 
+
 
 # USE CASE DIAGRAM
-![use-case-diagram](https://user-images.githubusercontent.com/20603329/174759217-c1862d40-79b6-4147-b21e-eee590b56c20.png)
+![use-case-diagram](https://user-images.githubusercontent.com/20603329/175824946-1e9d266d-6fad-4c1f-a800-abcc88e97e13.png)
 
 
 # ACTIVITY DIAGRAM
