@@ -26,7 +26,7 @@ A marketplace is a platform where vendors can come together to sell their produc
 
 10) View Wishlist
 
-11)Logout 
+11) Logout 
 
 
 # USE CASE DIAGRAM
