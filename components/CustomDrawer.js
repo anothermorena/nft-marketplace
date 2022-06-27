@@ -27,11 +27,11 @@ const CustomDrawer = (props) => {
       <DrawerContentScrollView {...props} contentContainerStyle={{backgroundColor: COLORS.brand}}>
         <ImageBackground source={assets.drawerBg} style={{padding: 20}}>
           <Image source={assets.person01} style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}/>
-          <Text style={{color: COLORS.white, fontSize: 18, fontFamily: 'Roboto-Medium', marginBottom: 5}}>
+          <Text style={{color: COLORS.white, fontSize: 18, fontFamily: 'InterMedium', marginBottom: 5}}>
             Morena
           </Text>
           <View style={{flexDirection: 'row'}}>
-            <Text style={{color: COLORS.white, fontFamily: 'Roboto-Regular', marginRight: 5}}>
+            <Text style={{color: COLORS.white, fontFamily: 'InterMedium', marginRight: 5}}>
               280 Nft's
             </Text>
             <FontAwesome5 name="coins" size={14} color={COLORS.white} />
@@ -46,7 +46,7 @@ const CustomDrawer = (props) => {
         <TouchableOpacity onPress={handleUserLogout} style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <AntDesign  name="logout" size={22}  color={COLORS.brand}/>
-            <Text style={{fontSize: 15, fontFamily: 'Roboto-Medium', marginLeft: 5}}>
+            <Text style={{fontSize: 15, fontFamily: 'InterRegular', marginLeft: 5}}>
               Logout
             </Text>
           </View>
@@ -57,7 +57,7 @@ const CustomDrawer = (props) => {
         <TouchableOpacity onPress={() => props.navigation.navigate('Login')} style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <AntDesign name="login" size={22}  color={COLORS.brand}/>
-            <Text style={{fontSize: 15, fontFamily: 'Roboto-Medium', marginLeft: 5}}>
+            <Text style={{fontSize: 15, fontFamily: 'InterRegular', marginLeft: 5}}>
               Login
             </Text>
           </View>
