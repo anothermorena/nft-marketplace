@@ -4,7 +4,6 @@ import {useState, useEffect, useCallback} from 'react';
 import { View } from 'react-native';
 
 //react navigation stack
-import RootStack from './navigators/RootStack';
 import DrawerStack from './navigators/DrawerStack';
 
 //app loading
@@ -75,13 +74,12 @@ export default function App() {
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       {/*
       
-        //to able to pass the values that are stored with context we make use of the provider that comes with context
+        //to be able to pass the values that are stored with context we make use of the provider that comes with context
         //once the above is done we can then set the initial values of the context 
 
       */}
       <CredentialsContext.Provider value={{ storedCredentials, setStoredCredentials }}>
         <DrawerStack />
-        {/*<RootStack />*/}
       </CredentialsContext.Provider>
     </View>
  
