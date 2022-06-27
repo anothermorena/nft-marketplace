@@ -21,7 +21,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const RootStack = () => {
- 
    return (
          <Stack.Navigator
            screenOptions={{
@@ -34,11 +33,12 @@ const RootStack = () => {
              headerLeftContainerStyle: {
                paddingLeft: 20,
              },
+             headerLeft: null
            }}
            initialRouteName="Home"
          >
                <Stack.Screen options={{headerTintColor: COLORS.primary}} name="Home" component={Home}/>
-               <Stack.Screen name="Login" component={Login} />
+               <Stack.Screen name="Login" component={Login}/>
                <Stack.Screen name="Signup" component={Signup} />
                <Stack.Screen name="ResetPasswordRequest" component={ResetPasswordRequest} />
                <Stack.Screen name="ResetPasswordInput" component={ResetPasswordInput} />

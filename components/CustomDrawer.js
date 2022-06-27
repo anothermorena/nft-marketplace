@@ -10,7 +10,7 @@ import { CredentialsContext } from './CredentialsContext';
 //expo async secure local storage.
 import * as SecureStore from 'expo-secure-store';
 
-const CustomDrawer = props => {
+const CustomDrawer = (props) => {
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
   //log out the user
@@ -54,7 +54,7 @@ const CustomDrawer = props => {
       </View>
       ) : (
         <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
-        <TouchableOpacity onPress={() => {}} style={{paddingVertical: 15}}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Login')} style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <AntDesign name="login" size={22}  color={COLORS.brand}/>
             <Text style={{fontSize: 15, fontFamily: 'Roboto-Medium', marginLeft: 5}}>

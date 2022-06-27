@@ -4,7 +4,6 @@ import heart from "../assets/icons/heart.png";
 import left from "../assets/icons/left.png";
 import search from "../assets/icons/search.png";
 
-import logo from "../assets/images/logo.png";
 import nft01 from "../assets/images/nft01.png";
 import nft02 from "../assets/images/nft02.jpeg";
 import nft03 from "../assets/images/nft03.jpeg";
@@ -26,7 +25,6 @@ export default {
   left,
   search,
 
-  logo,
   nft01,
   nft02,
   nft03,

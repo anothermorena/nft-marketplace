@@ -4,88 +4,21 @@ import { EvilIcons } from '@expo/vector-icons';
 
 const HomeHeader = ({ onSearch, navigation }) => {
   return (
-    <View
-      style={{
-        backgroundColor: COLORS.brand,
-        padding: SIZES.font,
-      }}
-    >
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Image
-          source={assets.logo}
-          resizeMode="contain"
-          style={{ width: 90, height: 25 }}
-        />
-
+    <View style={{backgroundColor: COLORS.brand,padding: SIZES.font}}>
+      <View style={{flexDirection: "row",justifyContent: "space-between",alignItems: "center"}}>
+      <Text style={{fontFamily: FONTS.bold,fontSize: SIZES.extraLarge,color: COLORS.white}}>NFT Market Place</Text>
         <View style={{ width: 45, height: 45 }}>
           <Pressable onPress={() => navigation.openDrawer()}>
-            <Image
-              source={assets.person01}
-              resizeMode="contain"
-              style={{ width: "100%", height: "100%" }}
-            />
-            <Image
-              source={assets.badge}
-              resizeMode="contain"
-              style={{
-                position: "absolute",
-                width: 20,
-                height: 20,
-                bottom: -5,
-                right: 0,
-              }}
-            />
+            <Image source={assets.person01} resizeMode="contain"style={{ width: "100%", height: "100%" }}/>
+            <Image source={assets.badge} resizeMode="contain" style={{position: "absolute",width: 20,height: 20,bottom: -5,right: 0}}/>
           </Pressable>
         </View>
       </View>
 
-      <View style={{ marginVertical: SIZES.font }}>
-        <Text
-          style={{
-            fontFamily: FONTS.regular,
-            fontSize: SIZES.small,
-            color: COLORS.white,
-          }}
-        >
-          Hello Morena 👋
-        </Text>
-
-        <Text
-          style={{
-            fontFamily: FONTS.bold,
-            fontSize: SIZES.large,
-            color: COLORS.white,
-            marginTop: SIZES.base / 2,
-          }}
-        >
-          Let’s find a masterpiece 
-        </Text>
-      </View>
-
       <View style={{ marginTop: SIZES.font }}>
-        <View
-          style={{
-            width: "100%",
-            borderRadius: SIZES.font,
-            backgroundColor: COLORS.white,
-            flexDirection: "row",
-            alignItems: "center",
-            paddingHorizontal: SIZES.font,
-            paddingVertical: SIZES.small - 2,
-          }}
-        >
+        <View style={{width: "100%",borderRadius: SIZES.font,backgroundColor: COLORS.white,flexDirection: "row",alignItems: "center",paddingHorizontal: SIZES.font,paddingVertical: SIZES.small - 2}}>
           <EvilIcons  name="search" size={35} color={COLORS.brand}  />
-          <TextInput
-            placeholder="Search NFTs"
-            style={{ flex: 1 }}
-            onChangeText={onSearch}
-          />
+          <TextInput placeholder="Search NFTs" style={{ flex: 1}} onChangeText={onSearch}/>
         </View>
       </View>
     </View>

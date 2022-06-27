@@ -76,6 +76,9 @@ const Login = ({ navigation }) => {
         } else {
           //login was successful persist the login
           persistLogin({ ...data}, message, status);
+
+          //redirect the user to the home screen
+          navigation.navigate('Home');
     
         }
         setSubmitting(false);
