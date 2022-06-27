@@ -6,7 +6,6 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 //screens
 import Home from './../screens/Home';
-import Nfts from './../screens/Nfts';
 import WishList from './../screens/WishList';
 import Details from './../screens/Details';
 import Signup from './../screens/Signup';
@@ -72,15 +71,6 @@ const TabNavigator = () => {
             <Ionicons name="home-outline" color={color} size={size} />
           ),
         })}
-      />
-      <Tab.Screen
-        name="Nfts"
-        component={Nfts}
-        options={{
-          tabBarIcon: ({color, size}) => (
-            <FontAwesome5 name="coins" color={color} size={size} />
-          ),
-        }}
       />
       <Tab.Screen
         name="Trending Nfts"

@@ -1,9 +1,27 @@
+import { useContext } from 'react';
 import {View,Text,ImageBackground,Image,TouchableOpacity} from 'react-native';
 import {DrawerContentScrollView,DrawerItemList} from '@react-navigation/drawer';
-import {Ionicons, FontAwesome5} from '@expo/vector-icons';
+import {FontAwesome5, AntDesign } from '@expo/vector-icons';
 import { COLORS, assets } from "../constants";
 
+// credentials context
+import { CredentialsContext } from './CredentialsContext';
+
+//expo async secure local storage.
+import * as SecureStore from 'expo-secure-store';
+
 const CustomDrawer = props => {
+  const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+
+  //log out the user
+  const handleUserLogout = async () => {
+    await SecureStore.deleteItemAsync('nftMarketPlace')
+      .then(() => {
+        setStoredCredentials("");
+      })
+      .catch((error) => console.log(error));
+  };
+  
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props} contentContainerStyle={{backgroundColor: COLORS.brand}}>
@@ -23,16 +41,29 @@ const CustomDrawer = props => {
           <DrawerItemList {...props} />
         </View>
       </DrawerContentScrollView>
+      {storedCredentials ? (
       <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
-        <TouchableOpacity onPress={() => {}} style={{paddingVertical: 15}}>
+        <TouchableOpacity onPress={handleUserLogout} style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Ionicons name="power" size={22}  color={COLORS.brand}/>
+            <AntDesign  name="logout" size={22}  color={COLORS.brand}/>
             <Text style={{fontSize: 15, fontFamily: 'Roboto-Medium', marginLeft: 5}}>
               Logout
             </Text>
           </View>
         </TouchableOpacity>
       </View>
+      ) : (
+        <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
+        <TouchableOpacity onPress={() => {}} style={{paddingVertical: 15}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <AntDesign name="login" size={22}  color={COLORS.brand}/>
+            <Text style={{fontSize: 15, fontFamily: 'Roboto-Medium', marginLeft: 5}}>
+              Login
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      )}
     </View>
   );
 };

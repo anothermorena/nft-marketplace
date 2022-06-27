@@ -15,6 +15,9 @@ import WishList from './../screens/WishList';
 import CustomDrawer from '../components/CustomDrawer';
 import TabNavigator from './TabNavigator';
 
+// credentials context
+import { CredentialsContext } from './../components/CredentialsContext';
+
 const theme = {
     ...DefaultTheme,
     colors: {
@@ -39,6 +42,8 @@ const DrawerStack = () => {
   if (!loaded) return null;
 
   return (
+    <CredentialsContext.Consumer>
+      {({ storedCredentials }) => (
      <NavigationContainer theme={theme}>
       <Drawer.Navigator 
       drawerContent={props => <CustomDrawer {...props} />}
@@ -53,15 +58,28 @@ const DrawerStack = () => {
           fontSize: 15,
         },
       }}>
-        <Drawer.Screen name="Home" component={TabNavigator}  options={{drawerIcon: () => (<Ionicons name="home-outline" size={22} color={COLORS.white} />)}}/>
-        <Drawer.Screen name="Create Nft" component={CreateNft}  options={{drawerIcon: () => (<FontAwesome5 name="pen" size={22} color={COLORS.brand} />)}}/>
-        <Drawer.Screen name="My Nfts" component={Nfts}  options={{drawerIcon: () => (<FontAwesome5 name="coins" size={22} color={COLORS.brand} />)}}/>
-        <Drawer.Screen name="My Wishlist" component={WishList}  options={{drawerIcon: ({color}) => (<Ionicons name="heart" size={22} color={COLORS.brand} />)}}/>
-        <Drawer.Screen name="My Bids" component={Bids}  options={{drawerIcon: () => (<Ionicons name="hammer" size={22} color={COLORS.brand} />)}}/>
-        <Drawer.Screen name="Update Profile Details" component={UpdateProfileDetails}   options={{drawerIcon: () => (<MaterialCommunityIcons name="account-edit" size={22} color={COLORS.brand} />)}}/>
-        <Drawer.Screen name="Change Password" component={ChangePassword}  options={{drawerIcon: () => (<MaterialCommunityIcons name="account-key" size={22} color={COLORS.brand} />)}} />
+        {storedCredentials ? (
+          <>
+          <Drawer.Screen name="Home" component={TabNavigator}  options={{drawerIcon: () => (<Ionicons name="home-outline" size={22} color={COLORS.white} />)}}/>
+          <Drawer.Screen name="Create Nft" component={CreateNft}  options={{drawerIcon: () => (<FontAwesome5 name="pen" size={22} color={COLORS.brand} />)}}/>
+          <Drawer.Screen name="My Nfts" component={Nfts}  options={{drawerIcon: () => (<FontAwesome5 name="coins" size={22} color={COLORS.brand} />)}}/>
+          <Drawer.Screen name="My Wishlist" component={WishList}  options={{drawerIcon: ({color}) => (<Ionicons name="heart" size={22} color={COLORS.brand} />)}}/>
+          <Drawer.Screen name="My Bids" component={Bids}  options={{drawerIcon: () => (<Ionicons name="hammer" size={22} color={COLORS.brand} />)}}/>
+          <Drawer.Screen name="Update Profile Details" component={UpdateProfileDetails}   options={{drawerIcon: () => (<MaterialCommunityIcons name="account-edit" size={22} color={COLORS.brand} />)}}/>
+          <Drawer.Screen name="Change Password" component={ChangePassword}  options={{drawerIcon: () => (<MaterialCommunityIcons name="account-key" size={22} color={COLORS.brand} />)}} />
+          
+          </>
+         
+        ) : (
+          <>
+          <Drawer.Screen name="Home" component={TabNavigator}  options={{drawerIcon: () => (<Ionicons name="home-outline" size={22} color={COLORS.white} />)}}/>
+          <Drawer.Screen name="My Wishlist" component={WishList}  options={{drawerIcon: ({color}) => (<Ionicons name="heart" size={22} color={COLORS.brand} />)}}/>
+          </>
+        )}
       </Drawer.Navigator>
     </NavigationContainer>
+    )}
+    </CredentialsContext.Consumer>
   );
 }
 

@@ -107,17 +107,6 @@ const Login = ({ navigation }) => {
         });
     };
 
-  //TODO: move this function to the logout page later
-  //log out the user
-  const clearLogin = async () => {
-    await SecureStore.deleteItemAsync('nftMarketPlace')
-      .then(() => {
-        setStoredCredentials("");
-      })
-      .catch((error) => console.log(error));
-  };
-  
-
   return (
     <KeyboardAvoidingWrapper>
         <StyledContainer> 
