@@ -6,13 +6,14 @@ import {useFonts } from 'expo-font';
 import { COLORS } from "./../constants";
 import {Ionicons, MaterialCommunityIcons, FontAwesome5} from '@expo/vector-icons';
 
-import Home from './../screens/Home';
 import ChangePassword from './../screens/ChangePassword';
 import UpdateProfileDetails from './../screens/UpdateProfileDetails';
 import Nfts from './../screens/Nfts';
+import CreateNft from './../screens/CreateNft';
 import Bids from './../screens/Bids';
 import WishList from './../screens/WishList';
 import CustomDrawer from '../components/CustomDrawer';
+import TabNavigator from './TabNavigator';
 
 const theme = {
     ...DefaultTheme,
@@ -52,8 +53,9 @@ const DrawerStack = () => {
           fontSize: 15,
         },
       }}>
-        <Drawer.Screen name="Home" component={Home}  options={{drawerIcon: () => (<Ionicons name="home-outline" size={22} color={COLORS.white} />)}}/>
-        <Drawer.Screen name="My Nft's" component={Nfts}  options={{drawerIcon: () => (<FontAwesome5 name="coins" size={22} color={COLORS.brand} />)}}/>
+        <Drawer.Screen name="Home" component={TabNavigator}  options={{drawerIcon: () => (<Ionicons name="home-outline" size={22} color={COLORS.white} />)}}/>
+        <Drawer.Screen name="Create Nft" component={CreateNft}  options={{drawerIcon: () => (<FontAwesome5 name="pen" size={22} color={COLORS.brand} />)}}/>
+        <Drawer.Screen name="My Nfts" component={Nfts}  options={{drawerIcon: () => (<FontAwesome5 name="coins" size={22} color={COLORS.brand} />)}}/>
         <Drawer.Screen name="My Wishlist" component={WishList}  options={{drawerIcon: ({color}) => (<Ionicons name="heart" size={22} color={COLORS.brand} />)}}/>
         <Drawer.Screen name="My Bids" component={Bids}  options={{drawerIcon: () => (<Ionicons name="hammer" size={22} color={COLORS.brand} />)}}/>
         <Drawer.Screen name="Update Profile Details" component={UpdateProfileDetails}   options={{drawerIcon: () => (<MaterialCommunityIcons name="account-edit" size={22} color={COLORS.brand} />)}}/>
