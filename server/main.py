@@ -1,7 +1,7 @@
 #load the required modules or packages
 import fastapi as fastapi 
 import sqlalchemy.orm as orm
-from database import engine, get_db
+from database import engine
 import services, schemas, models
 import fastapi.security as security
 from passlib.hash import bcrypt
@@ -14,7 +14,7 @@ models.Base.metadata.create_all(engine)
 
 #create a user end point
 @app.post("/api/users")
-async def create_user(user: schemas.UserCreate, db: orm.Session = fastapi.Depends(get_db)):
+async def create_user(user: schemas.UserCreate, db: orm.Session = fastapi.Depends(services.get_db)):
    #check if a user with the provided email exists or not 
     db_user = await services.get_user_by_email(user.email, db)
  
@@ -39,7 +39,7 @@ async def create_user(user: schemas.UserCreate, db: orm.Session = fastapi.Depend
 
 #send otp end point
 @app.post("/api/send_otp")
-async def send_otp(email: schemas.Otp, db: orm.Session = fastapi.Depends(get_db)):
+async def send_otp(email: schemas.Otp, db: orm.Session = fastapi.Depends(services.get_db)):
    #check if a user withthe provided email exists or not 
    db_user = await services.get_user_by_email(email.email, db)
  
@@ -62,7 +62,7 @@ async def send_otp(email: schemas.Otp, db: orm.Session = fastapi.Depends(get_db)
 
 #verify account end point
 @app.patch("/api/verify_otp")
-async def verify_otp(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(get_db)):
+async def verify_otp(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(services.get_db)):
     #first check if a user with given email exist
      db_user = await services.get_user_by_email(user.email, db)
 
@@ -105,14 +105,16 @@ async def verify_otp(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(
 
 #user login end point
 @app.post("/api/login")
-async def user_login(form_data: security.OAuth2PasswordRequestForm = fastapi.Depends(), db: orm.Session = fastapi.Depends(get_db)):
+async def user_login(form_data: security.OAuth2PasswordRequestForm = fastapi.Depends(), db: orm.Session = fastapi.Depends(services.get_db)):
     #authenticate the user using the provided credentials
     user = await services.authenticate_user(form_data.username, form_data.password, db)
-    return user
+
+    #create an access token for the user
+    return await services.create_token(user)
 
 #reset password end point
 @app.patch("/api/reset_password")
-async def reset_password(user: schemas.ResetPassword, db: orm.Session = fastapi.Depends(get_db)):
+async def reset_password(user: schemas.ResetPassword, db: orm.Session = fastapi.Depends(services.get_db)):
       #first check if a user with given email exist
      db_user = await services.get_user_by_email(user.email, db)
 

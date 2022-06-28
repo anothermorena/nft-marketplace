@@ -19,7 +19,8 @@ class Envs:
     MAIL_PORT = int(os.getenv('MAIL_PORT'))
     MAIL_SERVER = os.getenv('MAIL_SERVER')
     MAIL_FROM_NAME = os.getenv('MAIN_FROM_NAME')
-
+    SECRET = os.getenv('SECRET')
+    ALGORITHM = os.getenv('ALGORITHM')
 
 email_conf = ConnectionConfig(
     MAIL_USERNAME=Envs.MAIL_USERNAME,

@@ -24,7 +24,7 @@ class UserCreate(UserBase):
 
 #inherits from UserBase
 class User(UserBase):
-    id: int
+    user_id: int
     
     class Config:
         orm_mode = True
