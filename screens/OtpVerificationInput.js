@@ -253,6 +253,7 @@ const OtpVerification = ({route, navigation}) => {
                 modalVisible={modalVisible}
                 persistLoginAfterOTPVerification={persistLoginAfterOTPVerification}
                 message={message}
+                navigation={navigation}
             />
         </View>   
     </KeyboardAvoidingWrapper>
