@@ -109,6 +109,14 @@ async def authenticate_user(email: str, password: str, db: orm.Session):
     return user
 
 
+#this function creates a new user password and stores it to the db
+async def new_password(password:str, current_user:dict, db: orm.Session):
+    new_hashed_password = hash.bcrypt.using(rounds=13).hash(password)
+    current_user.hashed_password = new_hashed_password
+    db.commit()
+    db.refresh(current_user)
+
+
 #this function creates a token
 async def create_token(user: models.User):
     #Take in our user model and map it to a user schema e.g. id->id

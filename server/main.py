@@ -132,11 +132,7 @@ async def reset_password(user: schemas.ResetPassword, db: orm.Session = fastapi.
          return dict(message="The provided OTP is invalid. Please try again.", status="FAILED")
         
      #everything seems okay: Proceed to reset the user password
-     #first: generate new salt and hash password with an explicit number of rounds, 13 in this case
-     new_hashed_password = hash.bcrypt.using(rounds=13).hash(user.password)
-     db_user.hashed_password = new_hashed_password
-     db.commit()
-     db.refresh(db_user)
+     await services.new_password(user.password,db_user,db)
 
      #delete the otp used for password reset
      await services.delete_otp(user.email, db)
@@ -164,10 +160,8 @@ async def change_password(change_password: schemas.ChangePassword, current_user:
         return dict(message="Your passwords do not match", status="FAILED")
 
     #everything is okay! Change the users password
-    new_hashed_password = hash.bcrypt.using(rounds=13).hash(change_password.new_password)
-    db_user.hashed_password = new_hashed_password
-    db.commit()
-    db.refresh(db_user)
+    await services.new_password(change_password.new_password,db_user,db)
+
 
     #done: send feedback to the user
     return dict(message="Successfully Updated", status="SUCCESS")

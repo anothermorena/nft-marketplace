@@ -17,7 +17,7 @@ class CreateUser(BaseModel):
         orm_mode = True
     
 
-#inherits from CreateUser base
+#inherits from UserBase
 class User(CreateUser):
     user_id: int
     
