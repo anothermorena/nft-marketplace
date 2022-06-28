@@ -10,7 +10,7 @@ import { CredentialsContext } from './CredentialsContext';
 //expo async secure local storage.
 import * as SecureStore from 'expo-secure-store';
 
-const CustomDrawer = (props) => {
+const CustomDrawer = props => {
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
   //log out the user

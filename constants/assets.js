@@ -2,6 +2,7 @@ import badge from "../assets/icons/badge.png";
 import eth from "../assets/icons/eth.png";
 import heart from "../assets/icons/heart.png";
 import left from "../assets/icons/left.png";
+import whiteLeft from "../assets/icons/white-left.png";
 import search from "../assets/icons/search.png";
 
 import nft01 from "../assets/images/nft01.png";
@@ -23,6 +24,7 @@ export default {
   eth,
   heart,
   left,
+  whiteLeft,
   search,
 
   nft01,

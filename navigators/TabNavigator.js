@@ -45,6 +45,7 @@ const RootStack = () => {
                <Stack.Screen name="Details" component={Details}/>
                <Stack.Screen name="Verification" component={Verification}/>
                <Stack.Screen name="OtpVerificationInput" component={OtpVerificationInput}/>
+
          </Stack.Navigator>
      )}
 

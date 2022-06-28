@@ -75,6 +75,8 @@ const Login = ({ navigation }) => {
           handleMessage(message, status);
         } else {
           //login was successful persist the login
+
+          //TODO: check if the user account is verified
           persistLogin({ ...data}, message, status);
 
           //redirect the user to the home screen
@@ -88,8 +90,7 @@ const Login = ({ navigation }) => {
         handleMessage('An error occurred. Check your network and try again');
         console.log(error.toJSON());
   
-      }
-      
+      } 
     };
 
     const handleMessage = (message, type = 'FAILED') => {

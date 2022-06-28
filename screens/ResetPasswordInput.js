@@ -88,7 +88,6 @@ const ResetPasswordInput = ({ route, navigation }) => {
           <InnerContainer>
           <TopHalf>
                 <IconBg>
-                    <StatusBar  style="dark"/>
                     <MaterialCommunityIcons name="lock-reset" size={125} color={COLORS.brand}/>
                 </IconBg>
             </TopHalf>
