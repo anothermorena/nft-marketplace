@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Formik } from 'formik';
-
 import {
   StyledContainer,
   PageLogo,
@@ -75,26 +74,30 @@ const Login = ({ navigation }) => {
           handleMessage(message, status);
         } else {
 
-          //login was successful persist the login
-          const userObj = {
-            access_token,
-            user
-          }
+          //check if the user's account is verified
+          if(user.user_status === "UNVERIFIED") {
+            alert("Your account is not verified. Verification is required before you can use your account for anything.");
 
-          //TODO: check if the user account is verified, if not redirect them to the verification screen
-          persistLogin(userObj, message, status);
-          //redirect the user to the home screen
-          navigation.navigate('Home');
-    
+            navigation.navigate('OtpVerificationInput', {email: credentials.email, title: 'Verify Your Account', type:"VERIFY_ACCOUNT"});
+
+          } else {
+            //persist the login
+            const userObj = {
+              access_token,
+              user
+            }
+
+            persistLogin(userObj, message, status);
+            //redirect the user to the home screen
+            navigation.navigate('Home');
+            }
         }
-        setSubmitting(false);
       
       } catch (error) {
-        setSubmitting(false);
         handleMessage('An error occurred. Check your network and try again');
-        console.log(error.toJSON());
-  
       } 
+
+      setSubmitting(false);
     };
 
     const handleMessage = (message, type = 'FAILED') => {
