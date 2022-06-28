@@ -3,27 +3,22 @@
 from pydantic import BaseModel
 from typing import Optional
 
-#this is the parent class that we use to inherit
-class UserBase(BaseModel):
+#CreateUser is the info we will be sending when creating a user
+class CreateUser(BaseModel):
     first_name: str
     last_name: str
     email: str
     profile_image: Optional[str] = None
     user_status: str
-    
-
-#inherits from UserBase
-#UserCreate is the info we will be sending when creating a user
-class UserCreate(UserBase):
     hashed_password: str
 
     #sets up extra configuration for this class
     class Config:
         orm_mode = True
+    
 
-
-#inherits from UserBase
-class User(UserBase):
+#inherits from CreateUser base
+class User(CreateUser):
     user_id: int
     
     class Config:
@@ -43,3 +38,9 @@ class VerifyOtp(Otp):
 class ResetPassword(Otp):
     otp: int
     password: str
+
+#change authenticated user password
+class ChangePassword(BaseModel):
+    current_password: str
+    new_password: str
+    confirm_password: str

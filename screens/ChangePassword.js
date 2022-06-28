@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -23,11 +23,22 @@ import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 import axios from './../api/axios';
 import { FocusedStatusBar,CircleButton } from './../components';
 
+//expo async secure local storage.
+import * as SecureStore from 'expo-secure-store';
+
+// credentials context
+import { CredentialsContext } from './../components/CredentialsContext';
 
 const ChangePassword = ({navigation}) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
+
+      // credentials context
+      const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+
+      //destructure the data stored in the context
+      const { access_token, user} = storedCredentials;
 
     //Password Validation
     const passwordValidationSchema = yup.object().shape({
@@ -46,21 +57,29 @@ const ChangePassword = ({navigation}) => {
 
         const config = {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + access_token
           }
         }
 
       try {
-        const response = await axios.patch("/api/change_password", JSON.stringify({ email: email, otp: code, password: formValues.password }), config);
+        const response = await axios.patch("/api/change_password", JSON.stringify({ email: user.email,current_password: formValues.currentPassword, new_password: formValues.password, confirm_password: formValues.confirmPassword }), config);
         const result = response.data;
         const { status, message } = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
-          //password change was successful: Logout the user then redirect him or her to the login page
-          navigation.navigate('Login');
-    
+          //password change was successful: 
+          //Logout the user 
+          handleUserLogout();
+
+          //tell the user to login again
+          alert("Your password was changed successfully. Please login again to continue managing your account");
+
+          // redirect him or her to the home page
+          navigation.navigate('Home');
+
         }
         setSubmitting(false);
       
@@ -75,6 +94,16 @@ const ChangePassword = ({navigation}) => {
       setMessage(message);
       setMessageType(type);
     };
+
+    //log out the user
+    const handleUserLogout = async () => {
+      await SecureStore.deleteItemAsync('nftMarketPlace')
+        .then(() => {
+          setStoredCredentials("");
+        })
+        .catch((error) => console.log(error));
+    };
+  
 
   return (
     <KeyboardAvoidingWrapper>

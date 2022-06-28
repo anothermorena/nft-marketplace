@@ -1,10 +1,11 @@
 #load the required modules or packages
-import fastapi as fastapi 
+import fastapi
+from fastapi import status, HTTPException
 import sqlalchemy.orm as orm
 from database import engine
 import services, schemas, models
 import fastapi.security as security
-from passlib.hash import bcrypt
+import passlib.hash as hash
 
 #create the app object
 app = fastapi.FastAPI()
@@ -14,7 +15,7 @@ models.Base.metadata.create_all(engine)
 
 #create a user end point
 @app.post("/api/users")
-async def create_user(user: schemas.UserCreate, db: orm.Session = fastapi.Depends(services.get_db)):
+async def create_user(user: schemas.CreateUser, db: orm.Session = fastapi.Depends(services.get_db)):
    #check if a user with the provided email exists or not 
     db_user = await services.get_user_by_email(user.email, db)
  
@@ -132,7 +133,7 @@ async def reset_password(user: schemas.ResetPassword, db: orm.Session = fastapi.
         
      #everything seems okay: Proceed to reset the user password
      #first: generate new salt and hash password with an explicit number of rounds, 13 in this case
-     new_hashed_password = bcrypt.using(rounds=13).hash(user.password)
+     new_hashed_password = hash.bcrypt.using(rounds=13).hash(user.password)
      db_user.hashed_password = new_hashed_password
      db.commit()
      db.refresh(db_user)
@@ -143,6 +144,33 @@ async def reset_password(user: schemas.ResetPassword, db: orm.Session = fastapi.
      #password reset was successful: tell the user
      return dict(message="Your password was reset successfully. You may now log into your account 🙃", status="SUCCESS")
 
+
+#change authenticated user password end point
+@app.patch("/api/change_password/")
+async def change_password(change_password: schemas.ChangePassword, current_user:schemas.User = fastapi.Depends(services.get_current_user), db: orm.Session = fastapi.Depends(services.get_db)):
+    #check if a user with the provided email exists or not 
+    db_user = await services.get_user_by_email(current_user.email, db)
+ 
+    if not db_user:
+        #user does not exists
+        return dict(status_code= status.HTTP_404_NOT_FOUND, message="User not found", status="FAILED")
+
+    #verify current password
+    if not hash.bcrypt.verify(change_password.current_password, db_user.hashed_password):
+        return dict(message="Your current password is incorrect", status="FAILED")
+
+    #verify if new and confirm password match
+    if change_password.new_password != change_password.confirm_password:
+        return dict(message="Your passwords do not match", status="FAILED")
+
+    #everything is okay! Change the users password
+    new_hashed_password = hash.bcrypt.using(rounds=13).hash(change_password.new_password)
+    db_user.hashed_password = new_hashed_password
+    db.commit()
+    db.refresh(db_user)
+
+    #done: send feedback to the user
+    return dict(message="Successfully Updated", status="SUCCESS")
 
 
 

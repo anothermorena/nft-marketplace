@@ -67,18 +67,22 @@ const Login = ({ navigation }) => {
       }
 
       try {
-        const response = await axios.post("/api/login", requestBody, config);
+        const response = await axios.post("/api/login", requestBody, config); 
         const result = response.data;
-        const { status, message, data } = result;
+        const { access_token, status, message, user } = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
+
           //login was successful persist the login
+          const userObj = {
+            access_token,
+            user
+          }
 
-          //TODO: check if the user account is verified
-          persistLogin({ ...data}, message, status);
-
+          //TODO: check if the user account is verified, if not redirect them to the verification screen
+          persistLogin(userObj, message, status);
           //redirect the user to the home screen
           navigation.navigate('Home');
     

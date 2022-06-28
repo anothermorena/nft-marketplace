@@ -5,6 +5,7 @@ import sqlalchemy.orm as orm
 import random
 import jwt
 import fastapi
+from fastapi import status, HTTPException
 from fastapi_mail import FastMail, MessageSchema
 from config import email_conf, Envs
 import fastapi.security as security
@@ -37,7 +38,7 @@ async def get_otp_by_email(email: str, otp: int, db: orm.Session):
 
 
 #this function creates a new user
-async def create_user(user: schemas.UserCreate, db: orm.Session):
+async def create_user(user: schemas.CreateUser, db: orm.Session):
     #create the user data to be stored in the database
     user_obj = models.User(first_name= user.first_name,last_name= user.last_name,email=user.email, profile_image = "", user_status= "UNVERIFIED", hashed_password= hash.bcrypt.hash(user.hashed_password))  
 
@@ -91,7 +92,6 @@ async def send_email_async(subject: str, email_to: str, body: str):
     #send back a success message        
     return dict(message="Email sent successfully", status="SUCCESS", email= email_to)
 
-
 #function to authenticate the user
 async def authenticate_user(email: str, password: str, db: orm.Session):
     #first lets check if the user exists
@@ -105,7 +105,7 @@ async def authenticate_user(email: str, password: str, db: orm.Session):
     if not user.verify_password(password):
         return dict(message="Username or password incorrect", status="FAILED", data=None)
 
-    #login was successful: send the user user
+    #login was successful: send the user 
     return user
 
 
@@ -118,7 +118,7 @@ async def create_token(user: models.User):
     token = jwt.encode(user_obj.dict(), JWT_SECRET)
 
     #send this token when a user needs to access any area in our app that requires authentication
-    return dict(access_token=token, token_type="bearer",user=user_obj, status="SUCCESS", message="User was successfully authenticated")
+    return dict(access_token=token, token_type="bearer ",user=user_obj, status="SUCCESS", message="User was successfully authenticated")
 
 
 #get the current logged in user
@@ -127,7 +127,7 @@ async def get_current_user(db: orm.Session = fastapi.Depends(get_db), token: str
         #decode the token that we sent back
         payload = jwt.decode(token, JWT_SECRET, algorithms=Envs.ALGORITHM)
         #get the user by id
-        user = db.query(models.User).get(payload["id"])
+        user = db.query(models.User).get(payload["user_id"])
     except:
         raise fastapi.HTTPException(
             status_code=401, detail="Invalid Email or Password"
