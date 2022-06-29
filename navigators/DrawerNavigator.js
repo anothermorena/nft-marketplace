@@ -3,20 +3,20 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {useFonts } from 'expo-font';
 //colors
-import { COLORS } from "./../constants";
+import { COLORS } from "../constants";
 import {Ionicons, MaterialCommunityIcons, FontAwesome5} from '@expo/vector-icons';
 
-import ChangePassword from './../screens/ChangePassword';
-import UpdateProfileDetails from './../screens/UpdateProfileDetails';
-import Nfts from './../screens/Nfts';
-import CreateNft from './../screens/CreateNft';
-import Bids from './../screens/Bids';
-import WishList from './../screens/WishList';
+import ChangePassword from '../screens/ChangePassword';
+import UpdateProfileDetails from '../screens/UpdateProfileDetails';
+import Nfts from '../screens/Nfts';
+import CreateNft from '../screens/CreateNft';
+import Bids from '../screens/Bids';
+import WishList from '../screens/WishList';
 import CustomDrawer from '../components/CustomDrawer';
 import TabNavigator from './TabNavigator';
 
 // credentials context
-import { CredentialsContext } from './../components/CredentialsContext';
+import { CredentialsContext } from '../components/CredentialsContext';
 
 const theme = {
     ...DefaultTheme,

@@ -13,6 +13,7 @@ import nft05 from "../assets/images/nft05.jpeg";
 import nft06 from "../assets/images/nft06.jpeg";
 import nft07 from "../assets/images/nft07.jpeg";
 import drawerBg from "../assets/images/drawerBg.jpg";
+import profileAvatar from "../assets/images/profile-avatar.png"
 
 import person01 from "../assets/images/person01.png";
 import person02 from "../assets/images/person02.png";
@@ -35,6 +36,7 @@ export default {
   nft06,
   nft07,
   drawerBg,
+  profileAvatar,
 
   person01,
   person02,
