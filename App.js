@@ -4,7 +4,7 @@ import {useState, useEffect, useCallback} from 'react';
 import { View } from 'react-native';
 
 //react navigation stack
-import DrawerStack from './navigators/DrawerStack';
+import DrawerNavigator from './navigators/DrawerNavigator';
 
 //app loading
 import * as SplashScreen from 'expo-splash-screen';
@@ -79,7 +79,7 @@ export default function App() {
 
       */}
       <CredentialsContext.Provider value={{ storedCredentials, setStoredCredentials }}>
-        <DrawerStack />
+        <DrawerNavigator />
       </CredentialsContext.Provider>
     </View>
  

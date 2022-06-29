@@ -29,7 +29,7 @@ const theme = {
 
 const Drawer = createDrawerNavigator();
 
-const DrawerStack = () => {
+const DrawerNavigator = () => {
     //load the fonts we will be using and all other assets our app will use
    const [loaded] = useFonts({
     InterBold: require("./../assets/fonts/Inter-Bold.ttf"),
@@ -81,4 +81,4 @@ const DrawerStack = () => {
   );
 }
 
-export default DrawerStack;
+export default DrawerNavigator;
