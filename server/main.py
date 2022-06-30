@@ -1,11 +1,14 @@
 #load the required modules or packages
 import fastapi
-from fastapi import status, HTTPException
+from fastapi import status, HTTPException,File, UploadFile,Form
 import sqlalchemy.orm as orm
 from database import engine
 import services, schemas, models
 import fastapi.security as security
 import passlib.hash as hash
+from typing import Optional
+import pathlib
+import uuid
 
 #create the app object
 app = fastapi.FastAPI()
@@ -167,8 +170,55 @@ async def change_password(change_password: schemas.ChangePassword, current_user:
     return dict(message="Successfully Updated", status="SUCCESS")
 
 
+#update user profile end point
+@app.patch("/api/update_profile_details")
+async def update_profile_details(first_name: str = Form(), last_name: str = Form(), profile_image: Optional[UploadFile] = File(None),current_user:schemas.User = fastapi.Depends(services.get_current_user), db: orm.Session = fastapi.Depends(services.get_db)):
+    #check if a user with the provided email exists or not 
+    db_user = await services.get_user_by_email(current_user.email, db)
+ 
+    if not db_user:
+        #user does not exists
+        return dict(status_code=404, message="User not found", status="FAILED")
 
-        
-  
+    print(first_name)
+    print(last_name)
+
+    #check file type
+    if profile_image.content_type not in ['image/jpeg', 'image/png']:
+        raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")
+
+    #check if user uploaded a new profile image
+    if profile_image:
+        #delete old profile image
+        #get current image name
+        current_profile_image = current_user.profile_image
+        pass
+
+    #rename file
+    file_ext = pathlib.Path(profile_image.filename).suffix
+    random_file_name = f'{uuid.uuid4().hex}{file_ext}'
+
+    #update user profile details
+    current_user.first_name = first_name
+    current_user.last_name = last_name
+    current_user.profile_image = random_file_name
+    db.commit()
+    db.refresh(current_user)
+
+    #upload the file to the server
+    file_location = f"uploaded_images/user_profile_images/{random_file_name}"
+
+    with open(file_location, "wb+") as file_object:
+        file_object.write(profile_image.file.read())
+        return {"info": f"file '{random_file_name}' saved at '{file_location}'"}
+
+
+ 
     
+
+    
+
+
+   
+  
 

@@ -2,13 +2,14 @@
 #import required modules or packages
 from pydantic import BaseModel
 from typing import Optional
+from fastapi import File, UploadFile
 
 #CreateUser is the info we will be sending when creating a user
 class CreateUser(BaseModel):
     first_name: str
     last_name: str
     email: str
-    profile_image: Optional[str] = None
+    profile_image: str
     user_status: str
     hashed_password: str
 
@@ -44,3 +45,10 @@ class ChangePassword(BaseModel):
     current_password: str
     new_password: str
     confirm_password: str
+
+#update profile
+class UpdateUserProfile(BaseModel):
+    first_name: str
+    last_name: str
+    profile_image: Optional[UploadFile] = File(None)
+

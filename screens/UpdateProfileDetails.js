@@ -30,14 +30,13 @@ const UpdateProfileDetails = ({navigation}) => {
       const [messageType, setMessageType] = useState();
       const [image, setImage] = useState(null);
 
-
       // credentials context
       const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
       //destructure the data stored in the context
       const { first_name, last_name, profile_image} = storedCredentials.user;
 
-      //const { access_token, user} = storedCredentials;
+      const { access_token } = storedCredentials;
 
     //Profile Details Validation
     const profileDetailsValidationSchema = yup.object().shape({
@@ -74,13 +73,17 @@ const UpdateProfileDetails = ({navigation}) => {
 
         const config = {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             Authorization: "Bearer " + access_token
           }
         }
 
+        //prepare form data to send to the api to update user profile
+        let formData =  createFormData(formValues.firstName,formValues.lastName, image);
+        
       try {
-        const response = await axios.patch("/api/update_profile_details", JSON.stringify({ first_name: formValues.firstName, last_name:formValues.lastName, profile_image: image }), config);
+        //const response = await axios.patch("/api/update_profile_details/", JSON.stringify({ first_name:first_name, last_name:last_name }) , config);
+        const response = await axios.patch("/api/update_profile_details/", formData , config);
         const result = response.data;
         const { status, message } = result;
 
@@ -97,6 +100,7 @@ const UpdateProfileDetails = ({navigation}) => {
         }
       
       } catch (error) {
+        console.log(formData);
         handleMessage('An error occurred. Check your network and try again');
       }
       setSubmitting(false);
@@ -106,6 +110,24 @@ const UpdateProfileDetails = ({navigation}) => {
       setMessage(message);
       setMessageType(type);
     };
+
+
+    const createFormData = (firstName, lastName,uri) => {
+        const fileName = uri.split('/').pop();
+        const fileType = fileName.split('.').pop();
+        const formData = new FormData();
+    
+        formData.append('first_name', firstName),
+        formData.append('last_name', lastName),
+        formData.append('profile_image', { 
+          uri, 
+          name: fileName, 
+          type: `image/${fileType}` 
+        },
+      );
+      
+      return formData;
+    }
 
   return (
     <KeyboardAvoidingWrapper>
