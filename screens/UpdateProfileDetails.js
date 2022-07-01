@@ -82,7 +82,6 @@ const UpdateProfileDetails = ({navigation}) => {
         let formData =  createFormData(formValues.firstName,formValues.lastName, image);
         
       try {
-        //const response = await axios.patch("/api/update_profile_details/", JSON.stringify({ first_name:first_name, last_name:last_name }) , config);
         const response = await axios.patch("/api/update_profile_details/", formData , config);
         const result = response.data;
         const { status, message } = result;
@@ -100,7 +99,7 @@ const UpdateProfileDetails = ({navigation}) => {
         }
       
       } catch (error) {
-        console.log(formData);
+        console.log(error);
         handleMessage('An error occurred. Check your network and try again');
       }
       setSubmitting(false);

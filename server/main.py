@@ -9,6 +9,7 @@ import passlib.hash as hash
 from typing import Optional
 import pathlib
 import uuid
+import os
 
 #create the app object
 app = fastapi.FastAPI()
@@ -171,8 +172,9 @@ async def change_password(change_password: schemas.ChangePassword, current_user:
 
 
 #update user profile end point
-@app.patch("/api/update_profile_details")
+@app.patch("/api/update_profile_details/")
 async def update_profile_details(first_name: str = Form(), last_name: str = Form(), profile_image: Optional[UploadFile] = File(None),current_user:schemas.User = fastapi.Depends(services.get_current_user), db: orm.Session = fastapi.Depends(services.get_db)):
+    
     #check if a user with the provided email exists or not 
     db_user = await services.get_user_by_email(current_user.email, db)
  
@@ -180,37 +182,43 @@ async def update_profile_details(first_name: str = Form(), last_name: str = Form
         #user does not exists
         return dict(status_code=404, message="User not found", status="FAILED")
 
-    print(first_name)
-    print(last_name)
-
-    #check file type
-    if profile_image.content_type not in ['image/jpeg', 'image/png']:
-        raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")
-
     #check if user uploaded a new profile image
     if profile_image:
         #delete old profile image
         #get current image name
-        current_profile_image = current_user.profile_image
-        pass
+        current_profile_image = db_user.profile_image
 
-    #rename file
-    file_ext = pathlib.Path(profile_image.filename).suffix
-    random_file_name = f'{uuid.uuid4().hex}{file_ext}'
+        #deletion path
+        current_profile_image_location = f"uploaded_images/user_profile_images/{current_profile_image}"
 
-    #update user profile details
-    current_user.first_name = first_name
-    current_user.last_name = last_name
-    current_user.profile_image = random_file_name
-    db.commit()
-    db.refresh(current_user)
+        #try to delete the file 
+        try:
+            os.remove(current_profile_image_location)
+        except OSError as e:  # failed, report it back to the user 
+            print ("Error: %s - %s." % (e.filename, e.strerror))
+        
+        #check file type of the uploaded image
+        if profile_image.content_type not in ['image/jpg','image/jpeg', 'image/png']:
+            raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")
 
-    #upload the file to the server
-    file_location = f"uploaded_images/user_profile_images/{random_file_name}"
+        #rename uploaded file
+        file_ext = pathlib.Path(profile_image.filename).suffix
+        random_file_name = f'{uuid.uuid4().hex}{file_ext}'
 
-    with open(file_location, "wb+") as file_object:
-        file_object.write(profile_image.file.read())
-        return {"info": f"file '{random_file_name}' saved at '{file_location}'"}
+
+        #update user profile details
+        db_user.first_name = first_name
+        db_user.last_name = last_name
+        db_user.profile_image = random_file_name
+        db.commit()
+        db.refresh(db_user)
+
+        #upload the file to the server
+        file_location = f"uploaded_images/user_profile_images/{random_file_name}"
+
+        with open(file_location, "wb+") as file_object:
+            file_object.write(profile_image.file.read())
+            return {"info": f"file '{random_file_name}' saved at '{file_location}'"}
 
 
  
