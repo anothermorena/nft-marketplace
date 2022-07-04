@@ -70,6 +70,8 @@ const Login = ({ navigation }) => {
         const result = response.data;
         const { access_token, status, message, user } = result;
 
+ 
+
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {

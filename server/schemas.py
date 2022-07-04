@@ -1,6 +1,7 @@
 #This file contains pydantic models/schemas
 #import required modules or packages
 from pydantic import BaseModel
+from typing import Optional
 
 
 #CreateUser is the info we will be sending when creating a user
@@ -8,7 +9,7 @@ class CreateUser(BaseModel):
     first_name: str
     last_name: str
     email: str
-    profile_image: str
+    profile_image: Optional[str] = None
     user_status: str
     hashed_password: str
 

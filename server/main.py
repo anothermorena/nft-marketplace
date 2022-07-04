@@ -7,9 +7,7 @@ import services, schemas, models
 import fastapi.security as security
 import passlib.hash as hash
 from typing import Optional
-import pathlib
-import uuid
-import os
+
 
 #create the app object
 app = fastapi.FastAPI()
@@ -184,41 +182,22 @@ async def update_profile_details(first_name: str = Form(), last_name: str = Form
 
     #check if user uploaded a new profile image
     if profile_image:
-        #delete old profile image
-        #get current image name
-        current_profile_image = db_user.profile_image
-
-        #deletion path
-        current_profile_image_location = f"uploaded_images/user_profile_images/{current_profile_image}"
-
-        #try to delete the file 
-        try:
-            os.remove(current_profile_image_location)
-        except OSError as e:  # failed, report it back to the user 
-            print ("Error: %s - %s." % (e.filename, e.strerror))
-        
         #check file type of the uploaded image
         if profile_image.content_type not in ['image/jpg','image/jpeg', 'image/png']:
-            raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")
+            raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")     
+    
+        #upload the image to the cloudinary
+        result = services.upload_image(profile_image.file,profile_image.filename,unique_filename = False, overwrite=True)
+        
+        #get the url of the profile image
+        profile_image_url = result.get("url")
 
-        #rename uploaded file
-        file_ext = pathlib.Path(profile_image.filename).suffix
-        random_file_name = f'{uuid.uuid4().hex}{file_ext}'
-
-
-        #update user profile details
-        db_user.first_name = first_name
-        db_user.last_name = last_name
-        db_user.profile_image = random_file_name
-        db.commit()
-        db.refresh(db_user)
-
-        #upload the file to the server
-        file_location = f"uploaded_images/user_profile_images/{random_file_name}"
-
-        with open(file_location, "wb+") as file_object:
-            file_object.write(profile_image.file.read())
-            return {"info": f"file '{random_file_name}' saved at '{file_location}'"}
+    #update user profile details
+    db_user.first_name = first_name
+    db_user.last_name = last_name
+    db_user.profile_image = profile_image_url
+    db.commit()
+    db.refresh(db_user)
 
 
  

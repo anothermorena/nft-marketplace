@@ -38,6 +38,7 @@ const UpdateProfileDetails = ({navigation}) => {
 
       const { access_token } = storedCredentials;
 
+
     //Profile Details Validation
     const profileDetailsValidationSchema = yup.object().shape({
         firstName: yup
@@ -136,26 +137,29 @@ const UpdateProfileDetails = ({navigation}) => {
           <InnerContainer style={{marginVertical: -40}}> 
           <SubTitle style={{marginTop:40}}>Update Your Profile Details</SubTitle>
           <TouchableOpacity onPress={pickImage}>
-              {profile_image === "" ? ( 
-                <>
-                {image !== null ? (
-                <> 
-                    <PageLogo resizeMode="cover" source={{ uri: image }} style={{borderRadius: 160}}/>
-                    <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/>  
-                </>
-                ) : (
-                  <>
-                    <PageLogo resizeMode="cover" source={assets.profileAvatar}/>
-                    <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 150,right: 20}}/>
-                  </>
-                )}
-                </>
-              ):(
+
+          {!image && !profile_image && (
               <>
-                <PageLogo resizeMode="cover" source={require("./../assets/images/morena.jpg")} style={{borderRadius: 160}}/>
+                <PageLogo resizeMode="cover" source={assets.profileAvatar}/>
+                <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 150,right: 20}}/> 
+              </>
+            )}
+
+            
+            {!image && profile_image && (
+              <>
+                <PageLogo resizeMode="cover" source={assets.profileAvatar}/>
                 <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/>
               </>
             )}
+            {image && !profile_image && (
+              <>
+                <PageLogo resizeMode="cover" source={{ uri: image }} style={{borderRadius: 160}}/>
+                <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/> 
+              </>
+            )}
+
+           
           </TouchableOpacity> 
             <Formik
                initialValues={{firstName: first_name,lastName: last_name, profileImage: profile_image}}

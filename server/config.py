@@ -2,6 +2,9 @@
 import os
 from dotenv import load_dotenv
 from fastapi_mail import ConnectionConfig
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # load environment variables from .env
 load_dotenv('./../.env')
@@ -21,7 +24,12 @@ class Envs:
     MAIL_FROM_NAME = os.getenv('MAIN_FROM_NAME')
     SECRET = os.getenv('SECRET')
     ALGORITHM = os.getenv('ALGORITHM')
-
+    CLOUDINARY_NAME = os.getenv('CLOUDINARY_NAME')
+    CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY')
+    CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
+    
+    
+#Setup our email configurations
 email_conf = ConnectionConfig(
     MAIL_USERNAME=Envs.MAIL_USERNAME,
     MAIL_PASSWORD=Envs.MAIL_PASSWORD,
@@ -34,4 +42,16 @@ email_conf = ConnectionConfig(
     USE_CREDENTIALS=True,
     TEMPLATE_FOLDER='./templates/email'
 )
+
+
+# Set clouditionary configuration: return "https" URLs by setting secure=True  
+# ==============================
+clouditionary_config = cloudinary.config(
+            cloud_name= Envs.CLOUDINARY_NAME,
+            api_key= Envs.CLOUDINARY_API_KEY,
+            api_secret = Envs.CLOUDINARY_API_SECRET,
+            secure=True
+        ) 
+
+
 

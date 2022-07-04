@@ -10,6 +10,8 @@ from fastapi_mail import FastMail, MessageSchema
 from config import email_conf, Envs
 import fastapi.security as security
 from database import SessionLocal
+import cloudinary
+import cloudinary.uploader
 
 #we use oauth to issue a token when a user logs in
 oauth2schema = security.OAuth2PasswordBearer(tokenUrl="/api/login")
@@ -142,6 +144,18 @@ async def get_current_user(db: orm.Session = fastapi.Depends(get_db), token: str
         )
 
     return schemas.User.from_orm(user)
+
+
+#function to upload images to cloudinary
+def upload_image(image,image_name,unique_filename=False, overwrite=True):
+
+  # Upload the image and get its URL
+  # ==============================
+
+  # Upload the image.
+  # Set the asset's public ID and allow overwriting the asset with new versions
+  return cloudinary.uploader.upload(image, public_id=image_name, unique_filename = unique_filename, overwrite=overwrite)
+
 
 
 
