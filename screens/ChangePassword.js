@@ -34,11 +34,11 @@ const ChangePassword = ({navigation}) => {
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
 
-      // credentials context
-      const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+    // credentials context
+    const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
-      //destructure the data stored in the context
-      const { access_token, user} = storedCredentials;
+    //destructure the data stored in the context
+    const { accessToken,email} = storedCredentials;
 
     //Password Validation
     const passwordValidationSchema = yup.object().shape({
@@ -58,12 +58,12 @@ const ChangePassword = ({navigation}) => {
         const config = {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: "Bearer " + access_token
+            Authorization: "Bearer " + accessToken
           }
         }
 
       try {
-        const response = await axios.patch("/api/change_password", JSON.stringify({ email: user.email,current_password: formValues.currentPassword, new_password: formValues.password, confirm_password: formValues.confirmPassword }), config);
+        const response = await axios.patch("/api/change_password", JSON.stringify({ email,current_password: formValues.currentPassword, new_password: formValues.password, confirm_password: formValues.confirmPassword }), config);
         const result = response.data;
         const { status, message } = result;
 
