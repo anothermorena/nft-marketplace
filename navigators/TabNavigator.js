@@ -16,11 +16,13 @@ import Verification from './../screens/OtpVerificationMsg';
 import OtpVerificationInput from './../screens/OtpVerificationInput';
 import TrendingNfts from './../screens/TrendingNfts';
 
+
 //navigators
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const RootStack = () => {
+
    return (
          <Stack.Navigator
            screenOptions={{

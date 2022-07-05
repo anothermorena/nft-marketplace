@@ -1,16 +1,25 @@
-import { View, Text, Image, TextInput, Pressable } from "react-native";
-import { COLORS, FONTS, SIZES, assets } from "../constants";
+import { useContext } from 'react';
+import { View, Text, TextInput, Pressable } from "react-native";
+import { COLORS, FONTS, SIZES, assets} from "../constants";
 import { EvilIcons } from '@expo/vector-icons';
+import { CredentialsContext } from './../components/CredentialsContext';
+import {PageLogo} from './../components/StyledComponents';
 
 const HomeHeader = ({ onSearch, navigation }) => {
+
+  // credentials context
+  const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+
+  //destructure the data stored in the context
+  //const { profileImage} = storedCredentials;
+
   return (
     <View style={{backgroundColor: COLORS.brand,padding: SIZES.font}}>
       <View style={{flexDirection: "row",justifyContent: "space-between",alignItems: "center"}}>
       <Text style={{fontFamily: FONTS.bold,fontSize: SIZES.extraLarge,color: COLORS.white}}>NFT Market Place</Text>
         <View style={{ width: 45, height: 45 }}>
           <Pressable onPress={() => navigation.openDrawer()}>
-            <Image source={assets.person01} resizeMode="contain"style={{ width: "100%", height: "100%" }}/>
-            <Image source={assets.badge} resizeMode="contain" style={{position: "absolute",width: 20,height: 20,bottom: -5,right: 0}}/>
+            <PageLogo resizeMode="contain" source={assets.person01} style={{width: "100%", height: "100%",borderRadius: 200}}/>
           </Pressable>
         </View>
       </View>

@@ -13,6 +13,9 @@ import * as SecureStore from 'expo-secure-store';
 const CustomDrawer = props => {
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
+  const {firstName,lastName,profileImage} = storedCredentials;
+  const nftsCount = 20;
+
   //log out the user
   const handleUserLogout = async () => {
     await SecureStore.deleteItemAsync('nftMarketPlace')
@@ -25,22 +28,25 @@ const CustomDrawer = props => {
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props} contentContainerStyle={{backgroundColor: COLORS.brand}}>
+      {!storedCredentials ? (<ImageBackground source={assets.drawerBg} style={{padding: 20,height: 160}}/>): (
         <ImageBackground source={assets.drawerBg} style={{padding: 20}}>
-          <Image source={assets.person01} style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}/>
-          <Text style={{color: COLORS.white, fontSize: 18, fontFamily: 'InterMedium', marginBottom: 5}}>
-            Morena
+        <Image source={{uri: profileImage}} style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}/>
+        <Text style={{color: COLORS.white, fontSize: 18, fontFamily: 'InterMedium', marginBottom: 5}}>
+          {`${firstName} ` + `${lastName}`}
+        </Text>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{color: COLORS.white, fontFamily: 'InterMedium', marginRight: 5}}>
+            {`${nftsCount} `}Nft'(s)
           </Text>
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{color: COLORS.white, fontFamily: 'InterMedium', marginRight: 5}}>
-              280 Nft's
-            </Text>
-            <FontAwesome5 name="coins" size={14} color={COLORS.white} />
-          </View>
-        </ImageBackground>
+          <FontAwesome5 name="coins" size={14} color={COLORS.white} />
+        </View>
+      </ImageBackground>
+        )}
         <View style={{flex: 1, backgroundColor: COLORS.white, paddingTop: 10}}>
           <DrawerItemList {...props} />
         </View>
-      </DrawerContentScrollView>
+    </DrawerContentScrollView>
+        
       {storedCredentials ? (
       <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
         <TouchableOpacity onPress={handleUserLogout} style={{paddingVertical: 15}}>
