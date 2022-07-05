@@ -181,16 +181,26 @@ async def update_profile_details(first_name: str = Form(), last_name: str = Form
         return dict(status_code=404, message="User not found", status="FAILED")
 
     #check if user uploaded a new profile image
-    if profile_image:
-        #check file type of the uploaded image
-        if profile_image.content_type not in ['image/jpg','image/jpeg', 'image/png']:
-            raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")     
-    
-        #upload the image to the cloudinary
-        result = services.upload_image(profile_image.file,profile_image.filename,unique_filename = False, overwrite=True)
+    if not profile_image:
+        #user did not upload an image: update first name and last name with incoming values  
+        db_user.first_name = first_name
+        db_user.last_name = last_name
+        db.commit()
+        db.refresh(db_user)
         
-        #get the url of the profile image
-        profile_image_url = result.get("url")
+        #done: send feedback to the user
+        return dict(message="Successfully Updated", status="SUCCESS", data=db_user)
+    
+    #user uploaded an image
+    # check file type of the uploaded image
+    if profile_image.content_type not in ['image/jpg','image/jpeg', 'image/png']:
+        raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")     
+    
+    #upload the image to cloudinary
+    result = services.upload_image(profile_image.file,profile_image.filename,unique_filename=False, overwrite=True)
+        
+    #get the url of the profile image
+    profile_image_url = result.get("secure_url")
 
     #update user profile details
     db_user.first_name = first_name
@@ -198,6 +208,9 @@ async def update_profile_details(first_name: str = Form(), last_name: str = Form
     db_user.profile_image = profile_image_url
     db.commit()
     db.refresh(db_user)
+    
+    #done: send feedback to the user
+    return dict(message="Successfully Updated", status="SUCCESS", data=db_user)
 
 
  

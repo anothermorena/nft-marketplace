@@ -1,4 +1,5 @@
 #import required modules or packages
+# ==============================
 import os
 from dotenv import load_dotenv
 from fastapi_mail import ConnectionConfig
@@ -7,9 +8,11 @@ import cloudinary.uploader
 import cloudinary.api
 
 # load environment variables from .env
+# ==============================
 load_dotenv('./../.env')
 
 #create environment variables configuration class 
+# ==============================
 class Envs:
     DB_USER = os.getenv('DB_USER')
     DB_PASSWORD = os.getenv('DB_PASSWORD')
@@ -29,7 +32,8 @@ class Envs:
     CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
     
     
-#Setup our email configurations
+# Setup our email configurations
+# ==============================
 email_conf = ConnectionConfig(
     MAIL_USERNAME=Envs.MAIL_USERNAME,
     MAIL_PASSWORD=Envs.MAIL_PASSWORD,

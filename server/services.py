@@ -128,7 +128,7 @@ async def create_token(user: models.User):
     token = jwt.encode(user_obj.dict(), JWT_SECRET)
 
     #send this token when a user needs to access any area in our app that requires authentication
-    return dict(access_token=token, token_type="bearer ",user=user_obj, status="SUCCESS", message="User was successfully authenticated")
+    return dict(access_token=token,user=user_obj, status="SUCCESS", message="User was successfully authenticated")
 
 
 #get the current logged in user
@@ -148,10 +148,6 @@ async def get_current_user(db: orm.Session = fastapi.Depends(get_db), token: str
 
 #function to upload images to cloudinary
 def upload_image(image,image_name,unique_filename=False, overwrite=True):
-
-  # Upload the image and get its URL
-  # ==============================
-
   # Upload the image.
   # Set the asset's public ID and allow overwriting the asset with new versions
   return cloudinary.uploader.upload(image, public_id=image_name, unique_filename = unique_filename, overwrite=overwrite)

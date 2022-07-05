@@ -68,16 +68,15 @@ const Login = ({ navigation }) => {
       try {
         const response = await axios.post("/api/login", requestBody, config); 
         const result = response.data;
-        const { access_token, status, message, user } = result;
-
- 
+        //destructure and convert variable names from snake_case to camelCase
+        const { access_token: accessToken, status, message, user: {first_name: firstName, last_name: lastName, email, profile_image: profileImage, user_status: userStatus, user_id: userId}} = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
 
           //check if the user's account is verified
-          if(user.user_status === "UNVERIFIED") {
+          if(userStatus === "UNVERIFIED") {
             alert("Your account is not verified. Verification is required before you can use your account for anything.");
 
             navigation.navigate('OtpVerificationInput', {email: credentials.email, title: 'Verify Your Account', type:"VERIFY_ACCOUNT"});
@@ -85,8 +84,13 @@ const Login = ({ navigation }) => {
           } else {
             //persist the login
             const userObj = {
-              access_token,
-              user
+              accessToken,
+              firstName,
+              lastName,
+              email,
+              profileImage,
+              userStatus,
+              userId
             }
 
             persistLogin(userObj, message, status);

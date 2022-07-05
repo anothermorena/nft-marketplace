@@ -26,17 +26,15 @@ import * as ImagePicker from 'expo-image-picker';
 import { CredentialsContext } from './../components/CredentialsContext';
 
 const UpdateProfileDetails = ({navigation}) => {
-      const [message, setMessage] = useState();
-      const [messageType, setMessageType] = useState();
-      const [image, setImage] = useState(null);
+    const [message, setMessage] = useState();
+    const [messageType, setMessageType] = useState();
+    const [image, setImage] = useState(null);
 
-      // credentials context
-      const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+    // credentials context
+    const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
-      //destructure the data stored in the context
-      const { first_name, last_name, profile_image} = storedCredentials.user;
-
-      const { access_token } = storedCredentials;
+    //destructure the data stored in the context
+    const { accessToken,firstName,lastName,profileImage} = storedCredentials;
 
 
     //Profile Details Validation
@@ -75,7 +73,7 @@ const UpdateProfileDetails = ({navigation}) => {
         const config = {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: "Bearer " + access_token
+            Authorization: "Bearer " + accessToken
           }
         }
 
@@ -85,22 +83,30 @@ const UpdateProfileDetails = ({navigation}) => {
       try {
         const response = await axios.patch("/api/update_profile_details/", formData , config);
         const result = response.data;
-        const { status, message } = result;
+        const {status, message, data } = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
+
           //update the credentials context with the users new profile details
+          const newStoredCredentials = {
+              ...storedCredentials,
+              firstName: data.first_name, 
+              lastName: data.last_name, 
+              profileImage: data.profile_image    
+          }
+          setStoredCredentials(newStoredCredentials);
 
-          alert("Your profile details were updated successfully");
+          //tell the user the update was successful
+          alert("Your profile details were updated successfully.");
 
-          // open the the profile screen
-          navigation.navigate('UpdateProfileDetails');
-
+          //rediect the user to the home page
+          navigation.navigate('Home');
         }
       
       } catch (error) {
-        console.log(error);
+      
         handleMessage('An error occurred. Check your network and try again');
       }
       setSubmitting(false);
@@ -112,20 +118,27 @@ const UpdateProfileDetails = ({navigation}) => {
     };
 
 
-    const createFormData = (firstName, lastName,uri) => {
-        const fileName = uri.split('/').pop();
+    const createFormData = (firstName, lastName,image) => {
+
+      //create the form object
+      const formData = new FormData();
+
+      //check if user uploaded an image
+      if (image) {
+        //user uploaded an image: append the file
+        const fileName = image.split('/').pop();
         const fileType = fileName.split('.').pop();
-        const formData = new FormData();
-    
-        formData.append('first_name', firstName),
-        formData.append('last_name', lastName),
         formData.append('profile_image', { 
-          uri, 
+          image, 
           name: fileName, 
           type: `image/${fileType}` 
         },
       );
-      
+      }
+        
+      formData.append('first_name', firstName);
+      formData.append('last_name', lastName);
+         
       return formData;
     }
 
@@ -138,31 +151,30 @@ const UpdateProfileDetails = ({navigation}) => {
           <SubTitle style={{marginTop:40}}>Update Your Profile Details</SubTitle>
           <TouchableOpacity onPress={pickImage}>
 
-          {!image && !profile_image && (
+          {!image && !profileImage && (
               <>
                 <PageLogo resizeMode="cover" source={assets.profileAvatar}/>
                 <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 150,right: 20}}/> 
               </>
             )}
 
-            
-            {!image && profile_image && (
-              <>
-                <PageLogo resizeMode="cover" source={assets.profileAvatar}/>
-                <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/>
-              </>
-            )}
-            {image && !profile_image && (
+          {image && (
               <>
                 <PageLogo resizeMode="cover" source={{ uri: image }} style={{borderRadius: 160}}/>
                 <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/> 
               </>
             )}
-
-           
+            
+            {!image && profileImage && (
+              <>
+                <PageLogo resizeMode="cover" source={{uri: profileImage}} style={{borderRadius: 200}}/>
+                <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/>
+              </>
+            )}
+   
           </TouchableOpacity> 
             <Formik
-               initialValues={{firstName: first_name,lastName: last_name, profileImage: profile_image}}
+               initialValues={{firstName: firstName,lastName: lastName, profileImage: profileImage}}
                validationSchema={profileDetailsValidationSchema}
                onSubmit={(values, { setSubmitting }) => {
                  if (values.firstName == '' || values.lastName == '') {
