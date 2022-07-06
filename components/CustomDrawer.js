@@ -13,8 +13,19 @@ import * as SecureStore from 'expo-secure-store';
 const CustomDrawer = props => {
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
+  //maor todo fix this mess with conditional rendering not wirking
+//get the user's profile details from the credentials context
+  if(storedCredentials != null) {
+    const {firstName,lastName,profileImage} = storedCredentials;
+
+    //TODO: get the users nft count from the db
+    const nftsCount = 20;
+   
+  }
+
   const {firstName,lastName,profileImage} = storedCredentials;
   const nftsCount = 20;
+  
 
   //log out the user
   const handleUserLogout = async () => {
@@ -28,7 +39,7 @@ const CustomDrawer = props => {
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props} contentContainerStyle={{backgroundColor: COLORS.brand}}>
-      {!storedCredentials ? (<ImageBackground source={assets.drawerBg} style={{padding: 20,height: 160}}/>): (
+      {storedCredentials == null ? (<ImageBackground source={assets.drawerBg} style={{padding: 20,height: 160}}/>): (
         <ImageBackground source={assets.drawerBg} style={{padding: 20}}>
         <Image source={{uri: profileImage}} style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}/>
         <Text style={{color: COLORS.white, fontSize: 18, fontFamily: 'InterMedium', marginBottom: 5}}>

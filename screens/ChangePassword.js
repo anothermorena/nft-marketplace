@@ -111,13 +111,13 @@ const ChangePassword = ({navigation}) => {
         <FocusedStatusBar background={COLORS.primary}/>
           <CircleButton imgUrl={assets.whiteLeft} handlePress={() => navigation.goBack()} left={15} top={15}  backgroundColor= {COLORS.brand}/>
           <InnerContainer style={{marginVertical: -40}}>
+          <SubTitle style={{marginTop: 40}}>Change Your Password</SubTitle>
           <TopHalf>
                 <IconBg>
                     <FontAwesome name="exchange" size={125} color={COLORS.brand}/>
                 </IconBg>
             </TopHalf>
-            <SubTitle>Change Your Password</SubTitle>
-
+            
             <Formik
                initialValues={{currentPassword: '',password: '', confirmPassword: ''}}
                validationSchema={passwordValidationSchema}

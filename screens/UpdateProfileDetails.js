@@ -106,7 +106,7 @@ const UpdateProfileDetails = ({navigation}) => {
         }
       
       } catch (error) {
-      
+        console.log(error.toJSON());
         handleMessage('An error occurred. Check your network and try again');
       }
       setSubmitting(false);
@@ -118,18 +118,18 @@ const UpdateProfileDetails = ({navigation}) => {
     };
 
 
-    const createFormData = (firstName, lastName,image) => {
+    const createFormData = (firstName, lastName,uri) => {
 
       //create the form object
       const formData = new FormData();
 
       //check if user uploaded an image
-      if (image) {
+      if (uri) {
         //user uploaded an image: append the file
         const fileName = image.split('/').pop();
         const fileType = fileName.split('.').pop();
         formData.append('profile_image', { 
-          image, 
+          uri, 
           name: fileName, 
           type: `image/${fileType}` 
         },
