@@ -8,6 +8,7 @@ import axios from '../api/axios';
 const Home = ({navigation}) => {
 
     const [nftData, setNftData] = useState(null);
+    const [searchResults, setSearchResults] = useState(null);
     const [loading, setLoading] = useState(true);
 
     //get nfts from the database
@@ -28,19 +29,11 @@ const Home = ({navigation}) => {
 
     //search nft's
     const handleSearch = value => {
-      if (value.length === 0) {
-        setNftData(nftData);
-      }
-  
       const filteredData = nftData.filter((item) =>
         item.nft_title.toLowerCase().includes(value.toLowerCase())
       );
   
-      if (filteredData.length === 0) {
-        setNftData(nftData);
-      } else {
-        setNftData(filteredData);
-      }
+      if (filteredData.length !== 0) setSearchResults(filteredData);
     };
 
   return (
@@ -49,7 +42,7 @@ const Home = ({navigation}) => {
         <View style={{flex: 1}}>
             <View style={{zIndex: 0}}>
                 <FlatList 
-                    data={nftData}
+                    data={searchResults ? searchResults : nftData}
                     renderItem={({item}) => <NFTCard data={item}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
