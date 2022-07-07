@@ -1,7 +1,7 @@
 import { View, Image, Text } from "react-native";
 import { SIZES, FONTS, COLORS, SHADOWS, assets } from "../constants";
 
-export const NFTTitle = ({ title, subTitle, titleSize, subTitleSize }) => {
+export const NFTTitle = ({ title, subTitle, titleSize, subTitleSize}) => {
   return (
     <View>
       <Text
@@ -75,7 +75,7 @@ export const People = () => {
   );
 };
 
-export const EndDate = () => {
+export const EndDate = ({biddingDeadline}) => {
   return (
     <View
       style={{
@@ -106,13 +106,13 @@ export const EndDate = () => {
           color: COLORS.primary,
         }}
       >
-        12h 30m
+        {biddingDeadline}
       </Text>
     </View>
   );
 };
 
-export const SubInfo = () => {
+export const SubInfo = ({biddingDeadline}) => {
   return (
     <View
       style={{
@@ -124,7 +124,7 @@ export const SubInfo = () => {
       }}
     >
       <People />
-      <EndDate />
+      <EndDate biddingDeadline={biddingDeadline}/>
     </View>
   );
 };
