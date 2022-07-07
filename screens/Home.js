@@ -1,25 +1,43 @@
-import {useState} from 'react';
-import {View, SafeAreaView, FlatList} from 'react-native';
-
-//local imports
-import {COLORS, NFTData} from "../constants";
+import {useState, useEffect} from 'react';
+import {View, SafeAreaView, FlatList,ActivityIndicator} from 'react-native';
+import {COLORS} from "../constants";
 import { HomeHeader,NFTCard, FocusedStatusBar } from '../components';
+import axios from '../api/axios';
+
 
 const Home = ({navigation}) => {
 
-    const [nftData, setNftData] = useState(NFTData);
+    const [nftData, setNftData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
+    //get nfts from the database
+    useEffect(() => {
+        const fetchNftData = async () => {
+          const result = await axios(
+            '/api/nfts',
+          );
+     
+          setNftData(result.data);
+          setLoading(false);
+        };
+     
+        fetchNftData();
+       
+    
+    },[]);
+
+    //search nft's
     const handleSearch = value => {
       if (value.length === 0) {
-        setNftData(NFTData);
+        setNftData(nftData);
       }
   
-      const filteredData = NFTData.filter((item) =>
-        item.name.toLowerCase().includes(value.toLowerCase())
+      const filteredData = nftData.filter((item) =>
+        item.nft_title.toLowerCase().includes(value.toLowerCase())
       );
   
       if (filteredData.length === 0) {
-        setNftData(NFTData);
+        setNftData(nftData);
       } else {
         setNftData(filteredData);
       }
@@ -28,17 +46,18 @@ const Home = ({navigation}) => {
   return (
     <SafeAreaView style={{flex:1}}>
         <FocusedStatusBar background={COLORS.primary}/>
-
         <View style={{flex: 1}}>
             <View style={{zIndex: 0}}>
                 <FlatList 
                     data={nftData}
                     renderItem={({item}) => <NFTCard data={item}/>}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation}/>}
                 />
             </View>
+
+            {loading && <ActivityIndicator size="large" color={COLORS.brand} style={{marginVertical:200}}/>}
 
             {/* This view is going to act as a background color. It will be displayed behind out nft list*/}
             <View style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: -1}}>

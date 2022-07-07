@@ -173,6 +173,15 @@ async def get_nfts(db: orm.Session):
     # It basically saves us from writing a for loop where we will have to go through each nft and turns it into an nft schema object. 
     # Its simillar to map in JS
     return list(map(schemas.Nft.from_orm, nfts))
+
+#get nft creator
+async def get_creator(nfts:list, db: orm.Session):
+    for nft in nfts:
+        #get nft creator
+        nft_creator =  db.query(models.User).filter(models.User.user_id == nft.user_id).first()
+        nft_creator_full_name = nft_creator.first_name + " " + nft_creator.last_name
+        nft.creator = nft_creator_full_name
+    
     
 
 

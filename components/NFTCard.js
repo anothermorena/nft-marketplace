@@ -12,7 +12,7 @@ const NFTCard = ({data}) => {
   return (
     <View style={{ backgroundColor: COLORS.white, borderRadius: SIZES.font, marginBottom: SIZES.extraLarge, margin: SIZES.base,...SHADOWS.dark}}>
          <View style={{ width: "100%",height: 250,}}>
-            <Image source={data.image} resizeMode="cover" style={{width: "100%",height: "100%", borderTopLeftRadius: SIZES.font, borderTopRightRadius: SIZES.font,}}/>
+            <Image source={{uri: data.nft_image}} resizeMode="cover" style={{width: "100%",height: "100%", borderTopLeftRadius: SIZES.font, borderTopRightRadius: SIZES.font}}/>
             <CircleButton imgUrl={assets.heart} right={10} top={10} />
         </View>
 
@@ -20,7 +20,7 @@ const NFTCard = ({data}) => {
         
         <View style={{ width: "100%", padding: SIZES.font }}>
         <NFTTitle
-          title={data.name}
+          title={data.nft_title}
           subTitle={data.creator}
           titleSize={SIZES.large}
           subTitleSize={SIZES.small}
@@ -34,7 +34,7 @@ const NFTCard = ({data}) => {
             alignItems: "center",
           }}
         >
-          <EthPrice price={data.price} />
+          <EthPrice price={data.nft_price} />
           <RectButton
             minWidth={120}
             fontSize={SIZES.font}

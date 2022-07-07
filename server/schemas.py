@@ -1,7 +1,7 @@
 #This file contains pydantic models/schemas
 #import required modules or packages
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional,List
 
 #CreateUser is the info we will be sending when creating a user
 class CreateUser(BaseModel):
@@ -55,6 +55,8 @@ class Nft(BaseModel):
     nft_image: str
     nft_price: float 
     bidding_deadline: str 
+    creator : Optional[str] = None
+    bids : Optional[List] = None
     
     class Config:
         orm_mode = True
