@@ -163,6 +163,16 @@ async def create_nft(user: schemas.User, nft_data: dict, db: orm.Session):
     
     #send the nft back
     return schemas.Nft.from_orm(nft)
+
+
+#gets all nfts in the database
+async def get_nfts(db: orm.Session):
+    nfts = db.query(models.Nft)
+    
+    #the map functions, maps each of our nfts. 
+    # It basically saves us from writing a for loop where we will have to go through each nft and turns it into an nft schema object. 
+    # Its simillar to map in JS
+    return list(map(schemas.Nft.from_orm, nfts))
     
 
 

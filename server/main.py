@@ -6,7 +6,7 @@ from database import engine
 import services, schemas, models
 import fastapi.security as security
 import passlib.hash as hash
-from typing import Optional
+from typing import Optional,List
 
 
 #create the app object
@@ -249,6 +249,10 @@ async def create_nft(nft_title: str = Form(), nft_description: str = Form(),nft_
     return dict(message="Successfully created Nft", status="SUCCESS", data=created_nft)
 
 
+#fetch nfts from the database
+@app.get("/api/nfts", response_model=List[schemas.Nft])
+async def get_nfts(db: orm.Session = fastapi.Depends(services.get_db)):
+    return await services.get_nfts(db=db)
 
 
  
