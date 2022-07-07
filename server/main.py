@@ -213,6 +213,8 @@ async def update_profile_details(first_name: str = Form(), last_name: str = Form
     return dict(message="Successfully Updated", status="SUCCESS", data=db_user)
 
 
+
+
  
     
 
