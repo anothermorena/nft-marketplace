@@ -27,6 +27,9 @@ class User(Base):
     def verify_password(self, password: str):
         #checks the password we sent for authentication vs the password stored in the DB
         return hash.bcrypt.verify(password, self.hashed_password)
+    
+    #table relationships
+    nfts = orm.relationship("Nft", back_populates="user")
 
 
 #2.One Time Pins Table
@@ -40,23 +43,26 @@ class Otp(Base):
     code = sql.Column(sql.Integer, nullable=False)
     email = sql.Column(sql.String(30), unique=True, index=True, nullable=False)
     date_created =sql.Column(sql.DateTime, default=dt.datetime.utcnow, nullable=False)
-    
-    
-    nfts = orm.relationship("Nft", back_populates="owner")
+
     
 #3.Nfts Table
 class Nft(Base):
+    
+    #name of the table
     __tablename__ = "nfts"
+    
+    #create table columns
     nft_id = sql.Column(sql.Integer, primary_key=True, index=True)
-    user_id = sql.Column(sql.Integer, sql.ForeignKey("users.user_id"), index=True)
+    user_id = sql.Column(sql.Integer, sql.ForeignKey("users.user_id"))
     nft_title = sql.Column(sql.String(255), nullable=False)
-    nft_description = sql.Column(sql.String, nullable=False)
-    nft_image = sql.Column(sql.String, index=True)
-    nft_price = sql.Column(sql.Float, index=True)
-    bidding_deadline = sql.Column(sql.String)
+    nft_description = sql.Column(sql.String(1000), nullable=False)
+    nft_image = sql.Column(sql.String(500),nullable=False)
+    nft_price = sql.Column(sql.Float, nullable=False)
+    bidding_deadline = sql.Column(sql.String(255),nullable=False)
     date_created = sql.Column(sql.DateTime, default=dt.datetime.utcnow, nullable=False)
     
-    owner = orm.relationship("User", back_populates="nfts")
+    #table relationships
+    user = orm.relationship("User", back_populates="nfts")
 
 
 

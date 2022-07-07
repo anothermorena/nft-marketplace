@@ -2,8 +2,6 @@
 #import required modules or packages
 from pydantic import BaseModel
 from typing import Optional
-from fastapi import File, UploadFile,Form
-
 
 #CreateUser is the info we will be sending when creating a user
 class CreateUser(BaseModel):
@@ -48,14 +46,18 @@ class ChangePassword(BaseModel):
     confirm_password: str
     
     
-#create nft schema
-class CreateNft(BaseModel):
-    user_id: int = Form()
-    nft_title: str = Form()
-    nft_description: str = Form()
-    nft_image: UploadFile = File(...)
-    nft_price: float = Form()
-    bidding_deadline: str = Form()
+#view nft schema
+class Nft(BaseModel):
+    nft_id : int
+    user_id: int 
+    nft_title: str 
+    nft_description: str 
+    nft_image: str
+    nft_price: float 
+    bidding_deadline: str 
+    
+    class Config:
+        orm_mode = True
     
     
     

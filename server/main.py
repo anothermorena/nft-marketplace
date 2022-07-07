@@ -213,6 +213,42 @@ async def update_profile_details(first_name: str = Form(), last_name: str = Form
     return dict(message="Successfully Updated", status="SUCCESS", data=db_user)
 
 
+#create nft end point
+@app.post("/api/create_nft/")
+async def create_nft(nft_title: str = Form(), nft_description: str = Form(),nft_image: UploadFile = File(...),nft_price: float = Form(),bidding_deadline: str = Form(),current_user:schemas.User = fastapi.Depends(services.get_current_user), db: orm.Session = fastapi.Depends(services.get_db)): 
+    #check if a user with the provided email exists or not 
+    db_user = await services.get_user_by_email(current_user.email, db)
+ 
+    if not db_user:
+        #user does not exists
+        return dict(status_code=404, message="User not found", status="FAILED")
+    
+    # check file type of the uploaded image
+    if nft_image.content_type not in ['image/jpg','image/jpeg', 'image/png']:
+        raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")     
+    
+    #upload the image to cloudinary
+    result = services.upload_image(nft_image.file,nft_image.filename,unique_filename=False, overwrite=True)
+        
+    #get the url of the profile image
+    nft_image_url = result.get("secure_url")
+    
+    #convert the nft data to a dictionary
+    nft_data = {
+        "nft_title": nft_title,
+        "nft_description": nft_description,
+        "nft_image": nft_image_url,
+        "nft_price": nft_price,
+        "bidding_deadline": bidding_deadline
+    }
+
+    #save the nft to the database
+    created_nft = await services.create_nft(user=db_user, db=db, nft_data=nft_data)
+    
+    #done: send feedback to the user
+    return dict(message="Successfully created Nft", status="SUCCESS", data=created_nft)
+
+
 
 
  

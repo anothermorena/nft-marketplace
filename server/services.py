@@ -146,11 +146,24 @@ async def get_current_user(db: orm.Session = fastapi.Depends(get_db), token: str
     return schemas.User.from_orm(user)
 
 
-#function to upload images to cloudinary
+#upload images to cloudinary
 def upload_image(image,image_name,unique_filename=False, overwrite=True):
   # Upload the image.
   # Set the asset's public ID and allow overwriting the asset with new versions
   return cloudinary.uploader.upload(image, public_id=image_name, unique_filename = unique_filename, overwrite=overwrite)
+
+#creates a new nft
+async def create_nft(user: schemas.User, nft_data: dict, db: orm.Session):
+    nft = models.Nft(**nft_data, user_id=user.user_id) #** means unpacks the values contained in the nft dictionary. It is simillar to destructuring in JS
+
+    #save the nft to the database
+    db.add(nft)
+    db.commit()
+    db.refresh(nft)
+    
+    #send the nft back
+    return schemas.Nft.from_orm(nft)
+    
 
 
 

@@ -99,7 +99,7 @@ const CreateNft = ({navigation}) => {
         let formData =  createFormData(formValues.nftTitle,formValues.nftDescription,formValues.nftPrice,formValues.biddingDeadline,image);
         
         try {
-          const response = await axios.patch("/api/create_nft/", formData , config);
+          const response = await axios.post("/api/create_nft/", formData , config);
           const result = response.data;
           const {status, message } = result;
 
@@ -109,11 +109,10 @@ const CreateNft = ({navigation}) => {
             //tell the user the nft was created successfully
             alert("Your nft was created successfully.");
 
-            //rediect the user my nft's screen
-            navigation.navigate('Nfts');
+            //rediect the user to the home screen
+            navigation.navigate('Home');
           }  
         } catch (error) {
-         
           handleMessage('An error occurred. Check your network and try again');
         }
         setSubmitting(false);
@@ -126,6 +125,7 @@ const CreateNft = ({navigation}) => {
       };
 
 
+      //create nft fields to be sent when creating a new nft
       const createFormData = (nftTitle, nftDescription, nftPrice,biddingDeadline,uri) => {
           //create the form object
           const formData = new FormData();
@@ -150,7 +150,7 @@ const CreateNft = ({navigation}) => {
           setImage(null);
       }
 
-      //creates the bidding deadline when user clicks on the bidding deadline input fiedl
+      //creates the bidding deadline when user clicks on the bidding deadline input field
       const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(false);
