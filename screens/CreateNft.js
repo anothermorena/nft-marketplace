@@ -40,7 +40,7 @@ const CreateNft = ({navigation}) => {
     const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
     //destructure the data stored in the context
-    const { accessToken,userId} = storedCredentials;
+    const { accessToken} = storedCredentials;
 
     //create Nft form fields validation
     const createNftValidationSchema = yup.object().shape({
@@ -96,7 +96,7 @@ const CreateNft = ({navigation}) => {
         } 
 
         //prepare form data to send to the api to create the nft
-        let formData =  createFormData(formValues.nftTitle,formValues.nftDescription,formValues.nftPrice,formValues.biddingDeadline,userId,image);
+        let formData =  createFormData(formValues.nftTitle,formValues.nftDescription,formValues.nftPrice,formValues.biddingDeadline,image);
         
         try {
           const response = await axios.patch("/api/create_nft/", formData , config);
@@ -126,7 +126,7 @@ const CreateNft = ({navigation}) => {
       };
 
 
-      const createFormData = (nftTitle, nftDescription, nftPrice,biddingDeadline,userId,uri) => {
+      const createFormData = (nftTitle, nftDescription, nftPrice,biddingDeadline,uri) => {
           //create the form object
           const formData = new FormData();
           const fileName = uri.split('/').pop();
@@ -141,7 +141,6 @@ const CreateNft = ({navigation}) => {
           formData.append('nft_description', nftDescription);
           formData.append('nft_price', nftPrice);
           formData.append('bidding_deadline', biddingDeadline);
-          formData.append('user_id', userId);
             
           return formData;
       }
@@ -158,7 +157,7 @@ const CreateNft = ({navigation}) => {
         setDate(currentDate);
 
         let tempDate = new Date(currentDate);
-        let fTime= tempDate.getHours()+':'+ tempDate.getMinutes()+':'+ tempDate.getSeconds();
+        let fTime= tempDate.getHours()+'h '+ tempDate.getMinutes()+'m '+ tempDate.getSeconds()+'s';
 
         setNftBiddingDeadline(fTime);
 

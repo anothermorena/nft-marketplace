@@ -54,7 +54,7 @@ class CreateNft(BaseModel):
     nft_title: str = Form()
     nft_description: str = Form()
     nft_image: UploadFile = File(...)
-    nft_price: str = Form()
+    nft_price: float = Form()
     bidding_deadline: str = Form()
     
     
