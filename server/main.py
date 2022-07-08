@@ -6,8 +6,7 @@ from database import engine
 import services, schemas, models
 import fastapi.security as security
 import passlib.hash as hash
-from typing import Optional,List,Dict
-
+from typing import Optional,List
 
 #create the app object
 app = fastapi.FastAPI()

@@ -22,8 +22,7 @@ const Home = ({navigation}) => {
           setLoading(false);
         };
      
-        fetchNftData();
-       
+        fetchNftData();  
     
     },[]);
 

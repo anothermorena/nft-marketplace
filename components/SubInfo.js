@@ -48,32 +48,6 @@ export const EthPrice = ({ price }) => {
   );
 };
 
-const ImageCmp = ({ imgUrl, index }) => {
-  return (
-    <Image
-      source={imgUrl}
-      resizeMode="contain"
-      style={{
-        width: 48,
-        height: 48,
-        marginLeft: index === 0 ? 0 : -SIZES.font,
-      }}
-    />
-  );
-};
-
-//people here means people interested in the nft
-export const People = () => {
-  return (
-    <View style={{ flexDirection: "row" }}>
-      {[assets.person02, assets.person03, assets.person04].map(
-        (imgUrl, index) => (
-          <ImageCmp imgUrl={imgUrl} index={index} key={`People-${index}`} />
-        )
-      )}
-    </View>
-  );
-};
 
 export const EndDate = ({biddingDeadline}) => {
   return (
@@ -82,6 +56,8 @@ export const EndDate = ({biddingDeadline}) => {
         paddingHorizontal: SIZES.font,
         paddingVertical: SIZES.base,
         backgroundColor: COLORS.white,
+        borderColor: COLORS.brand,
+        borderWidth:2,
         borderRadius: SIZES.font,
         justifyContent: "center",
         alignItems: "center",
@@ -120,10 +96,9 @@ export const SubInfo = ({biddingDeadline}) => {
         paddingHorizontal: SIZES.font,
         marginTop: -SIZES.extraLarge,
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
       }}
     >
-      <People />
       <EndDate biddingDeadline={biddingDeadline}/>
     </View>
   );
