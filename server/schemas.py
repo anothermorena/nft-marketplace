@@ -60,6 +60,12 @@ class Nft(BaseModel):
     
     class Config:
         orm_mode = True
+        
+    
+#add nft to users wishlist schema
+class AddNftToWishlist(BaseModel):
+    nft_id : int
+    user_ip_address: str
     
     
     
