@@ -1,7 +1,7 @@
 import { TouchableOpacity, Text, Image } from "react-native";
 import { COLORS, SIZES, FONTS, SHADOWS } from "../constants";
 
-export const CircleButton = ({ imgUrl, handlePress, ...props }) => {
+export const CircleButton = ({ imgUrl, handlePress,handleAddNftToWishList, ...props }) => {
   return (
     <TouchableOpacity
       style={{
@@ -15,7 +15,7 @@ export const CircleButton = ({ imgUrl, handlePress, ...props }) => {
         ...SHADOWS.light,
         ...props,
       }}
-      onPress={handlePress}
+      onPress={handleAddNftToWishList ? handleAddNftToWishList : handlePress}
     >
       <Image
         source={imgUrl}
@@ -25,6 +25,7 @@ export const CircleButton = ({ imgUrl, handlePress, ...props }) => {
     </TouchableOpacity>
   );
 };
+
 
 export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
   return (

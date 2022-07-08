@@ -48,7 +48,6 @@ const Home = ({navigation}) => {
       if (filteredData.length !== 0) setSearchResults(filteredData);
     };
 
- 
 
     
 
@@ -59,7 +58,7 @@ const Home = ({navigation}) => {
             <View style={{zIndex: 0}}>
                 <FlatList 
                     data={searchResults ? searchResults : nftData}
-                    renderItem={({item}) => <NFTCard data={item}/>}
+                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation}/>}
