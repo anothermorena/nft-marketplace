@@ -183,7 +183,20 @@ async def get_creator(nfts:list, db: orm.Session):
         nft.creator = nft_creator_full_name
 
     
-    
+#check if nft exists in users wish list
+async def check_wish_list_for_nft(user_ip_address: str, nft_id:int, db: orm.Session):
+    #if there is an nft with the specified id and user ip in the wishlist, return it
+    return db.query(models.Wishlist).filter(models.Wishlist.user_ip_address == user_ip_address).filter(models.Wishlist.nft_id == nft_id).first()
+
+#add nft to users wish list
+async def add_nft_to_wish_list(user_ip_address: str, nft_id:int, db: orm.Session):
+    wishlist_obj = models.Wishlist(user_ip_address = user_ip_address, nft_id = nft_id)
+
+    #save the nft  to the users wishlist
+    db.add(wishlist_obj)
+    db.commit()
+    db.refresh(wishlist_obj)
+   
 
 
 

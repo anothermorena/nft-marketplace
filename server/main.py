@@ -261,6 +261,21 @@ async def get_nfts(db: orm.Session = fastapi.Depends(services.get_db)):
     return nfts
 
 
+#add  nft to users wishlist api end point
+@app.post("/api/add_nft_to_wish_list/")
+async def add_nft_to_wish_list(wishlist: schemas.AddNftToWishlist,db: orm.Session = fastapi.Depends(services.get_db)):
+    #check if nft is not already in the users wish list
+    nft = await services.check_wish_list_for_nft(wishlist.user_ip_address, wishlist.nft_id, db)
+    
+    if nft:
+        return dict(message="This nft already in your wish list. 😒")
+    
+    #nft is not in the users wish list : add it
+    await services.add_nft_to_wish_list(wishlist.user_ip_address, wishlist.nft_id, db)
+    
+    #send feed back to the user
+    return dict(message="Nft was successfully added your wish list. 😋")
+
  
     
 

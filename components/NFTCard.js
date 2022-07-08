@@ -18,7 +18,7 @@ const NFTCard = ({data,userIpAddress}) => {
 
       try {
         const response = await axios.post("/api/add_nft_to_wish_list/", JSON.stringify({ user_ip_address: userIpAddress, nft_id: data.nft_id }), config);
-        const { message } = response;
+        const { message } = response.data;
 
         //give the user feedback
         alert(message);
@@ -30,7 +30,7 @@ const NFTCard = ({data,userIpAddress}) => {
     }
 
   return (
-    <View style={{ backgroundColor: COLORS.white, borderRadius: SIZES.font, marginBottom: SIZES.extraLarge, margin: SIZES.base,...SHADOWS.dark}}>
+    <View style={{ backgroundColor: COLORS.white, borderWidth:2, borderColor:COLORS.brand, borderRadius: SIZES.font, marginBottom: SIZES.extraLarge, margin: SIZES.base,...SHADOWS.dark}}>
          <View style={{ width: "100%",height: 250,}}>
             <Image source={{uri: data.nft_image}} resizeMode="cover" style={{width: "100%",height: "100%", borderTopLeftRadius: SIZES.font, borderTopRightRadius: SIZES.font,}}/>
             <CircleButton imgUrl={assets.heart} right={10} top={10} handleAddNftToWishList={handleAddNftToWishList}/>
