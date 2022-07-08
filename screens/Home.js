@@ -3,6 +3,7 @@ import {View, SafeAreaView, FlatList,ActivityIndicator} from 'react-native';
 import {COLORS} from "../constants";
 import { HomeHeader,NFTCard, FocusedStatusBar } from '../components';
 import axios from '../api/axios';
+import * as Network from 'expo-network';
 
 
 const Home = ({navigation}) => {
@@ -10,9 +11,11 @@ const Home = ({navigation}) => {
     const [nftData, setNftData] = useState(null);
     const [searchResults, setSearchResults] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [userIpAddress, setUserIpAddress] = useState(null);
 
-    //get nfts from the database
+  
     useEffect(() => {
+        //get nfts from the database
         const fetchNftData = async () => {
           const result = await axios(
             '/api/nfts',
@@ -22,9 +25,19 @@ const Home = ({navigation}) => {
           setLoading(false);
         };
      
-        fetchNftData();  
+        fetchNftData(); 
+
+        //get users internet protocol address
+        const getUserIpAddress = async () => {
+          ip = await Network.getIpAddressAsync();
+          setUserIpAddress(ip);
+        } 
+
+        getUserIpAddress();
+        
     
     },[]);
+
 
     //search nft's
     const handleSearch = value => {
@@ -34,6 +47,10 @@ const Home = ({navigation}) => {
   
       if (filteredData.length !== 0) setSearchResults(filteredData);
     };
+
+ 
+
+    
 
   return (
     <SafeAreaView style={{flex:1}}>
