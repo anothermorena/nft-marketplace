@@ -268,7 +268,7 @@ async def add_nft_to_wish_list(wishlist: schemas.AddNftToWishlist,db: orm.Sessio
     nft = await services.check_wish_list_for_nft(wishlist.user_ip_address, wishlist.nft_id, db)
     
     if nft:
-        return dict(message="This nft already in your wish list. 😒")
+        return dict(message="This nft already in your wish list. 😒") 
     
     #nft is not in the users wish list : add it
     await services.add_nft_to_wish_list(wishlist.user_ip_address, wishlist.nft_id, db)
@@ -276,6 +276,22 @@ async def add_nft_to_wish_list(wishlist: schemas.AddNftToWishlist,db: orm.Sessio
     #send feed back to the user
     return dict(message="Nft was successfully added your wish list. 😋")
 
+
+
+#fetch users nft wishlist  from the database
+@app.get("/api/get_users_wish_list/", response_model=List[schemas.WishList])
+async def get_users_wish_list(user_ip_address: str, db: orm.Session = fastapi.Depends(services.get_db)):
+    #get  all nfts in the users wishlist
+    wishlist = await services.get_users_wish_list(user_ip_address=user_ip_address,db=db)
+    
+    #get the nft details
+    await services.get_nft_details(wishlist,db)
+        
+    #get each nft's creator
+    await services.get_creator(wishlist,db)
+    
+    #done: send them back to the user
+    return wishlist
  
     
 

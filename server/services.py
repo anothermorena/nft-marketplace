@@ -181,6 +181,17 @@ async def get_creator(nfts:list, db: orm.Session):
         nft_creator =  db.query(models.User).filter(models.User.user_id == nft.user_id).first()
         nft_creator_full_name = nft_creator.first_name + " " + nft_creator.last_name
         nft.creator = nft_creator_full_name
+        
+#get nft details
+async def get_nft_details(nfts:list, db: orm.Session):
+    for nft in nfts:
+        nft_details =  db.query(models.Nft).filter(models.Nft.nft_id == nft.nft_id).first()
+        nft.nft_title = nft_details.nft_title
+        nft.nft_description = nft_details.nft_description
+        nft.nft_image = nft_details.nft_image
+        nft.nft_price = nft_details.nft_price
+        nft.bidding_deadline = nft_details.bidding_deadline
+        nft.user_id = nft_details.user_id  
 
     
 #check if nft exists in users wish list
@@ -196,6 +207,11 @@ async def add_nft_to_wish_list(user_ip_address: str, nft_id:int, db: orm.Session
     db.add(wishlist_obj)
     db.commit()
     db.refresh(wishlist_obj)
+    
+#get users nft wishlist
+async def get_users_wish_list(user_ip_address:str, db: orm.Session):
+    wishlist = db.query(models.Wishlist).filter(models.Wishlist.user_ip_address == user_ip_address)
+    return list(map(schemas.WishList.from_orm, wishlist))
    
 
 

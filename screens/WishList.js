@@ -8,44 +8,40 @@ import * as Network from 'expo-network';
 
 const WishList = ({navigation}) => {
 
-    const [nftData, setNftData] = useState(null);
-    const [searchResults, setSearchResults] = useState(null);
+    const [wishList, setWishList] = useState(null);
+    const [wishListSearchResults, setWishListSearchResults] = useState(null);
     const [loading, setLoading] = useState(true);
     const [userIpAddress, setUserIpAddress] = useState(null);
 
+    //get users internet protocol address
+    const getUserIpAddress = async () => {
+      ip = await Network.getIpAddressAsync();
+      setUserIpAddress(ip);
+    } 
+
+    getUserIpAddress();
   
     useEffect(() => {
-        //get nfts from the database
-        const fetchNftData = async () => {
-          const result = await axios(
-            '/api/nfts',
-          );
+        //get users wish list from the database
+        const fetchNftWishListData = async (userIpAddress) => {
+          const result = await axios('/api/get_users_wish_list/');
      
-          setNftData(result.data);
+          setWishList(result.data);
           setLoading(false);
         };
      
-        fetchNftData(); 
+        fetchNftWishListData(userIpAddress); 
 
-        //get users internet protocol address
-        const getUserIpAddress = async () => {
-          ip = await Network.getIpAddressAsync();
-          setUserIpAddress(ip);
-        } 
-
-        getUserIpAddress();
-        
-    
     },[]);
 
 
-    //search nft's
+    //search users wishlist
     const handleSearch = value => {
-      const filteredData = nftData.filter((item) =>
+      const filteredData = wishList.filter((item) =>
         item.nft_title.toLowerCase().includes(value.toLowerCase())
       );
   
-      if (filteredData.length !== 0) setSearchResults(filteredData);
+      if (filteredData.length !== 0) setWishListSearchResults(filteredData);
     };
 
 
@@ -57,11 +53,11 @@ const WishList = ({navigation}) => {
         <View style={{flex: 1}}>
             <View style={{zIndex: 0}}>
                 <FlatList 
-                    data={searchResults ? searchResults : nftData}
+                    data={wishListSearchResults ? wishListSearchResults : wishList}
                     renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
-                    ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search your wishlist"/>}
+                    ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search your nft wish list"/>}
                 />
             </View>
 
