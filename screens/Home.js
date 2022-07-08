@@ -61,7 +61,7 @@ const Home = ({navigation}) => {
                     renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
-                    ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation}/>}
+                    ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search Nfts"/>}
                 />
             </View>
 

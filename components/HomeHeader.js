@@ -5,7 +5,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import { CredentialsContext } from './../components/CredentialsContext';
 import {PageLogo} from './../components/StyledComponents';
 
-const HomeHeader = ({ onSearch, navigation }) => {
+const HomeHeader = ({ onSearch, navigation,searchBarPlaceHolderText }) => {
 
   // credentials context
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
@@ -41,7 +41,7 @@ const HomeHeader = ({ onSearch, navigation }) => {
       <View style={{ marginTop: SIZES.font }}>
         <View style={{width: "100%",borderRadius: SIZES.font,backgroundColor: COLORS.white,flexDirection: "row",alignItems: "center",paddingHorizontal: SIZES.font,paddingVertical: SIZES.small - 2}}>
           <EvilIcons  name="search" size={35} color={COLORS.brand}  />
-          <TextInput placeholder="Search NFTs" style={{ flex: 1}} onChangeText={onSearch}/>
+          <TextInput placeholder={searchBarPlaceHolderText} style={{ flex: 1}} onChangeText={onSearch}/>
         </View>
       </View>
     </View>
