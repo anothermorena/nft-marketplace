@@ -249,7 +249,7 @@ async def create_nft(nft_title: str = Form(), nft_description: str = Form(),nft_
 
 
 #fetch nfts from the database
-@app.get("/api/nfts", response_model=List[schemas.Nft])
+@app.get("/api/nfts/", response_model=List[schemas.Nft])
 async def get_nfts(db: orm.Session = fastapi.Depends(services.get_db)):
     #get  all nfts
     nfts = await services.get_nfts(db=db)
@@ -259,6 +259,7 @@ async def get_nfts(db: orm.Session = fastapi.Depends(services.get_db)):
     
     #done: send them back to the user
     return nfts
+
 
  
     

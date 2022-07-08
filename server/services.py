@@ -181,6 +181,7 @@ async def get_creator(nfts:list, db: orm.Session):
         nft_creator =  db.query(models.User).filter(models.User.user_id == nft.user_id).first()
         nft_creator_full_name = nft_creator.first_name + " " + nft_creator.last_name
         nft.creator = nft_creator_full_name
+
     
     
 
