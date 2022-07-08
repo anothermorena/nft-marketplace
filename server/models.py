@@ -65,7 +65,17 @@ class Nft(Base):
     user = orm.relationship("User", back_populates="nfts")
 
 
+#4.Wish List Table
+class Wishlist(Base):
 
+    #name of the table
+    __tablename__ = "wishlist"
+
+    #create table columns
+    wishlist_id = sql.Column(sql.Integer, primary_key=True, index=True, nullable=False)
+    nft_id = sql.Column(sql.Integer, nullable=False)
+    user_ip_address = sql.Column(sql.String(30), unique=True, index=True, nullable=False)
+    date_created =sql.Column(sql.DateTime, default=dt.datetime.utcnow, nullable=False)
 
 
     
