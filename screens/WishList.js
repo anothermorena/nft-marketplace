@@ -1,9 +1,10 @@
 import {useState, useEffect} from 'react';
-import {View, SafeAreaView, FlatList,ActivityIndicator} from 'react-native';
+import {View, SafeAreaView, FlatList,ActivityIndicator, Text} from 'react-native';
 import {COLORS} from "../constants";
 import { HomeHeader,NFTCard, FocusedStatusBar } from '../components';
 import axios from '../api/axios';
 import * as Network from 'expo-network';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 const WishList = ({navigation}) => {
@@ -13,27 +14,26 @@ const WishList = ({navigation}) => {
     const [loading, setLoading] = useState(true);
     const [userIpAddress, setUserIpAddress] = useState(null);
 
+     //get users internet protocol address
+     const getUserIpAddress = async () => {
+      let ip = await Network.getIpAddressAsync();
+      setUserIpAddress(ip);
+    } 
+
+    getUserIpAddress();
   
     useEffect(() => {
-        //get users internet protocol address
-        const getUserIpAddress = async () => {
-          ip = await Network.getIpAddressAsync();
-          setUserIpAddress(ip);
-        } 
-
-        getUserIpAddress();
-
         //get users wish list from the database
         const fetchNftWishListData = async (userIpAddress) => {
           const result = await axios.get(`/api/get_users_wish_list/?user_ip_address=${userIpAddress}`);
      
           setWishList(result.data);
           setLoading(false);
-        };
+        };   
      
         fetchNftWishListData(userIpAddress); 
 
-    },[]);
+    },[userIpAddress]);
 
 
     //search users wishlist
@@ -43,7 +43,9 @@ const WishList = ({navigation}) => {
       );
   
       if (filteredData.length !== 0) setWishListSearchResults(filteredData);
-    };    
+    };  
+
+
 
   return (
     <SafeAreaView style={{flex:1}}>
@@ -52,13 +54,18 @@ const WishList = ({navigation}) => {
             <View style={{zIndex: 0}}>
                 <FlatList 
                     data={wishListSearchResults ? wishListSearchResults : wishList}
-                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress} buttonText = "Delete from wishlist" buttonBackgroundColor={COLORS.red}/>}
+                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress} buttonText = "Delete from wishlist" buttonBackgroundColor={COLORS.red} refreshWishList={setWishList} wishList={wishList}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search your nft wish list"/>}
                 />
             </View>
-
+            {!wishList && (
+              <>
+              <MaterialCommunityIcons name="cart-heart" size={64} color={COLORS.brand} style={{marginVertical:250, marginHorizontal:150}}/>
+              <Text style={{textAlign:"center", position:"absolute", bottom:180, left:120}}> Your wish list empty. </Text>
+              </>
+            )}
             {loading && <ActivityIndicator size="large" color={COLORS.brand} style={{marginVertical:200}}/>}
 
             {/* This view is going to act as a background color. It will be displayed behind out nft list*/}

@@ -5,9 +5,7 @@ import { RectButton, CircleButton } from "./Button";
 import { SubInfo, EthPrice, NFTTitle } from "./SubInfo";
 import axios from './../api/axios';
 
-const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, viewNftDetails}) => {
-    const navigation = useNavigation();
-
+const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, viewNftDetails,refreshWishList,wishList}) => {
     //add nft to wish list
     handleAddNftToWishList = async () => {
       const config = {
@@ -43,6 +41,9 @@ const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, viewNftDe
             }
           });
           alert("Successfully deleted nft from your wish list 😎");
+
+          //remove the nft from the displayed users wish list
+          refreshWishList(wishList.filter(nft => nft.nft_id !== data.nft_id))
         } catch (error) {
           alert("An error occurred. Check your network and try again");
         }
