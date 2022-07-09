@@ -257,6 +257,12 @@ async def get_nfts(db: orm.Session = fastapi.Depends(services.get_db)):
     #get each nft's creator
     await services.get_creator(nfts,db)
     
+    #get nft bids
+    await services.get_nft_bids(nfts,db)
+    
+    #get nft bidder details
+    await services.get_nft_bidder_details(nfts,db)
+    
     #done: send them back to the user
     return nfts
 
@@ -298,11 +304,5 @@ async def get_users_wish_list(user_ip_address: str, db: orm.Session = fastapi.De
 async def delete_nft_from_users_wish_list(nft: schemas.WishlistBase, db: orm.Session = fastapi.Depends(services.get_db)):
     await services.delete_nft_from_users_wish_list(nft.nft_id, nft.user_ip_address, db)
  
-    
-
-    
-
-
-   
   
 

@@ -191,9 +191,28 @@ async def get_nft_details(nfts:list, db: orm.Session):
         nft.nft_image = nft_details.nft_image
         nft.nft_price = nft_details.nft_price
         nft.bidding_deadline = nft_details.bidding_deadline
-        nft.user_id = nft_details.user_id  
-
+        nft.user_id = nft_details.user_id 
+        
+        
+#get nft bids
+async def get_nft_bids(nfts:list, db: orm.Session):
+    for nft in nfts:
+        nft_bids = db.query(models.Bid).filter(models.Bid.nft_id == nft.nft_id).first()
+        nft.bids.append(nft_bids)
     
+    
+#get nft bidder details
+async def get_nft_bidder_details(nfts:list, db: orm.Session):
+    for nft in nfts:
+        #only run this for loop if an nft has bid(s)
+            for bid in nft.bids:
+                if bid is not None:
+                    nft_bidder =  db.query(models.User).filter(models.User.user_id == bid.user_id).first()
+                    nft_bidder_full_name = nft_bidder.first_name + " " + nft_bidder.last_name
+                    bid.bidder = nft_bidder_full_name
+                    bid.bidder_image = nft_bidder.profile_image
+
+   
 #check if nft exists in users wish list
 async def check_wish_list_for_nft(user_ip_address: str, nft_id:int, db: orm.Session):
     #if there is an nft with the specified id and user ip in the wishlist, return it
