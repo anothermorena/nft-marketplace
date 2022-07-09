@@ -5,7 +5,7 @@ import { RectButton, CircleButton } from "./Button";
 import { SubInfo, EthPrice, NFTTitle } from "./SubInfo";
 import axios from './../api/axios';
 
-const NFTCard = ({data,userIpAddress}) => {
+const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, viewNftDetails}) => {
     const navigation = useNavigation();
 
     //add nft to wish list
@@ -29,11 +29,26 @@ const NFTCard = ({data,userIpAddress}) => {
 
     }
 
+      //delete nft from users wishlist
+      const deleteNftFromWishList = async () => {
+
+        const response = await axios.delete("/api/delete_nft_from_wishlist", {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          data: {
+            nft_id: data.nft_id,
+            user_ip_address: userIpAddress
+          }
+        });
+  
+      }
+
   return (
     <View style={{ backgroundColor: COLORS.white, borderWidth:2, borderColor:COLORS.brand, borderRadius: SIZES.font, marginBottom: SIZES.extraLarge, margin: SIZES.base,...SHADOWS.dark}}>
          <View style={{ width: "100%",height: 250,}}>
             <Image source={{uri: data.nft_image}} resizeMode="cover" style={{width: "100%",height: "100%", borderTopLeftRadius: SIZES.font, borderTopRightRadius: SIZES.font,}}/>
-            <CircleButton imgUrl={assets.heart} right={10} top={10} handleAddNftToWishList={handleAddNftToWishList}/>
+            <CircleButton imgUrl={assets.heart} right={10} top={10} handleAddNftToWishList={handleAddNftToWishList}/>   
         </View>
 
         <SubInfo biddingDeadline={data.bidding_deadline}/>
@@ -58,7 +73,9 @@ const NFTCard = ({data,userIpAddress}) => {
           <RectButton
             minWidth={120}
             fontSize={SIZES.font}
-            handlePress={() => navigation.navigate("Details", { data })}
+            buttonText = {buttonText}
+            backgroundColor={buttonBackgroundColor}
+            onPress ={viewNftDetails ? viewNftDetails : deleteNftFromWishList}
           />
         </View>
       </View>

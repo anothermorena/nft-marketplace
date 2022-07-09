@@ -27,7 +27,7 @@ export const CircleButton = ({ imgUrl, handlePress,handleAddNftToWishList, ...pr
 };
 
 
-export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
+export const RectButton = ({ minWidth, fontSize, onPress,buttonText, ...props }) => {
   return (
     <TouchableOpacity
       style={{
@@ -37,7 +37,7 @@ export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
         minWidth: minWidth,
         ...props,
       }}
-      onPress={handlePress}
+      onPress={onPress}
     >
       <Text
         style={{
@@ -47,7 +47,7 @@ export const RectButton = ({ minWidth, fontSize, handlePress, ...props }) => {
           textAlign: "center",
         }}
       >
-        Place a bid
+        {buttonText}
       </Text>
     </TouchableOpacity>
   );

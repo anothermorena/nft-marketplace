@@ -17,9 +17,7 @@ const Home = ({navigation}) => {
     useEffect(() => {
         //get nfts from the database
         const fetchNftData = async () => {
-          const result = await axios(
-            '/api/nfts',
-          );
+          const result = await axios('/api/nfts');
      
           setNftData(result.data);
           setLoading(false);
@@ -48,9 +46,6 @@ const Home = ({navigation}) => {
       if (filteredData.length !== 0) setSearchResults(filteredData);
     };
 
-
-    
-
   return (
     <SafeAreaView style={{flex:1}}>
         <FocusedStatusBar background={COLORS.primary}/>
@@ -58,7 +53,7 @@ const Home = ({navigation}) => {
             <View style={{zIndex: 0}}>
                 <FlatList 
                     data={searchResults ? searchResults : nftData}
-                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress}/>}
+                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress} buttonText = "Place a Bid" buttonBackgroundColor={COLORS.brand} viewNftDetails={() => navigation.navigate("Details", { item })}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search Nfts"/>}

@@ -13,18 +13,19 @@ const WishList = ({navigation}) => {
     const [loading, setLoading] = useState(true);
     const [userIpAddress, setUserIpAddress] = useState(null);
 
-    //get users internet protocol address
-    const getUserIpAddress = async () => {
-      ip = await Network.getIpAddressAsync();
-      setUserIpAddress(ip);
-    } 
-
-    getUserIpAddress();
   
     useEffect(() => {
+        //get users internet protocol address
+        const getUserIpAddress = async () => {
+          ip = await Network.getIpAddressAsync();
+          setUserIpAddress(ip);
+        } 
+
+        getUserIpAddress();
+
         //get users wish list from the database
         const fetchNftWishListData = async (userIpAddress) => {
-          const result = await axios('/api/get_users_wish_list/');
+          const result = await axios.get(`/api/get_users_wish_list/?user_ip_address=${userIpAddress}`);
      
           setWishList(result.data);
           setLoading(false);
@@ -42,10 +43,7 @@ const WishList = ({navigation}) => {
       );
   
       if (filteredData.length !== 0) setWishListSearchResults(filteredData);
-    };
-
-
-    
+    };    
 
   return (
     <SafeAreaView style={{flex:1}}>
@@ -54,7 +52,7 @@ const WishList = ({navigation}) => {
             <View style={{zIndex: 0}}>
                 <FlatList 
                     data={wishListSearchResults ? wishListSearchResults : wishList}
-                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress}/>}
+                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress} buttonText = "Delete from wishlist" buttonBackgroundColor={COLORS.red}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search your nft wish list"/>}
