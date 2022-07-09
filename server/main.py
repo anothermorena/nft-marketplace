@@ -263,7 +263,7 @@ async def get_nfts(db: orm.Session = fastapi.Depends(services.get_db)):
 
 #add  nft to users wishlist api end point
 @app.post("/api/add_nft_to_wish_list/")
-async def add_nft_to_wish_list(wishlist: schemas.Wishlist,db: orm.Session = fastapi.Depends(services.get_db)):
+async def add_nft_to_wish_list(wishlist: schemas.WishlistBase,db: orm.Session = fastapi.Depends(services.get_db)):
     #check if nft is not already in the users wish list
     nft = await services.check_wish_list_for_nft(wishlist.user_ip_address, wishlist.nft_id, db)
     
@@ -275,7 +275,6 @@ async def add_nft_to_wish_list(wishlist: schemas.Wishlist,db: orm.Session = fast
     
     #send feed back to the user
     return dict(message="Nft was successfully added your wish list. 😋")
-
 
 
 #fetch users nft wishlist  from the database
@@ -292,6 +291,12 @@ async def get_users_wish_list(user_ip_address: str, db: orm.Session = fastapi.De
     
     #done: send them back to the user
     return wishlist
+
+
+#delete nft from users wishlist
+@app.delete("/api/delete_nft_from_users_wish_list/", status_code=204)
+async def delete_nft_from_users_wish_list(nft: schemas.WishlistBase, db: orm.Session = fastapi.Depends(services.get_db)):
+    await services.delete_nft_from_users_wish_list(nft.nft_id, nft.user_ip_address, db)
  
     
 

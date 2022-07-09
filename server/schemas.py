@@ -63,7 +63,7 @@ class Nft(BaseModel):
         
   
 #wishlist schema
-class Wishlist(BaseModel):
+class WishlistBase(BaseModel):
     nft_id : int
     user_ip_address: str
        

@@ -212,6 +212,27 @@ async def add_nft_to_wish_list(user_ip_address: str, nft_id:int, db: orm.Session
 async def get_users_wish_list(user_ip_address:str, db: orm.Session):
     wishlist = db.query(models.Wishlist).filter(models.Wishlist.user_ip_address == user_ip_address)
     return list(map(schemas.WishList.from_orm, wishlist))
+
+
+#get the nft in the wishlist
+async def nft_selector(nft_id: int, user_ip_address: str, db: orm.Session):
+    wishlist_item = (db.query(models.Wishlist)
+        .filter_by(user_ip_address=user_ip_address) #gets all the lead by the specified user first
+        .filter(models.Wishlist.nft_id == nft_id) #from the returned wishlist, return the one with the specified ID
+        .first() #get the first object that comes from it
+    )
+
+    if wishlist_item is None:
+        raise fastapi.HTTPException(status_code=404, detail="Nft not found in the users wish list")
+
+    return wishlist_item
+
+#delete nft from users wish list
+async def delete_nft_from_users_wish_list(nft_id: int, user_ip_address: str, db: orm.Session):
+    nft_to_delete = await nft_selector(nft_id, user_ip_address, db)
+
+    db.delete(nft_to_delete)
+    db.commit()
    
 
 

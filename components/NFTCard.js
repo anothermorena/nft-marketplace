@@ -32,16 +32,20 @@ const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, viewNftDe
       //delete nft from users wishlist
       const deleteNftFromWishList = async () => {
 
-        const response = await axios.delete("/api/delete_nft_from_wishlist", {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          data: {
-            nft_id: data.nft_id,
-            user_ip_address: userIpAddress
-          }
-        });
-  
+        try {
+         await axios.delete("/api/delete_nft_from_users_wish_list", {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data: {
+              nft_id: data.nft_id,
+              user_ip_address: userIpAddress
+            }
+          });
+          alert("Successfully deleted nft from your wish list 😎");
+        } catch (error) {
+          alert("An error occurred. Check your network and try again");
+        }
       }
 
   return (
