@@ -30,6 +30,7 @@ class User(Base):
     
     #table relationships
     nfts = orm.relationship("Nft", back_populates="user")
+    bids = orm.relationship("Bid", back_populates="user")
 
 
 #2.One Time Pins Table
@@ -63,6 +64,7 @@ class Nft(Base):
     
     #table relationships
     user = orm.relationship("User", back_populates="nfts")
+    bids = orm.relationship("Bid", back_populates="nfts")
 
 
 #4.Wish List Table
@@ -76,6 +78,27 @@ class Wishlist(Base):
     nft_id = sql.Column(sql.Integer, nullable=False)
     user_ip_address = sql.Column(sql.String(255), index=True, nullable=False)
     date_created =sql.Column(sql.DateTime, default=dt.datetime.utcnow, nullable=False)
+    
+    
+    
+#5.Bids Table
+class Bid(Base):
+
+    #name of the table
+    __tablename__ = "bids"
+
+    #create table columns
+    bid_id = sql.Column(sql.Integer, primary_key=True, index=True, nullable=False)
+    user_id = sql.Column(sql.Integer, sql.ForeignKey("users.user_id"), index=True,)
+    nft_id = sql.Column(sql.Integer, sql.ForeignKey("nfts.nft_id"), index=True,)
+    bid_amount = sql.Column(sql.Float,  nullable=False)
+    date_created =sql.Column(sql.DateTime, default=dt.datetime.utcnow, nullable=False)
+    
+    #table relationships
+    user = orm.relationship("User", back_populates="bids")
+    nfts = orm.relationship("Nft", back_populates="bids")
+    
+    
 
 
     
