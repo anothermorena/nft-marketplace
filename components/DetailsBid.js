@@ -3,6 +3,7 @@ import { EthPrice } from "./SubInfo";
 import { COLORS, SIZES, FONTS } from "../constants";
 
 const DetailsBid = ({ bid }) => {
+
   return (
     <View
       style={{
@@ -13,12 +14,12 @@ const DetailsBid = ({ bid }) => {
         marginVertical: SIZES.base,
         paddingHorizontal: SIZES.base * 2,
       }}
-      key={bid.id}
+      key={bid.bid_id}
     >
       <Image
-        source={bid.image}
+        source={{uri: bid.bidder_image}}
         resizeMode="contain"
-        style={{ width: 48, height: 48 }}
+        style={{ width: 48, height: 48, borderRadius: 30,borderWidth:2, borderColor:COLORS.brand }}
       />
 
       <View
@@ -35,7 +36,7 @@ const DetailsBid = ({ bid }) => {
             color: COLORS.primary,
           }}
         >
-          Bid placed by {bid.name}
+          Bid placed by {bid.bidder}
         </Text>
         <Text
           style={{
@@ -45,11 +46,11 @@ const DetailsBid = ({ bid }) => {
             marginTop: 3,
           }}
         >
-          {bid.date}
+          {bid.date_created}
         </Text>
       </View>
 
-      <EthPrice price={bid.price} />
+      <EthPrice price={bid.bid_amount} />
     </View>
   );
 };

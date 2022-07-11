@@ -33,7 +33,7 @@ export const RectButton = ({ minWidth, fontSize, onPress,buttonText, ...props })
       style={{
         backgroundColor: COLORS.brand,
         padding: SIZES.small,
-        borderRadius: SIZES.extraLarge,
+        borderRadius: SIZES.font,
         minWidth: minWidth,
         ...props,
       }}

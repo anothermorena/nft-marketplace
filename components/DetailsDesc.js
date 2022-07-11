@@ -4,7 +4,7 @@ import { EthPrice, NFTTitle } from "./SubInfo";
 import { COLORS, SIZES, FONTS } from "../constants";
 
 const DetailsDesc = ({ data }) => {
-  const [text, setText] = useState(data.description.slice(0, 100));
+  const [text, setText] = useState(data.nft_description.slice(0, 100));
   const [readMore, setReadMore] = useState(false);
 
   return (
@@ -18,13 +18,13 @@ const DetailsDesc = ({ data }) => {
         }}
       >
         <NFTTitle
-          title={data.name}
+          title={data.nft_title}
           subTitle={data.creator}
           titleSize={SIZES.extraLarge}
           subTitleSize={SIZES.font}
         />
 
-        <EthPrice price={data.price} />
+        <EthPrice price={data.nft_price} />
       </View>
 
       <View style={{ marginVertical: SIZES.extraLarge * 1.5 }}>
@@ -60,10 +60,10 @@ const DetailsDesc = ({ data }) => {
               }}
               onPress={() => {
                 if (!readMore) {
-                  setText(data.description);
+                  setText(data.nft_description);
                   setReadMore(true);
                 } else {
-                  setText(data.description.slice(0, 100));
+                  setText(data.nft_description.slice(0, 100));
                   setReadMore(false);
                 }
               }}

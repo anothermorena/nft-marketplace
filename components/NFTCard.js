@@ -5,7 +5,9 @@ import { RectButton, CircleButton } from "./Button";
 import { SubInfo, EthPrice, NFTTitle } from "./SubInfo";
 import axios from './../api/axios';
 
-const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, viewNftDetails,refreshWishList,wishList}) => {
+const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, bidForNft,refreshWishList,wishList}) => {
+    const navigation = useNavigation();
+
     //add nft to wish list
     handleAddNftToWishList = async () => {
       const config = {
@@ -49,6 +51,10 @@ const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, viewNftDe
         }
       }
 
+      const viewNftDetails = async () => {
+        navigation.navigate("Details", { data })
+      }
+
   return (
     <View style={{ backgroundColor: COLORS.white, borderWidth:2, borderColor:COLORS.brand, borderRadius: SIZES.font, marginBottom: SIZES.extraLarge, margin: SIZES.base,...SHADOWS.dark}}>
          <View style={{ width: "100%",height: 250,}}>
@@ -80,7 +86,7 @@ const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, viewNftDe
             fontSize={SIZES.font}
             buttonText = {buttonText}
             backgroundColor={buttonBackgroundColor}
-            onPress ={viewNftDetails ? viewNftDetails : deleteNftFromWishList}
+            onPress ={bidForNft ? viewNftDetails : deleteNftFromWishList}
           />
         </View>
       </View>

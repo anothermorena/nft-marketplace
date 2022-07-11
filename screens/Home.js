@@ -13,7 +13,6 @@ const Home = ({navigation}) => {
     const [loading, setLoading] = useState(true);
     const [userIpAddress, setUserIpAddress] = useState(null);
 
-  
     useEffect(() => {
         //get nfts from the database
         const fetchNftData = async () => {
@@ -53,7 +52,7 @@ const Home = ({navigation}) => {
             <View style={{zIndex: 0}}>
                 <FlatList 
                     data={searchResults ? searchResults : nftData}
-                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress} buttonText = "Place a Bid" buttonBackgroundColor={COLORS.brand} viewNftDetails={() => navigation.navigate("Details", { item })}/>}
+                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress} buttonText = "Place a Bid" buttonBackgroundColor={COLORS.brand} bidForNft={true}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search Nfts"/>}
@@ -64,7 +63,7 @@ const Home = ({navigation}) => {
 
             {/* This view is going to act as a background color. It will be displayed behind out nft list*/}
             <View style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: -1}}>
-                {/* These two view components splits our sscreen into two. The firstone with a dark background and the second one with a white background */}
+                {/* These two view components splits our screen into two. The firstone with a purple (the brand color) background and the second one with a white background */}
                 <View style={{ height: 300, backgroundColor: COLORS.brand }} />
                 <View style={{ flex: 1, backgroundColor: COLORS.white }} />
             </View>

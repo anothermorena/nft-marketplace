@@ -257,9 +257,6 @@ async def get_nfts(db: orm.Session = fastapi.Depends(services.get_db)):
     #get each nft's creator
     await services.get_creator(nfts,db)
     
-    #get nft bids
-    await services.get_nft_bids(nfts,db)
-    
     #get nft bidder details
     await services.get_nft_bidder_details(nfts,db)
     

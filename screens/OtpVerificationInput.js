@@ -185,11 +185,6 @@ const OtpVerification = ({route, navigation}) => {
           setActiveResend(false);
     }
 
-    //persist login after verification
-    const persistLoginAfterOTPVerification = async () => { 
-
-    }
-
   return (
     <KeyboardAvoidingWrapper>
         <View style={{alignItems:'center', flex:1,padding:25,paddingTop: StatusBarHeight + 30, backgroundColor: COLORS.white}}>

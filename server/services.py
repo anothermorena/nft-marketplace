@@ -193,13 +193,6 @@ async def get_nft_details(nfts:list, db: orm.Session):
         nft.bidding_deadline = nft_details.bidding_deadline
         nft.user_id = nft_details.user_id 
         
-        
-#get nft bids
-async def get_nft_bids(nfts:list, db: orm.Session):
-    for nft in nfts:
-        nft_bids = db.query(models.Bid).filter(models.Bid.nft_id == nft.nft_id).first()
-        nft.bids.append(nft_bids)
-    
     
 #get nft bidder details
 async def get_nft_bidder_details(nfts:list, db: orm.Session):
