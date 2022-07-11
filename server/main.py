@@ -302,4 +302,26 @@ async def delete_nft_from_users_wish_list(nft: schemas.WishlistBase, db: orm.Ses
     await services.delete_nft_from_users_wish_list(nft.nft_id, nft.user_ip_address, db)
  
   
+#place  bid api end
+@app.post("/api/place_bid/")
+async def place_bid(bid: schemas.PlaceBid,current_user:schemas.User = fastapi.Depends(services.get_current_user), db: orm.Session = fastapi.Depends(services.get_db)): 
+    #check if a user with the provided email exists or not 
+    db_user = await services.get_user_by_email(current_user.email, db)
+ 
+    if not db_user:
+        #user does not exists
+        return dict(status_code=404, message="User not found", status="FAILED")
+    
+    #check if we have the nft with the specified id in the db
+    db_nft = await services.get_nft_by_id(bid.nft_id, db)
+    
+    if not db_nft:
+        #nft does not exists
+        return dict(status_code=404, message="Nft not found", status="FAILED")
+
+    #user and nft are valid: save the bid to the database
+    await services.create_nft_bid(user_id=db_user.user_id, nft_id=bid.nft_id, bid_amount=bid.bid_amount,db=db)
+    
+    #done: send feedback to the user
+    return dict(message="Your bid was successfully placed", status="SUCCESS")
 

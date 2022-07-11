@@ -244,7 +244,20 @@ async def delete_nft_from_users_wish_list(nft_id: int, user_ip_address: str, db:
     nft_to_delete = await nft_selector(nft_id, user_ip_address, db)
 
     db.delete(nft_to_delete)
+    db.commit()  
+    
+#get nft by id
+async def get_nft_by_id(nft_id: int, db: orm.Session):
+    return db.query(models.Nft).filter(models.Nft.nft_id == nft_id).first()
+
+#add nft bid to db
+async def create_nft_bid(user_id: int, nft_id:int, bid_amount: float, db: orm.Session):
+    bid_obj = models.Bid(user_id = user_id, nft_id = nft_id,bid_amount=bid_amount)
+
+    #save the bid
+    db.add(bid_obj)
     db.commit()
+    db.refresh(bid_obj)
    
 
 
