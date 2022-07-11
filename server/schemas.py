@@ -81,6 +81,12 @@ class WishList(BaseModel):
     
     class Config:
         orm_mode = True
+        
+#place bid schema
+class PlaceBid(BaseModel):
+    nft_id: int
+    bid_amount: float
+    
     
     
     
