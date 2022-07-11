@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import {useContext} from "react";
 import {StyledButton,ButtonText} from './../components/StyledComponents';
 import { CredentialsContext } from './../components/CredentialsContext';
+import axios from './../api/axios';
 
 const DetailsHeader = ({ data, navigation }) => (
     <View style={{ width: "100%", height: 373 }}>
@@ -52,7 +53,31 @@ const Details = ({route, navigation}) => {
     if(!storedCredentials) {
       alert("You must be logged in to bid for nfts");
       } else {
-        //TODO: place the bid
+        //Place the bid
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + storedCredentials.accessToken
+          }
+        }
+        try {
+          const response = await axios.post("/api/place_bid", JSON.stringify({ nft_id: data.nft_id,bid_amount:formValues.bidAmount}) , config);
+          const result = response.data;
+          const {status, message } = result;
+
+          if (status !== 'SUCCESS') {
+            alert(message);
+          } else {
+            //tell the user the bid was placed successfully
+            alert(message);
+
+            //rediect the user to the home screen
+            navigation.navigate('Home');
+          }  
+        } catch (error) {
+          alert('An error occurred. Check your network and try again');
+        }
+        setSubmitting(false);
         
       }
   }

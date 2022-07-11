@@ -317,7 +317,12 @@ async def place_bid(bid: schemas.PlaceBid,current_user:schemas.User = fastapi.De
     
     if not db_nft:
         #nft does not exists
-        return dict(status_code=404, message="Nft not found", status="FAILED")
+        return dict(status_code=404, message="Nft not found.", status="FAILED")
+    
+    #check if user is not bidding on thier own nft
+    if db_nft.user_id ==  db_user.user_id:
+        #its thier nft: stop that bs 
+        return dict(status_code=404, message="You cannot bid on your own nft.", status="FAILED")
 
     #user and nft are valid: save the bid to the database
     await services.create_nft_bid(user_id=db_user.user_id, nft_id=bid.nft_id, bid_amount=bid.bid_amount,db=db)
