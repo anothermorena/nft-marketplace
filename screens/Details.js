@@ -1,6 +1,11 @@
-import { View, Text, SafeAreaView, Image, StatusBar, FlatList, TextInput } from "react-native";
-import { COLORS, SIZES, assets, SHADOWS, FONTS } from "../constants";
-import { CircleButton, RectButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
+import { View, Text, SafeAreaView, Image, StatusBar, FlatList, TextInput,ActivityIndicator,StyleSheet } from "react-native";
+import { COLORS, SIZES, assets, FONTS } from "../constants";
+import { CircleButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import {useContext} from "react";
+import {StyledButton,ButtonText} from './../components/StyledComponents';
+import { CredentialsContext } from './../components/CredentialsContext';
 
 const DetailsHeader = ({ data, navigation }) => (
     <View style={{ width: "100%", height: 373 }}>
@@ -29,9 +34,32 @@ const Details = ({route, navigation}) => {
   //get the nft data from the route parameters  
   const { data } = route.params;
 
+  // credentials context
+  const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+
+  //bid amount validation
+  const bidAmountValidationSchema = yup.object().shape({
+    bidAmount: yup
+    .number()
+    .min(0.1)
+    .positive()
+    .required("Bid Amount is required to place a bid for this nft.")
+    
+  });
+
+  //make a request to place a bid for the current nft
+  const handlePlaceABid = async (formValues, setSubmitting) => {
+    if(!storedCredentials) {
+      alert("You must be logged in to bid for nfts");
+      } else {
+        //TODO: place the bid
+        
+      }
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
-      <FocusedStatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/>
+      <FocusedStatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/> 
       <View
         style={{
           width: "100%",
@@ -45,8 +73,52 @@ const Details = ({route, navigation}) => {
         }}
       >
         <View style={{flex:1, flexDirection:"row",alignItems:"center", justifyContent:"space-between"}}>
-          <TextInput keyboardType="number-pad" placeholder="Bid Amount"style={{ height: 48, width:150, borderColor: COLORS.brand, borderWidth: 2, borderRadius: SIZES.font,textAlign:"center",margin:10}}/>
-          <RectButton minWidth={170} fontSize={SIZES.large} {...SHADOWS.dark} buttonText ="Place a Bid" />
+        <Formik
+               initialValues={{bidAmount: ""}}
+               validationSchema={bidAmountValidationSchema}
+               onSubmit={(values, { setSubmitting }) => {
+                if (values.bidAmount == "") {
+                  alert("Bid Amount is required to place a bid");
+                  setSubmitting(false);
+                }   else {
+                  handlePlaceABid(values, setSubmitting);
+                }     
+  
+               }}
+            >
+            {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, touched,errors}) => (
+              <> 
+              <TextInput 
+                  keyboardType="number-pad"
+                  placeholder="Bid Amount"
+                  style={{ 
+                    height: 48,
+                    width:150,
+                    borderColor: COLORS.brand,
+                    borderWidth: 2, 
+                    borderRadius: SIZES.font,
+                    textAlign:"center",
+                    margin:5
+                    }}
+                    value={values.bidAmount}
+                    onChangeText={handleChange('bidAmount')}
+                    onBlur={handleBlur('bidAmount')}
+                    />
+                    {touched.bidAmount && errors.bidAmount && alert("Bid Amount is required to place a bid")}
+                    
+                   {!isSubmitting && (
+                    <StyledButton style={styles.styledButtonExtraStyles} onPress={handleSubmit}>
+                      <ButtonText style={{textAlign: "center",fontSize:SIZES.font}}>Place a Bid</ButtonText>
+                    </StyledButton>
+                  )}
+                  {isSubmitting && (
+                    <StyledButton disabled={true} style={styles.styledButtonExtraStyles}>
+                      <ActivityIndicator size="large" color={COLORS.white} />
+                    </StyledButton>
+                  )}
+              </>
+            )}
+          </Formik>
         </View>
         
       </View>
@@ -98,14 +170,22 @@ const Details = ({route, navigation}) => {
       </>
       )} 
         
-
-            <View style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: -1}}>
-                <View style={{ flex: 1, backgroundColor: COLORS.white }} />
-            </View>
+      <View style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: -1}}>
+          <View style={{ flex: 1, backgroundColor: COLORS.white }} />
+      </View>
 
     </SafeAreaView>
   )
 }
 
+//extra styles for the submit button
+const styles = StyleSheet.create ({
+  styledButtonExtraStyles: {
+    height:48, 
+    width:150,
+    borderRadius: SIZES.font,
+    padding: SIZES.small
+  }
+});
 
 export default Details;
