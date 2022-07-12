@@ -6,18 +6,16 @@ import sqlalchemy as  sql
 import passlib.hash as hash
 import sqlalchemy.orm as orm
 
-#2. below we create our database tables and their columns
-#========================================================
+#2. create database tables and their columns
+#===========================================
 #3. users table
 #==============
 class User(Base):
 
-    #3.1. name of the table
-    #======================
     __tablename__ = "users"
 
-    #3.2. create table columns
-    #=========================
+    #3.1. table columns
+    #==================
     user_id = sql.Column(sql.Integer, primary_key=True, index=True, nullable=False)
     first_name = sql.Column(sql.String(255), nullable=False)
     last_name = sql.Column(sql.String(255), nullable=False)
@@ -28,14 +26,12 @@ class User(Base):
     date_created =sql.Column(sql.DateTime, default=dt.datetime.utcnow, nullable=False)
     
     
-    #3.3. verify the password
-    #========================
+    #3.2 check the password we sent for authentication vs the password stored in the DB
+    #=====================================================================================
     def verify_password(self, password: str):
-        #3.3.1 checks the password we sent for authentication vs the password stored in the DB
-        #=====================================================================================
         return hash.bcrypt.verify(password, self.hashed_password)
     
-    #3.4 users table relationships
+    #3.3 users table relationships
     #=============================
     nfts = orm.relationship("Nft", back_populates="user")
     bids = orm.relationship("Bid", back_populates="user")
@@ -45,12 +41,10 @@ class User(Base):
 #=====================
 class Otp(Base):
 
-    #4.1. name of the table
-    #======================
     __tablename__ = "otps"
 
-    #4.2. create table columns
-    #=========================
+    #4.2. table columns
+    #==================
     otp_id = sql.Column(sql.Integer, primary_key=True, index=True, nullable=False)
     code = sql.Column(sql.Integer, nullable=False)
     email = sql.Column(sql.String(30), unique=True, index=True, nullable=False)
@@ -60,12 +54,11 @@ class Otp(Base):
 #5. nfts table
 #=============
 class Nft(Base):
-    
-    #5.1. name of the table
-    #======================
+
     __tablename__ = "nfts"
     
-    #5.2. create table columns
+    #5.2. table columns
+    #==================
     nft_id = sql.Column(sql.Integer, primary_key=True, index=True)
     user_id = sql.Column(sql.Integer, sql.ForeignKey("users.user_id"))
     nft_title = sql.Column(sql.String(255), nullable=False)
@@ -76,6 +69,7 @@ class Nft(Base):
     date_created = sql.Column(sql.DateTime, default=dt.datetime.utcnow, nullable=False)
     
     #5.3. nfts table relationships
+    #=============================
     user = orm.relationship("User", back_populates="nfts")
     bids = orm.relationship("Bid", back_populates="nfts")
 
@@ -84,12 +78,10 @@ class Nft(Base):
 #==================
 class Wishlist(Base):
 
-    #6.1. name of the table
-    #======================
     __tablename__ = "wishlist"
 
-    #6.2. create table columns
-    #=========================
+    #6.2. table columns
+    #==================
     wishlist_id = sql.Column(sql.Integer, primary_key=True, index=True, nullable=False)
     nft_id = sql.Column(sql.Integer, nullable=False)
     user_ip_address = sql.Column(sql.String(255), index=True, nullable=False)
@@ -101,12 +93,10 @@ class Wishlist(Base):
 #=============
 class Bid(Base):
 
-    #7.1. name of the table
-    #======================
     __tablename__ = "bids"
 
-    #7.2. create table columns
-    #=========================
+    #7.2. table columns
+    #==================
     bid_id = sql.Column(sql.Integer, primary_key=True, index=True, nullable=False)
     user_id = sql.Column(sql.Integer, sql.ForeignKey("users.user_id"), index=True,)
     nft_id = sql.Column(sql.Integer, sql.ForeignKey("nfts.nft_id"), index=True,)
