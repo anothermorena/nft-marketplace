@@ -55,7 +55,7 @@ clouditionary_config = cloudinary.config(
             api_key= Envs.CLOUDINARY_API_KEY,
             api_secret = Envs.CLOUDINARY_API_SECRET,
             secure=True
-        ) 
+) 
 
 
 

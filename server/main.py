@@ -19,7 +19,7 @@ models.Base.metadata.create_all(engine)
 
 #4. create a user end point
 #==========================
-@app.post("/api/users")
+@app.post("/api/users",status_code=201)
 async def create_user(user: schemas.CreateUser, db: orm.Session = fastapi.Depends(services.get_db)):
     db_user = await services.get_user_by_email(user.email, db)
  
@@ -39,7 +39,7 @@ async def create_user(user: schemas.CreateUser, db: orm.Session = fastapi.Depend
 
 #5. send otp end point
 #=====================
-@app.post("/api/send_otp")
+@app.post("/api/send_otp",status_code=200)
 async def send_otp(otp_request: schemas.Otp, db: orm.Session = fastapi.Depends(services.get_db)):
    db_user = await services.get_user_by_email(otp_request.email, db)
 
@@ -56,7 +56,7 @@ async def send_otp(otp_request: schemas.Otp, db: orm.Session = fastapi.Depends(s
 
 #6. verify account end point
 #===========================
-@app.patch("/api/verify_otp")
+@app.patch("/api/verify_otp", status_code=200)
 async def verify_otp(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(services.get_db)):
     db_user = await services.get_user_by_email(user.email, db)
     if not db_user:
@@ -84,14 +84,14 @@ async def verify_otp(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(
 
 #7. user login end point
 #=======================
-@app.post("/api/login")
+@app.post("/api/login",status_code=200)
 async def user_login(form_data: security.OAuth2PasswordRequestForm = fastapi.Depends(), db: orm.Session = fastapi.Depends(services.get_db)):
     user = await services.authenticate_user(form_data.username, form_data.password, db)
     return await services.create_token(user)
 
 #8. reset password end point
 #===========================
-@app.patch("/api/reset_password")
+@app.patch("/api/reset_password", status_code=200)
 async def reset_password(reset_pass: schemas.ResetPassword, db: orm.Session = fastapi.Depends(services.get_db)):
     db_user = await services.get_user_by_email(reset_pass.email, db)
     if not db_user:
@@ -114,7 +114,7 @@ async def reset_password(reset_pass: schemas.ResetPassword, db: orm.Session = fa
 
 #9. change authenticated user password end point
 #===============================================
-@app.patch("/api/change_password/")
+@app.patch("/api/change_password/",status_code=200)
 async def change_password(change_password: schemas.ChangePassword, current_user:schemas.User = fastapi.Depends(services.get_current_user), db: orm.Session = fastapi.Depends(services.get_db)):
     db_user = await services.get_user_by_email(current_user.email, db)
  
@@ -134,7 +134,7 @@ async def change_password(change_password: schemas.ChangePassword, current_user:
 
 #10. update user profile end point
 #=================================
-@app.patch("/api/update_profile_details/")
+@app.patch("/api/update_profile_details/",status_code=200)
 async def update_profile_details(first_name: str = Form(), last_name: str = Form(), profile_image: Optional[UploadFile] = File(None),current_user:schemas.User = fastapi.Depends(services.get_current_user), db: orm.Session = fastapi.Depends(services.get_db)): 
     db_user = await services.get_user_by_email(current_user.email, db)
  
@@ -173,7 +173,7 @@ async def update_profile_details(first_name: str = Form(), last_name: str = Form
 
 #11. create nft end point
 #========================
-@app.post("/api/create_nft/")
+@app.post("/api/create_nft/",status_code=201)
 async def create_nft(nft_title: str = Form(), nft_description: str = Form(),nft_image: UploadFile = File(...),nft_price: float = Form(),bidding_deadline: str = Form(),current_user:schemas.User = fastapi.Depends(services.get_current_user), db: orm.Session = fastapi.Depends(services.get_db)): 
     db_user = await services.get_user_by_email(current_user.email, db)
  
@@ -204,7 +204,7 @@ async def create_nft(nft_title: str = Form(), nft_description: str = Form(),nft_
 
 #12. fetch nfts from the database
 #================================
-@app.get("/api/nfts/", response_model=List[schemas.Nft])
+@app.get("/api/nfts/", response_model=List[schemas.Nft],status_code=200)
 async def get_nfts(db: orm.Session = fastapi.Depends(services.get_db)):
     nfts = await services.get_nfts(db=db)
     
@@ -219,7 +219,7 @@ async def get_nfts(db: orm.Session = fastapi.Depends(services.get_db)):
 
 #13. add  nft to users wishlist api end point
 #===========================================
-@app.post("/api/add_nft_to_wish_list/")
+@app.post("/api/add_nft_to_wish_list/",status_code=201)
 async def add_nft_to_wish_list(wishlist: schemas.WishlistBase,db: orm.Session = fastapi.Depends(services.get_db)):
     nft = await services.check_wish_list_for_nft(wishlist.user_ip_address, wishlist.nft_id, db)
     
@@ -233,7 +233,7 @@ async def add_nft_to_wish_list(wishlist: schemas.WishlistBase,db: orm.Session = 
 
 #14. fetch users nft wishlist  from the database
 #===============================================
-@app.get("/api/get_users_wish_list/", response_model=List[schemas.WishList])
+@app.get("/api/get_users_wish_list/", response_model=List[schemas.WishList],status_code=200)
 async def get_users_wish_list(user_ip_address: str, db: orm.Session = fastapi.Depends(services.get_db)):
     wishlist = await services.get_users_wish_list(user_ip_address=user_ip_address,db=db)
     await services.get_nft_details(wishlist,db)
@@ -250,7 +250,7 @@ async def delete_nft_from_users_wish_list(nft: schemas.WishlistBase, db: orm.Ses
   
 #16. place  bid api end
 #======================
-@app.post("/api/place_bid/")
+@app.post("/api/place_bid/",status_code=201)
 async def place_bid(bid: schemas.PlaceBid,current_user:schemas.User = fastapi.Depends(services.get_current_user), db: orm.Session = fastapi.Depends(services.get_db)): 
     db_user = await services.get_user_by_email(current_user.email, db)
  
