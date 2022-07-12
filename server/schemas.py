@@ -1,9 +1,12 @@
-#This file contains pydantic models/schemas
-#import required modules or packages
+#1. This file contains pydantic models/schemas
+#=============================================
+
+#2. import required modules and packages
+#=======================================
 from pydantic import BaseModel
 from typing import Optional,List
 
-#CreateUser is the info we will be sending when creating a user
+#3. CreateUser is the info we will be sending when creating a user
 class CreateUser(BaseModel):
     first_name: str
     last_name: str
