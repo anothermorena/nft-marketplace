@@ -1,18 +1,18 @@
-#import required modules or packages
-# ==============================
+#1. import required modules and  packages
+#==============================
 import os
+import cloudinary
+import cloudinary.api
+import cloudinary.uploader
 from dotenv import load_dotenv
 from fastapi_mail import ConnectionConfig
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
-# load environment variables from .env
-# ==============================
+#2. load environment variables from .env
+#==============================
 load_dotenv('./../.env')
 
-#create environment variables configuration class 
-# ==============================
+#3. create environment variables configuration class 
+#==============================
 class Envs:
     DB_USER = os.getenv('DB_USER')
     DB_PASSWORD = os.getenv('DB_PASSWORD')
@@ -32,8 +32,8 @@ class Envs:
     CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET')
     
     
-# Setup our email configurations
-# ==============================
+#4. setup the email server configuration
+#==============================
 email_conf = ConnectionConfig(
     MAIL_USERNAME=Envs.MAIL_USERNAME,
     MAIL_PASSWORD=Envs.MAIL_PASSWORD,
@@ -48,8 +48,8 @@ email_conf = ConnectionConfig(
 )
 
 
-# Set clouditionary configuration: return "https" URLs by setting secure=True  
-# ==============================
+#5. set up clouditionary configuration: return "https" URLs by setting secure=True  
+#==============================
 clouditionary_config = cloudinary.config(
             cloud_name= Envs.CLOUDINARY_NAME,
             api_key= Envs.CLOUDINARY_API_KEY,
