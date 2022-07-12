@@ -22,7 +22,6 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const RootStack = () => {
-
    return (
          <Stack.Navigator
            screenOptions={{
@@ -90,7 +89,7 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Menu"
+        name="Ham Menu"
         component={Ionicons}
         options={{
           tabBarIcon: ({color, size}) => (
@@ -116,9 +115,7 @@ const getTabBarVisibility = route => {
 
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
 
-  if( routeName == 'Details' || routeName == 'Login' || routeName == 'Signup' || routeName == 'ResetPasswordRequest' || routeName == 'ResetPasswordInput' || routeName == 'Verification' || routeName == 'OtpVerificationInput') {
-    return 'none';
-  }
+  if( routeName == 'Details' || routeName == 'Login' || routeName == 'Signup' || routeName == 'ResetPasswordRequest' || routeName == 'ResetPasswordInput' || routeName == 'Verification' || routeName == 'OtpVerificationInput')return 'none';
   return 'flex';
 };
 

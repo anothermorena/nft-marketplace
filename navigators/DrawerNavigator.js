@@ -1,4 +1,4 @@
-import { NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme,useIsFocused } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {useFonts } from 'expo-font';
@@ -28,6 +28,8 @@ const theme = {
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
+  //const isFocused = useIsFocused();
+
     //load the fonts we will be using and all other assets our app will use
    const [loaded] = useFonts({
     InterBold: require("./../assets/fonts/Inter-Bold.ttf"),
@@ -48,6 +50,7 @@ const DrawerNavigator = () => {
       screenOptions={{
         headerShown: false,
         drawerActiveBackgroundColor: COLORS.brand,
+        drawerInactiveBackgroundColor: COLORS.white,
         drawerActiveTintColor: '#fff',
         drawerInactiveTintColor: '#333',
         drawerLabelStyle: {
@@ -58,7 +61,7 @@ const DrawerNavigator = () => {
       }}>
         {storedCredentials ? (
           <>
-          <Drawer.Screen name="Home" component={TabNavigator}  options={{drawerIcon: () => (<Ionicons name="home-outline" size={22} color={COLORS.white} />)}}/>
+          <Drawer.Screen name="Home" component={TabNavigator}  options={{drawerIcon: () => (<Ionicons name="home-outline" size={22} color={ COLORS.white} />)}}/>
           <Drawer.Screen name="Create Nft" component={CreateNft}  options={{drawerIcon: () => (<FontAwesome5 name="pen" size={22} color={COLORS.brand} />)}}/>
           <Drawer.Screen name="My Wishlist" component={WishList}  options={{drawerIcon: () => (<Ionicons name="heart" size={22} color={COLORS.brand} />)}}/>
           <Drawer.Screen name="Update Profile Details" component={UpdateProfileDetails}   options={{drawerIcon: () => (<MaterialCommunityIcons name="account-edit" size={22} color={COLORS.brand} />)}}/>
