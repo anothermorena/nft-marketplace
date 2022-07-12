@@ -92,19 +92,22 @@ async def user_login(form_data: security.OAuth2PasswordRequestForm = fastapi.Dep
 #8. reset password end point
 #===========================
 @app.patch("/api/reset_password")
-async def reset_password(user: schemas.ResetPassword, db: orm.Session = fastapi.Depends(services.get_db)):
-    db_user = await services.get_user_by_email(user.email, db)
+async def reset_password(reset_pass: schemas.ResetPassword, db: orm.Session = fastapi.Depends(services.get_db)):
+    db_user = await services.get_user_by_email(reset_pass.email, db)
     if not db_user:
        return dict(message="Invalid email or otp.", status="FAILED")
 
-    otp = await services.get_otp_by_email(user.email, user.otp, db)
+    otp = await services.get_otp_by_email(reset_pass.email, reset_pass.otp, db)
 
     if not otp:
         return dict(message="The provided OTP is invalid. Please try again.", status="FAILED")
+    
+    if reset_pass.password != reset_pass.confirm_password:
+        return dict(message="Your passwords do not match", status="FAILED")
   
-    await services.new_password(user.password,db_user,db)
+    await services.new_password(reset_pass.password,db_user,db)
 
-    await services.delete_otp(user.email, db)
+    await services.delete_otp(reset_pass.email, db)
 
     return dict(message="Your password was reset successfully. You may now log into your account 🙃", status="SUCCESS")
 

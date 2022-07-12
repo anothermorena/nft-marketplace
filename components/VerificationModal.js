@@ -8,11 +8,9 @@ import {Ionicons} from '@expo/vector-icons';
 // get status bar height
 const StatusBarHeight = Constants.statusBarHeight;
 
-const VerificationModal = ({modalVisible, setModalVisible,successful,message, persistLoginAfterOTPVerification, navigation}) => {
+const VerificationModal = ({modalVisible, setModalVisible,successful,message, navigation}) => {
   const buttonHandler = () => { 
     if(successful) {
-        persistLoginAfterOTPVerification();
-        
         //redirect the user to the log in screen
         navigation.navigate('Home');
     }

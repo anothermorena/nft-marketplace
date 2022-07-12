@@ -56,7 +56,7 @@ const ResetPasswordInput = ({ route, navigation }) => {
         }
 
       try {
-        const response = await axios.patch("/api/reset_password", JSON.stringify({ email: email, otp: code, password: formValues.password }), config);
+        const response = await axios.patch("/api/reset_password", JSON.stringify({ email: email, otp: code, password: formValues.password, confirm_password:formValues.confirmPssword }), config);
         const result = response.data;
         const { status, message } = result;
 

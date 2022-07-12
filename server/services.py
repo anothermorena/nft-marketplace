@@ -35,27 +35,18 @@ def get_db():
 #5. get a user by a given email
 #==============================
 async def get_user_by_email(email: str, db: orm.Session):
-    #5.1. if there is a user with the specified email return that user
-    #=================================================================
     return db.query(models.User).filter(models.User.email == email).first()
 
 #6. get an otp by a given email
 #==============================
 async def get_otp_by_email(email: str, otp: int, db: orm.Session):
-    #6.1. if there is an otp with the specified email return it
-    #==========================================================
     return db.query(models.Otp).filter(models.Otp.email == email).filter(models.Otp.code == otp).first()
 
 
 #7. create a new user
 #====================
 async def create_user(user: schemas.CreateUser, db: orm.Session):
-    #7.1. create the user data object to be stored in the database
-    #=============================================================
     user_obj = models.User(first_name= user.first_name,last_name= user.last_name,email=user.email, profile_image = "", user_status= "UNVERIFIED", hashed_password= hash.bcrypt.hash(user.hashed_password))  
-
-    #7.2. save the user to the database
-    #==================================
     db.add(user_obj)
     db.commit()
     db.refresh(user_obj)
@@ -76,25 +67,15 @@ async def delete_otp(email:str, db: orm.Session):
 #9. creates a user's one time pin for account verification and password reset
 #============================================================================
 async def create_otp(email:str, db: orm.Session):
-
-    #9.1. delete existing one time pin before creating a new one
-    #===========================================================
     delete_old_otp = await delete_otp(email,db)
 
     if delete_old_otp:
-        #9.2. generate a random 4 digit code to use as an otp
-        #====================================================
         new_otp = random.randint(1000,9999)
         otp_obj = models.Otp(code = new_otp, email = email)
-
-        #9.3. save the otp to the database
-        #=================================
         db.add(otp_obj)
         db.commit()
         db.refresh(otp_obj)
-
-        #9.4. send back the code to send it ton the user
-        #===============================================
+        
         return new_otp
 
 #10. sends emails to the user
@@ -108,36 +89,25 @@ async def send_email_async(subject: str, email_to: str, body: str):
     )
     
     fm = FastMail(email_conf)
-    await fm.send_message(message, template_name='email.html')
-    #10.1. send back a success message 
-    #================================       
+    await fm.send_message(message, template_name='email.html')    
     return dict(message="Email sent successfully", status="SUCCESS", email= email_to)
 
 #11. authenticate the user
 #=========================
 async def authenticate_user(email: str, password: str, db: orm.Session):
-    #11.2. first: check if the user exists
-    #====================================
     user = await get_user_by_email(email=email, db=db)
-
-    #11.3. user does not exist: return a generic message back to the user
-    #====================================================================
     if not user:
         return dict(message="Username or password incorrect", status="FAILED")
 
-    #11.4. check if the submitted password matches the stored hashed password
-    #========================================================================
     if not user.verify_password(password):
-        return dict(message="Username or password incorrect", status="FAILED", data=None)
+        return dict(message="Username or password incorrect", status="FAILED")
 
-    #11.5. login was successful: send the user back
-    #=========================================
     return user
 
 
 #12. create a new user password and stores it to the db
 #======================================================
-async def new_password(password:str, current_user:dict, db: orm.Session):
+async def new_password(password:str, current_user:dict, db: orm.Session):      
     new_hashed_password = hash.bcrypt.using(rounds=13).hash(password)
     current_user.hashed_password = new_hashed_password
     db.commit()
@@ -164,41 +134,27 @@ async def create_token(user: models.User):
 #==================================
 async def get_current_user(db: orm.Session = fastapi.Depends(get_db), token: str = fastapi.Depends(oauth2schema)):
     try:
-        #14.1. decode the token that we sent back
-        #========================================
         payload = jwt.decode(token, JWT_SECRET, algorithms=Envs.ALGORITHM)
-        #14.2. get the user by id
-        #========================
         user = db.query(models.User).get(payload["user_id"])
     except:
         raise fastapi.HTTPException(status_code=401, detail="Invalid Email or Password")
-    
-    #14.3. return the user
-    #=====================
+
     return schemas.User.from_orm(user)
 
 
 #15. upload images to cloudinary
 #===============================
 def upload_image(image,image_name,unique_filename=False, overwrite=True):
-  #15.1. upload the image.
-  #15.2. set the asset's public ID and allow overwriting the asset with new versions
-  #=================================================================================
   return cloudinary.uploader.upload(image, public_id=image_name, unique_filename = unique_filename, overwrite=overwrite)
 
 #16. create a new nft
 #====================
 async def create_nft(user: schemas.User, nft_data: dict, db: orm.Session):
     nft = models.Nft(**nft_data, user_id=user.user_id) #** means unpacks the values contained in the nft dictionary. It is simillar to destructuring in JS
-
-    #16.1. save the nft to the database
-    #==================================
     db.add(nft)
     db.commit()
     db.refresh(nft)
-    
-    #16.2. send the nft back
-    #=======================
+
     return schemas.Nft.from_orm(nft)
 
 
@@ -250,17 +206,12 @@ async def get_nft_bidder_details(nfts:list, db: orm.Session):
 #21. check if nft exists in users wish list
 #==========================================
 async def check_wish_list_for_nft(user_ip_address: str, nft_id:int, db: orm.Session):
-    #21.1. if there is an nft with the specified id and user ip in the wishlist: return it
-    #=====================================================================================
     return db.query(models.Wishlist).filter(models.Wishlist.user_ip_address == user_ip_address).filter(models.Wishlist.nft_id == nft_id).first()
 
 #22. add nft to users wish list
 #==============================
 async def add_nft_to_wish_list(user_ip_address: str, nft_id:int, db: orm.Session):
     wishlist_obj = models.Wishlist(user_ip_address = user_ip_address, nft_id = nft_id)
-
-    #21.1. save the nft  to the users wishlist
-    #=========================================
     db.add(wishlist_obj)
     db.commit()
     db.refresh(wishlist_obj)
@@ -278,7 +229,7 @@ async def nft_selector(nft_id: int, user_ip_address: str, db: orm.Session):
     wishlist_item = (db.query(models.Wishlist)
         .filter_by(user_ip_address=user_ip_address) #gets all the lead by the specified user first
         .filter(models.Wishlist.nft_id == nft_id) #from the returned wishlist, return the one with the specified ID
-        .first() #get the first object that comes from it
+        .first() 
     )
 
     if wishlist_item is None:
@@ -290,7 +241,6 @@ async def nft_selector(nft_id: int, user_ip_address: str, db: orm.Session):
 #===================================
 async def delete_nft_from_users_wish_list(nft_id: int, user_ip_address: str, db: orm.Session):
     nft_to_delete = await nft_selector(nft_id, user_ip_address, db)
-
     db.delete(nft_to_delete)
     db.commit()  
     
@@ -299,13 +249,11 @@ async def delete_nft_from_users_wish_list(nft_id: int, user_ip_address: str, db:
 async def get_nft_by_id(nft_id: int, db: orm.Session):
     return db.query(models.Nft).filter(models.Nft.nft_id == nft_id).first()
 
-#27.add nft bid to db
+
+#27. add nft bid to db
 #====================
 async def create_nft_bid(user_id: int, nft_id:int, bid_amount: float, db: orm.Session):
     bid_obj = models.Bid(user_id = user_id, nft_id = nft_id,bid_amount=bid_amount)
-
-    #27.1. save the bid
-    #==================
     db.add(bid_obj)
     db.commit()
     db.refresh(bid_obj)

@@ -246,7 +246,6 @@ const OtpVerification = ({route, navigation}) => {
                 successful = {verificationSuccessful}
                 setModalVisible={setModalVisible}
                 modalVisible={modalVisible}
-                persistLoginAfterOTPVerification={persistLoginAfterOTPVerification}
                 message={message}
                 navigation={navigation}
             />

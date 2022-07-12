@@ -6,50 +6,58 @@
 from pydantic import BaseModel
 from typing import Optional,List
 
-#3. CreateUser is the info we will be sending when creating a user
-class CreateUser(BaseModel):
+class UserBase(BaseModel):
     first_name: str
     last_name: str
     email: str
     profile_image: Optional[str] = None
-    user_status: str
+    user_status: str  
+
+#3. required fields when creating a user
+#=======================================
+class CreateUser(UserBase):
     hashed_password: str
 
-    #sets up extra configuration for this class
     class Config:
         orm_mode = True
-    
 
-#inherits from UserBase
-class User(CreateUser):
+#4. info sent back with user profile data
+#========================================
+class User(UserBase):
     user_id: int
     
     class Config:
         orm_mode = True
 
 
-#One time pin schema
+#5. required fields when creating a one time pin
+#===============================================
 class Otp(BaseModel):
     email: str
 
-#verify OTP Schema
+#6. required fields to verify an otp
+#===================================
 class VerifyOtp(Otp):
     otp: int
     request_type: str
 
-#reset password schema
+#7. required fields when resetting a user password
+#=================================================
 class ResetPassword(Otp):
     otp: int
     password: str
+    confirm_password: str
 
-#change authenticated user password
+#8. required fields when changing a logged in user's password
+#============================================================
 class ChangePassword(BaseModel):
     current_password: str
     new_password: str
     confirm_password: str
     
     
-#view nft schema
+#9. required fields when creating an nft
+#=======================================
 class Nft(BaseModel):
     nft_id : int
     user_id: int 
@@ -65,13 +73,15 @@ class Nft(BaseModel):
         orm_mode = True
         
   
-#wishlist schema
+#10.required fields when adding an nft to a wish list
+#====================================================
 class WishlistBase(BaseModel):
     nft_id : int
     user_ip_address: str
        
     
-#view wishlist schema
+#11. required fields when viewing a users nft wish list
+#======================================================
 class WishList(BaseModel):
     nft_id : int
     user_id: Optional[int] = None 
@@ -85,7 +95,8 @@ class WishList(BaseModel):
     class Config:
         orm_mode = True
         
-#place bid schema
+#12. required fields when bidding for an nft
+#===========================================
 class PlaceBid(BaseModel):
     nft_id: int
     bid_amount: float
