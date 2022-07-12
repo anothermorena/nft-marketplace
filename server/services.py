@@ -11,7 +11,6 @@ import sqlalchemy.orm as orm
 from database import SessionLocal
 import fastapi.security as security
 from config import email_conf, Envs
-from fastapi import status, HTTPException
 from fastapi_mail import FastMail, MessageSchema
 
 #2. we use oauth to issue a token when a user logs in
