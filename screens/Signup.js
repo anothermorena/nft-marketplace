@@ -1,31 +1,34 @@
-import React, { useState, useContext } from 'react';
-import { StatusBar } from 'expo-status-bar';
-
-import { FocusedStatusBar } from './../components';
-
-// formik
-import { Formik } from 'formik';
-
-//yup for formik form validation
+//1. import all requred packages,hooks and components
+//===================================================
 import * as yup from 'yup';
-
-// builtin react native components
-import { View, Text, TouchableOpacity, ActivityIndicator, TextInput} from 'react-native';
-
-// icons
-import { Octicons, Ionicons } from '@expo/vector-icons';
-
-// keyboard avoiding view
-import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-
-// our theme config and other constants
-import { COLORS, Constants } from "../constants";
-
-// get status bar height
-const StatusBarHeight = Constants.statusBarHeight;
-
-// API client
+import { Formik } from 'formik';
+import { useState} from 'react';
 import axios from './../api/axios';
+import { COLORS } from "./../constants";
+import {
+  Line,
+  MsgBox,
+  SubTitle,
+  TextLink,
+  LeftIcon,
+  RightIcon,
+  ExtraView,
+  PageTitle,
+  ExtraText,
+  ButtonText,
+  FormikError,
+  StyledButton,
+  InnerContainer,
+  StyledFormArea,
+  StyledTextInput,
+  StyledContainer,
+  TextLinkContent,
+  StyledInputLabel,
+} from './../components/StyledComponents';
+import { FocusedStatusBar } from './../components';
+import { View, ActivityIndicator} from 'react-native';
+import { Octicons, Ionicons } from '@expo/vector-icons';
+import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
 const Signup = ({ navigation }) => {
 
@@ -52,9 +55,7 @@ const Signup = ({ navigation }) => {
   const [message, setMessage] = useState();
   const [messageType, setMessageType] = useState();
 
-    //Handle sign up form submission
-    const handleSignup = async (formValues, setSubmitting) => {
-    
+  const handleSignup = async (formValues, setSubmitting) => {
       handleMessage(null);
 
       const config = {
@@ -65,41 +66,21 @@ const Signup = ({ navigation }) => {
 
       try {
         const response = await axios.post("/api/users", JSON.stringify({ first_name: formValues.firstName, last_name: formValues.lastName, email: formValues.email, profile_image : "", user_status:"UNVERIFIED", hashed_password: formValues.password }), config);
-    
         const result = response.data;
         const { status, message, email } = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
-          //Signup was successful redirect the user to the account verification screen
-          //temporaryUserPersist(({firstName, lastName, email} = formValues))
           navigation.navigate('Verification',{
             email: email
-          
           })
-        }
-        setSubmitting(false);
-      
+        }  
       } catch (error) {
-        setSubmitting(false);
         handleMessage('An error occurred. Check your network and try again');
-        console.log(error.toJSON());
-  
       }
+      setSubmitting(false);
     };
-
-    /*persist data that user signs up with temporarily
-    const temporaryUserPersist = async (formValues) => {
-      
-        try {
-          await AsyncStorage.setItem('tempUser', JSON.stringify(formValues));
-        } catch (error) {
-          handleMessage('Error with initial data handling');
-        }
-    };
-
-    */
 
     const handleMessage = (message, type = '') => {
       setMessage(message);
@@ -108,152 +89,139 @@ const Signup = ({ navigation }) => {
 
   return (
     <KeyboardAvoidingWrapper>
-      <View style={{flex:1,padding: 25, paddingTop: StatusBarHeight + 10, backgroundColor: COLORS.white}}>
+      <StyledContainer>
         <FocusedStatusBar background={COLORS.primary}/>
-        <View style={{flex:1, width:'100%', alignItems:'center'}}>
-          <Text style={{fontSize:30, textAlign:'center',fontWeight:'bold', color: COLORS.brand}}>NFT Market Place</Text>
-          <Text style={{fontSize: 18, marginBottom:20, letterSpacing: 1, fontWeight: 'bold', color:COLORS.tertiary}}>Create Account</Text>
+          <InnerContainer>
+            <PageTitle>NFT Market Place</PageTitle>
+            <SubTitle>Create Account</SubTitle>
+            <Formik
+              initialValues={{ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }}
+              validationSchema={signupValidationSchema}
+              onSubmit={(values, { setSubmitting }) => {
+                if (
+                  values.email == '' ||
+                  values.password == '' ||
+                  values.firstName == '' ||
+                  values.lastName == '' ||
+                  values.confirmPassword == ''
+                ) {
+                  handleMessage('Please fill in all fields');
+                  setSubmitting(false);
+                } else if (values.password !== values.confirmPassword) {
+                  handleMessage('Passwords do not match');
+                  setSubmitting(false);
+                } else {
+                  handleSignup(values, setSubmitting);
+                }
+              }}
+            >
+              {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched }) => (
+                <StyledFormArea>
+                  <MyTextInput
+                    label="First Name"
+                    placeholder="Otsogile "
+                    placeholderTextColor={COLORS.darkLight}
+                    onChangeText={handleChange('firstName')}
+                    onBlur={handleBlur('firstName')}
+                    value={values.firstName}
+                    icon="person"
+                  />
+                  {touched.firstName && errors.firstName && <FormikError>{errors.firstName}</FormikError>}
 
-          <Formik
-            initialValues={{ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }}
-            validationSchema={signupValidationSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              if (
-                values.email == '' ||
-                values.password == '' ||
-                values.firstName == '' ||
-                values.lastName == '' ||
-                values.confirmPassword == ''
-              ) {
-                handleMessage('Please fill in all fields');
-                setSubmitting(false);
-              } else if (values.password !== values.confirmPassword) {
-                handleMessage('Passwords do not match');
-                setSubmitting(false);
-              } else {
-                handleSignup(values, setSubmitting);
-              }
-            }}
-          >
-            {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched }) => (
-              <View style={{width:'90%'}}>
-                <MyTextInput
-                  label="First Name"
-                  placeholder="Otsogile "
-                  placeholderTextColor={COLORS.darkLight}
-                  onChangeText={handleChange('firstName')}
-                  onBlur={handleBlur('firstName')}
-                  value={values.firstName}
-                  icon="person"
-                />
-                {touched.firstName && errors.firstName &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.firstName}</Text>
-                  }
+                  <MyTextInput
+                    label="Last Name"
+                    placeholder="Onalepelo "
+                    placeholderTextColor={COLORS.darkLight}
+                    onChangeText={handleChange('lastName')}
+                    onBlur={handleBlur('lastName')}
+                    value={values.lastName}
+                    icon="person"
+                  />
+                  {touched.lastName && errors.lastName && <FormikError>{errors.lastName}</FormikError>}
 
-                <MyTextInput
-                  label="Last Name"
-                  placeholder="Onalepelo "
-                  placeholderTextColor={COLORS.darkLight}
-                  onChangeText={handleChange('lastName')}
-                  onBlur={handleBlur('lastName')}
-                  value={values.lastName}
-                  icon="person"
-                />
-                 {touched.lastName && errors.lastName &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.lastName}</Text>
-                  }
-                <MyTextInput
-                  label="Email Address"
-                  placeholder="hireme@morena.com"
-                  placeholderTextColor={COLORS.darkLight}
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                  keyboardType="email-address"
-                  icon="mail"
-                />
-                 {touched.email && errors.email &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
-                  }
+                  <MyTextInput
+                    label="Email Address"
+                    placeholder="hireme@morena.com"
+                    placeholderTextColor={COLORS.darkLight}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    keyboardType="email-address"
+                    icon="mail"
+                  />
+                  {touched.email && errors.email && <FormikError>{errors.email}</FormikError>}
 
-                <MyTextInput
-                  label="Password"
-                  placeholder="* * * * * * * *"
-                  placeholderTextColor={COLORS.darkLight}
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                  secureTextEntry={hidePassword}
-                  icon="lock"
-                  isPassword={true}
-                  hidePassword={hidePassword}
-                  setHidePassword={setHidePassword}
-                />
-                {touched.password && errors.password &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
-                  }
-                <MyTextInput
-                  label="Confirm Password"
-                  placeholder="* * * * * * * *"
-                  placeholderTextColor={COLORS.darkLight}
-                  onChangeText={handleChange('confirmPassword')}
-                  onBlur={handleBlur('confirmPassword')}
-                  value={values.confirmPassword}
-                  secureTextEntry={hidePassword}
-                  icon="lock"
-                  isPassword={true}
-                  hidePassword={hidePassword}
-                  setHidePassword={setHidePassword}
-                />
-                
-                <Text style={{textAlign:'center', fontSize:13, color: messageType == "SUCCESS" ? COLORS.green : COLORS.red}}>{message}</Text>
+                  <MyTextInput
+                    label="Password"
+                    placeholder="* * * * * * * *"
+                    placeholderTextColor={COLORS.darkLight}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                    secureTextEntry={hidePassword}
+                    icon="lock"
+                    isPassword={true}
+                    hidePassword={hidePassword}
+                    setHidePassword={setHidePassword}
+                  />
+                  {touched.password && errors.password && <FormikError>{errors.password}</FormikError>}
+                  <MyTextInput
+                    label="Confirm Password"
+                    placeholder="* * * * * * * *"
+                    placeholderTextColor={COLORS.darkLight}
+                    onChangeText={handleChange('confirmPassword')}
+                    onBlur={handleBlur('confirmPassword')}
+                    value={values.confirmPassword}
+                    secureTextEntry={hidePassword}
+                    icon="lock"
+                    isPassword={true}
+                    hidePassword={hidePassword}
+                    setHidePassword={setHidePassword}
+                  />
+                  
+                  <MsgBox type={messageType}>{message}</MsgBox>
 
-                {!isSubmitting && (
-                  <TouchableOpacity style={{padding: 15,backgroundColor: COLORS.brand, justifyContent:'center',alignItems:'center', borderRadius:5, marginVertical:5, height:60}} onPress={handleSubmit}>
-                    <Text style={{color: COLORS.white, fontSize:16}}>Signup</Text>
-                  </TouchableOpacity>
-                )}
-                {isSubmitting && (
-                  <TouchableOpacity style={{padding: 15,backgroundColor: COLORS.brand, justifyContent:'center',alignItems:'center', borderRadius:5, marginVertical:5, height:60}} disabled={true}>
-                    <ActivityIndicator size="large" color={COLORS.white} />
-                  </TouchableOpacity>
-                )}
+                  {!isSubmitting && (
+                    <StyledButton onPress={handleSubmit}>
+                      <ButtonText>Signup</ButtonText>
+                    </StyledButton>
+                  )}
 
-                <View style={{height:1, width:'100%',backgroundColor:COLORS.darkLight, marginVertical:10}} />
-                <View style={{justifyContent:'center',flexDirection:'row',alignItems:'center',padding:10}}>
-                  <Text style={{justifyContent:'center',alignContent:'center',color:COLORS.tertiary, fontSize:15}}>Already have an account? </Text>
-                  <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={() => navigation.navigate('Login')}>
-                    <Text style={{color:COLORS.brand, fontSize:15}}>Login</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )}
+                  {isSubmitting && (
+                    <StyledButton disabled={true}>
+                      <ActivityIndicator size="large" color={COLORS.white} />
+                    </StyledButton>
+                  )}
+
+                  <Line />
+                  <ExtraView>
+                      <ExtraText>Already have an account? </ExtraText>
+                      <TextLink onPress={() => navigation.navigate('Login')}>
+                        <TextLinkContent>Login</TextLinkContent>
+                      </TextLink>
+                </ExtraView>
+                </StyledFormArea>
+              )}
           </Formik>
-        </View>
-      </View>
+        </InnerContainer>
+      </StyledContainer>
     </KeyboardAvoidingWrapper>
   );
 };
 
-//this component is only going to be used here hence we created in this file
 const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
   return (
     <View>
-      <View style={{position:'absolute',left:15,top:38,zIndex:1}}>
-        <Octicons name={icon} size={30} color={COLORS.brand} />
-      </View>
-      <Text style={{color:COLORS.tertiary,fontSize:13,textAlign:'left'}}>{label}</Text>
-
-    <TextInput style={{backgroundColor: COLORS.secondaryLight,padding:15,paddingLeft:55,paddingRight:55,borderRadius:5,fontSize:16,height:60,marginVertical:3,marginBottom:10}} {...props} />
+      <LeftIcon>
+          <Octicons name={icon} size={30} color={COLORS.brand} />
+      </LeftIcon>
+      <StyledInputLabel>{label}</StyledInputLabel>
+      <StyledTextInput {...props} />
 
       {isPassword && (
-        <TouchableOpacity style={{position:'absolute',right:15,top:38,zIndex:1}}
-          onPress={() => {
-            setHidePassword(!hidePassword);
-          }}
-        >
+        <RightIcon onPress={() => {setHidePassword(!hidePassword);}}>
           <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={COLORS.darkLight} />
-        </TouchableOpacity>
+        </RightIcon>
       )}
     </View>
   );
