@@ -1,46 +1,37 @@
+//1. import all requred packages,hooks and components
+//===================================================
+import * as yup from 'yup';
 import { useState} from 'react';
 import { Formik } from 'formik';
+import axios from './../api/axios';
+import { COLORS} from "../constants";
 import {
-  StyledContainer,
-  PageLogo,
-  PageTitle,
-  SubTitle,
-  StyledInputLabel,
-  StyledFormArea,
-  StyledButton,
-  StyledTextInput,
-  LeftIcon,
-  InnerContainer,
-  ButtonText,
-  MsgBox,
   Line,
+  MsgBox,
+  PageLogo,
+  TextLink,
+  LeftIcon,
+  SubTitle,
+  PageTitle,
+  ButtonText,
   ExtraView,
   ExtraText,
-  TextLink,
-  TextLinkContent
+  FormikError,
+  StyledButton,
+  InnerContainer,
+  StyledFormArea,
+  TextLinkContent,
+  StyledTextInput,
+  StyledContainer,
+  StyledInputLabel
 } from './../components/StyledComponents';
-import { FocusedStatusBar } from "../components";
-import { View, ActivityIndicator, Text } from 'react-native';
-
-// our theme config and other constants
-import { COLORS} from "../constants";
-
-
-// icons
 import { Octicons } from '@expo/vector-icons';
-
-// keyboard avoiding view
+import { FocusedStatusBar } from "./../components";
+import { View, ActivityIndicator, Text } from 'react-native';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-
-//import axios
-import axios from './../api/axios';
-
-//yup for formik form validation
-import * as yup from 'yup';
 
 
 const ResetPasswordRequest = ({ navigation }) => {
-
     //request password reset input validation
     const requestPasswordResetValidationSchema = yup.object().shape({
         email: yup
@@ -71,14 +62,11 @@ const ResetPasswordRequest = ({ navigation }) => {
           //redirect to otp verification input screen
           navigation.navigate('OtpVerificationInput', {email: resetEmail.email, title: 'Password Reset', type:"RESET_PASSWORD_REQUEST"});
         }
-        setSubmitting(false);
       
       } catch (error) {
-        setSubmitting(false);
         handleMessage('An error occurred. Check your network and try again');
-        console.log(error.toJSON());
       }
-      
+      setSubmitting(false); 
     };
 
     const handleMessage = (message, type = 'FAILED') => {
@@ -89,7 +77,7 @@ const ResetPasswordRequest = ({ navigation }) => {
   return (
     <KeyboardAvoidingWrapper>
         <StyledContainer> 
-        <FocusedStatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true}/>
+          <FocusedStatusBar background={COLORS.primary}/>
           <InnerContainer>
               <PageLogo resizeMode="cover" source={require("./../assets/images/nft-login-image.png")}/>
               <PageTitle>NFT Market Place</PageTitle>
@@ -120,7 +108,7 @@ const ResetPasswordRequest = ({ navigation }) => {
                     icon="mail"
                   />
                   {touched.email && errors.email &&
-                    <Text style={{ fontSize: 10, color: 'red', marginBottom:40 }}>{errors.email}</Text>
+                    <FormikError style={{marginBottom:40 }}>{errors.email}</FormikError>
                   }
 
                   <MsgBox type={messageType}>{message}</MsgBox>
@@ -151,7 +139,7 @@ const ResetPasswordRequest = ({ navigation }) => {
                       <TextLinkContent>Login</TextLinkContent>
                     </TextLink>
                   </ExtraView>
-                
+              
                 </StyledFormArea>
               )}
             
