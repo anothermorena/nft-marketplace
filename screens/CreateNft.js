@@ -1,19 +1,22 @@
+//1. import all requred packages,hooks and components
+//===================================================
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import axios from './../api/axios';
 import {
-  StyledContainer,
-  PageLogo,
-  SubTitle,
-  StyledInputLabel,
-  StyledFormArea,
-  StyledButton,
-  StyledTextInput,
-  LeftIcon,
-  InnerContainer,
-  ButtonText,
+  IconBg,
   MsgBox,
-  IconBg
+  PageLogo,
+  LeftIcon,
+  SubTitle,
+  ButtonText,
+  FormikError,
+  StyledButton,
+  StyledFormArea,
+  StyledTextInput,
+  InnerContainer,
+  StyledContainer,
+  StyledInputLabel,
 } from './../components/StyledComponents';
 import { COLORS,assets } from "../constants";
 import * as ImagePicker from 'expo-image-picker';
@@ -26,20 +29,14 @@ import { FocusedStatusBar,CircleButton } from './../components';
 import { CredentialsContext } from './../context/CredentialsContext';
 
 const CreateNft = ({navigation}) => {
+  const [show, setShow] = useState(false);
     const [message, setMessage] = useState();
-    const [messageType, setMessageType] = useState();
-    const [image, setImage] = useState(null);
     const [mode, setMode] = useState("time");
-    const [show, setShow] = useState(false);
+    const [image, setImage] = useState(null);
     const [date, setDate] = useState(new Date());
-
-    // bidding deadline to be sent to the db
+    const [messageType, setMessageType] = useState();
     const [nftBiddingDeadline, setNftBiddingDeadline] = useState();
-
-    // credentials context
     const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
-
-    //destructure the data stored in the context
     const { accessToken} = storedCredentials;
 
     //create Nft form fields validation
@@ -59,7 +56,7 @@ const CreateNft = ({navigation}) => {
         .string()  
     });
 
-    //upload nft image function
+    //upload nft image
     const pickImage = async () => {
       //clear the current image stored in the state
       setImage(null);
@@ -88,7 +85,6 @@ const CreateNft = ({navigation}) => {
           }
         }
 
-        //check if user provided an image for the nft
         if(!image){
           handleMessage('You must upload or select an image for your nft');
           setSubmitting(false);
@@ -106,10 +102,7 @@ const CreateNft = ({navigation}) => {
           if (status !== 'SUCCESS') {
             handleMessage(message, status);
           } else {
-            //tell the user the nft was created successfully
             alert("Your nft was created successfully.");
-
-            //rediect the user to the home screen
             navigation.navigate('Home');
           }  
         } catch (error) {
@@ -197,19 +190,19 @@ const CreateNft = ({navigation}) => {
           </TouchableOpacity> 
            )}
             {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-              style={{
-                backgroundColor: COLORS.brand,
-                color: COLORS.brand,
-              }}
-            />
-          )}
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+                style={{
+                  backgroundColor: COLORS.brand,
+                  color: COLORS.brand,
+                }}
+              />
+             )}
 
             <Formik
                initialValues={{nftTitle: "",nftDescription: "", nftPrice:"", biddingDeadline:""}}
@@ -223,7 +216,7 @@ const CreateNft = ({navigation}) => {
                   handleCreateNft(values, setSubmitting);
                  }
                }}
-            >
+              >
                 {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
                 <StyledFormArea>
                 
@@ -235,9 +228,9 @@ const CreateNft = ({navigation}) => {
                     value={values.nftTitle}
                     icon="title"
                   />
-                   {touched.nftTitle && errors.nftTitle &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.nftTitle}</Text>
-                  }
+                {touched.nftTitle && errors.nftTitle &&
+                <FormikError>{errors.nftTitle}</FormikError>
+                }
                   
                 <MyTextInput
                     label="Nft Description"
@@ -251,8 +244,8 @@ const CreateNft = ({navigation}) => {
                     textAlignVertical= "top"
                     height={200}
                   />
-                   {touched.nftDescription && errors.nftDescription &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.nftDescription}</Text>
+                  {touched.nftDescription && errors.nftDescription &&
+                  <FormikError>{errors.nftDescription}</FormikError>
                   }
 
                   <MyTextInput
@@ -265,7 +258,7 @@ const CreateNft = ({navigation}) => {
                     icon="attach-money"
                   />
                    {touched.nftPrice && errors.nftPrice &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.nftPrice}</Text>
+                    <FormikError>{errors.nftPrice}</FormikError>
                   }
 
                   <MyTextInput
@@ -280,7 +273,7 @@ const CreateNft = ({navigation}) => {
                     showTimepicker={showTimepicker}
                   />
                    {touched.biddingDeadline && errors.biddingDeadline &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.biddingDeadline}</Text>
+                   <FormikError>{errors.biddingDeadline}</FormikError>
                   }
                   
                   <MsgBox type={messageType}>{message}</MsgBox>
