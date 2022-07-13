@@ -105,8 +105,8 @@ const Verification = ({route, navigation}) => {
 
   return (
     <StyledContainer style={{alignItems: 'center'}}>
+      <FocusedStatusBar background={COLORS.primary}/>
       <InnerContainer>
-          <FocusedStatusBar background={COLORS.primary}/>
           <TopHalf>
               <IconBg>
                   <Ionicons name="mail-open-outline" size={125} color={COLORS.brand} />

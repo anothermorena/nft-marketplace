@@ -1,33 +1,35 @@
-import { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Formik } from 'formik';
+//1. import all requred packages,hooks and components
+//===================================================
 import * as yup from 'yup';
+import { Formik } from 'formik';
+import { useState } from 'react';
+import axios from './../api/axios';
+import { COLORS } from "./../constants";
 import {
-  StyledContainer,
-  SubTitle,
-  StyledInputLabel,
-  StyledFormArea,
-  StyledButton,
-  StyledTextInput,
-  LeftIcon,
-  RightIcon,
-  InnerContainer,
-  ButtonText,
-  MsgBox,
   Line,
+  IconBg,
+  MsgBox,
+  TopHalf,
+  LeftIcon,
+  TextLink,
+  SubTitle,
   ExtraView,
   ExtraText,
-  TextLink,
+  RightIcon,
+  ButtonText,
+  FormikError,
+  StyledButton,
+  StyledFormArea,
+  InnerContainer,
   TextLinkContent,
-  TopHalf,
-  IconBg
+  StyledTextInput,
+  StyledContainer,
+  StyledInputLabel,
 } from './../components/StyledComponents';
-import { View, Text, ActivityIndicator } from 'react-native';
-import { COLORS } from "../constants";
+import {  FocusedStatusBar } from './../components';
+import { View, ActivityIndicator } from 'react-native';
 import { Octicons, Ionicons , MaterialCommunityIcons} from '@expo/vector-icons';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-import axios from './../api/axios';
-
 
 const ResetPasswordInput = ({ route, navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
@@ -37,7 +39,7 @@ const ResetPasswordInput = ({ route, navigation }) => {
     //get the email the user used to create the reset password request and the otp
     const { email, code } = route.params;
 
-    //Password Validation
+    //Password Validation schema
     const passwordValidationSchema = yup.object().shape({
         password: yup
         .string()
@@ -67,13 +69,11 @@ const ResetPasswordInput = ({ route, navigation }) => {
           navigation.navigate('Login');
     
         }
-        setSubmitting(false);
       
       } catch (error) {
-        setSubmitting(false);
         handleMessage('An error occurred. Check your network and try again');
-  
       }
+      setSubmitting(false);
     };
 
     const handleMessage = (message, type = 'FAILED') => {
@@ -84,7 +84,7 @@ const ResetPasswordInput = ({ route, navigation }) => {
   return (
     <KeyboardAvoidingWrapper>
         <StyledContainer> 
-          <StatusBar style="dark" />
+          <FocusedStatusBar background={COLORS.primary}/>
           <InnerContainer>
           <TopHalf>
                 <IconBg>
@@ -125,7 +125,7 @@ const ResetPasswordInput = ({ route, navigation }) => {
                     setHidePassword={setHidePassword}
                   />
                    {touched.password && errors.password &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                    <FormikError>{errors.password}</FormikError>
                   }
 
                   <MyTextInput

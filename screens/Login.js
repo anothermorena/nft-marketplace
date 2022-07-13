@@ -5,24 +5,24 @@ import axios from './../api/axios';
 import { COLORS } from "./../constants";
 import { useState, useContext } from 'react';
 import {
-  StyledContainer,
-  PageLogo,
-  PageTitle,
-  SubTitle,
-  StyledInputLabel,
-  StyledFormArea,
-  StyledButton,
-  StyledTextInput,
-  LeftIcon,
-  RightIcon,
-  InnerContainer,
-  ButtonText,
-  MsgBox,
   Line,
-  ExtraView,
-  ExtraText,
+  MsgBox,
+  PageLogo,
+  LeftIcon,
   TextLink,
-  TextLinkContent
+  SubTitle,
+  ExtraText,
+  RightIcon,
+  PageTitle,
+  ExtraView,
+  ButtonText,
+  StyledButton,
+  StyledFormArea,
+  InnerContainer,
+  TextLinkContent,
+  StyledTextInput,
+  StyledContainer,
+  StyledInputLabel,
 } from './../components/StyledComponents';
 import * as SecureStore from 'expo-secure-store';
 import {  FocusedStatusBar } from './../components';
