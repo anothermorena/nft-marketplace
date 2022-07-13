@@ -1,6 +1,9 @@
-import { useState, useContext } from 'react';
-import { StatusBar } from 'expo-status-bar';
+//1. import all requred packages,hooks and components
+//===================================================
 import { Formik } from 'formik';
+import axios from './../api/axios';
+import { COLORS } from "./../constants";
+import { useState, useContext } from 'react';
 import {
   StyledContainer,
   PageLogo,
@@ -21,37 +24,23 @@ import {
   TextLink,
   TextLinkContent
 } from './../components/StyledComponents';
-import { View, ActivityIndicator } from 'react-native';
-
-// our theme config and other constants
-import { COLORS, Constants } from "../constants";
-
-// icons
-import { Octicons, Ionicons } from '@expo/vector-icons';
-
-// keyboard avoiding view
-import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-
-//import axios
-import axios from './../api/axios';
-
-//expo async secure local storage.
 import * as SecureStore from 'expo-secure-store';
-
-// credentials context
+import {  FocusedStatusBar } from './../components';
+import { View, ActivityIndicator } from 'react-native';
+import { Octicons, Ionicons } from '@expo/vector-icons';
 import { CredentialsContext } from './../context/CredentialsContext';
+import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
 
 const Login = ({ navigation }) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
-
-    // credentials context
     const {storedCredentials, setStoredCredentials} = useContext(CredentialsContext);
 
     const handleLogin = async (credentials,setSubmitting) => {
       //clear the error message whenever the login button is pressed
+      handleMessage(null);
 
       const requestBody = {
         body: JSON.stringify(
@@ -74,11 +63,9 @@ const Login = ({ navigation }) => {
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
         } else {
-
           //check if the user's account is verified
           if(userStatus === "UNVERIFIED") {
             alert("Your account is not verified. Verification is required before you can use your account for anything.");
-
             navigation.navigate('OtpVerificationInput', {email: credentials.email, title: 'Verify Your Account', type:"VERIFY_ACCOUNT"});
 
           } else {
@@ -98,11 +85,9 @@ const Login = ({ navigation }) => {
             navigation.navigate('Home');
             }
         }
-      
       } catch (error) {
         handleMessage('An error occurred. Check your network and try again');
       } 
-
       setSubmitting(false);
     };
 
@@ -127,7 +112,7 @@ const Login = ({ navigation }) => {
   return (
     <KeyboardAvoidingWrapper>
         <StyledContainer> 
-          <StatusBar style="dark" />
+          <FocusedStatusBar background={COLORS.primary}/>
           <InnerContainer>
               <PageLogo resizeMode="cover" source={require("./../assets/images/nft-login-image.png")}/>
               <PageTitle>NFT Market Place</PageTitle>
@@ -171,7 +156,6 @@ const Login = ({ navigation }) => {
                   />
                   <MsgBox type={messageType}>{message}</MsgBox>
 
-
                   {!isSubmitting && (
                     <StyledButton onPress={handleSubmit}>
                       <ButtonText>Login</ButtonText>
@@ -198,10 +182,8 @@ const Login = ({ navigation }) => {
                       <TextLinkContent>Reset Password</TextLinkContent>
                     </TextLink>
                   </ExtraView>
-                
                 </StyledFormArea>
-              )}
-            
+              )}     
             </Formik>
           </InnerContainer>
         </StyledContainer>
@@ -209,7 +191,6 @@ const Login = ({ navigation }) => {
     
   )
 }
-
 
 const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
     return (
