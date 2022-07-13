@@ -1,3 +1,5 @@
+//1. app colors
+//=============
 export const COLORS = {
     primary: "#001F2D",
     secondaryDark: "#4D626C",
@@ -12,7 +14,10 @@ export const COLORS = {
     lightGreen: 'rgba(16, 185, 129, 0.1)',
   };
   
-  export const SIZES = {
+  
+//2. app sizes
+//============
+export const SIZES = {
     base: 8,
     small: 12,
     font: 14,
@@ -21,6 +26,8 @@ export const COLORS = {
     extraLarge: 24,
   };
   
+//3. app fonts
+//============
   export const FONTS = {
     bold: "InterBold",
     semiBold: "InterSemiBold",
@@ -28,39 +35,41 @@ export const COLORS = {
     regular: "InterRegular",
     light: "InterLight",
   };
-  
-  export const SHADOWS = {
-    light: {
-      shadowColor: COLORS.gray,
-      shadowOffset: {
-        width: 0,
-        height: 1,
-      },
-      shadowOpacity: 0.22,
-      shadowRadius: 2.22,
-  
-      elevation: 3,
+
+//4. app shadows
+//=============
+export const SHADOWS = {
+  light: {
+    shadowColor: COLORS.gray,
+    shadowOffset: {
+      width: 0,
+      height: 1,
     },
-    medium: {
-      shadowColor: COLORS.gray,
-      shadowOffset: {
-        width: 0,
-        height: 3,
-      },
-      shadowOpacity: 0.29,
-      shadowRadius: 4.65,
-  
-      elevation: 7,
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
+  },
+  medium: {
+    shadowColor: COLORS.gray,
+    shadowOffset: {
+      width: 0,
+      height: 3,
     },
-    dark: {
-      shadowColor: COLORS.gray,
-      shadowOffset: {
-        width: 0,
-        height: 7,
-      },
-      shadowOpacity: 0.41,
-      shadowRadius: 9.11,
-  
-      elevation: 14,
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
+  },
+  dark: {
+    shadowColor: COLORS.gray,
+    shadowOffset: {
+      width: 0,
+      height: 7,
     },
-  };
+    shadowOpacity: 0.41,
+    shadowRadius: 9.11,
+  
+    elevation: 14,
+  },
+};
