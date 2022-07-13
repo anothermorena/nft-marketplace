@@ -31,7 +31,6 @@ import { Octicons, Ionicons } from '@expo/vector-icons';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
 const Signup = ({ navigation }) => {
-
   //Sign up form validation
   const signupValidationSchema = yup.object().shape({
     firstName: yup

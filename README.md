@@ -18,15 +18,11 @@ A marketplace is a platform where vendors can come together to sell their produc
 
 6) Search nft's.
 
-7) Show trending nft's by number of bids.
+7) Add and remove nfts from a wishlist
 
-8) Show my bids and nfts to an account holder or user.
+8) View Wishlist
 
-9) Add and remove nfts from a wishlist
-
-10) View Wishlist
-
-11) Logout 
+9) Logout 
 
 
 # USE CASE DIAGRAM
