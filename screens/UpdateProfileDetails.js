@@ -1,43 +1,39 @@
-import React, { useState,useContext } from 'react';
-import { Formik } from 'formik';
+//1. import all requred packages,hooks and components
+//===================================================
 import * as yup from 'yup';
+import { Formik } from 'formik';
+import axios from './../api/axios';
+import { useState,useContext } from 'react';
+import { COLORS,assets } from "./../constants";
 import {
-  StyledContainer,
+  MsgBox,
   PageLogo,
   SubTitle,
-  StyledInputLabel,
-  StyledFormArea,
-  StyledButton,
-  StyledTextInput,
   LeftIcon,
-  InnerContainer,
+  FormikError,
   ButtonText,
-  MsgBox,
+  StyledButton,
+  InnerContainer,
+  StyledFormArea,
+  StyledTextInput,
+  StyledContainer,
+  StyledInputLabel,
 } from './../components/StyledComponents';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { COLORS,assets } from "../constants";
-import { Octicons, MaterialIcons} from '@expo/vector-icons';
-import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-import axios from './../api/axios';
-import { FocusedStatusBar,CircleButton } from './../components';
 import * as ImagePicker from 'expo-image-picker';
-
-// credentials context
+import { Octicons, MaterialIcons} from '@expo/vector-icons';
+import { FocusedStatusBar,CircleButton } from './../components';
 import { CredentialsContext } from './../context/CredentialsContext';
+import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 
 const UpdateProfileDetails = ({navigation}) => {
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
     const [image, setImage] = useState(null);
-
-    // credentials context
     const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
-
-    //destructure the data stored in the context
     const { accessToken,firstName,lastName,profileImage} = storedCredentials;
 
-
-    //Profile Details Validation
+    //profile details validation
     const profileDetailsValidationSchema = yup.object().shape({
         firstName: yup
         .string()
@@ -48,7 +44,6 @@ const UpdateProfileDetails = ({navigation}) => {
         
     });
 
-    //update users profile image function
     const pickImage = async () => {
       //clear the current image stored in the state
       setImage(null);
@@ -97,16 +92,11 @@ const UpdateProfileDetails = ({navigation}) => {
               profileImage: data.profile_image    
           }
           setStoredCredentials(newStoredCredentials);
-
-          //tell the user the update was successful
           alert("Your profile details were updated successfully.");
-
-          //rediect the user to the home page
           navigation.navigate('Home');
         }
       
       } catch (error) {
-        console.log(error.toJSON());
         handleMessage('An error occurred. Check your network and try again');
       }
       setSubmitting(false);
@@ -119,8 +109,6 @@ const UpdateProfileDetails = ({navigation}) => {
 
 
     const createFormData = (firstName, lastName,uri) => {
-
-      //create the form object
       const formData = new FormData();
 
       //check if user uploaded an image
@@ -197,7 +185,7 @@ const UpdateProfileDetails = ({navigation}) => {
                     icon="person"
                   />
                    {touched.firstName && errors.firstName &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.firstName}</Text>
+                    <FormikError>{errors.firstName}</FormikError>
                   }
                   
                 <MyTextInput
@@ -209,7 +197,7 @@ const UpdateProfileDetails = ({navigation}) => {
                     icon="person"
                   />
                    {touched.lastName && errors.lastName &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.lastName}</Text>
+                    <FormikError>{errors.lastName}</FormikError>
                   }
                   
                   <MsgBox type={messageType}>{message}</MsgBox>
@@ -229,8 +217,7 @@ const UpdateProfileDetails = ({navigation}) => {
             </Formik>
           </InnerContainer>
         </StyledContainer>
-    </KeyboardAvoidingWrapper>
-    
+    </KeyboardAvoidingWrapper>   
   )
 }
 
