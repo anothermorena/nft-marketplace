@@ -58,7 +58,7 @@ const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, bidForNft
   return (
     <View style={{ backgroundColor: COLORS.white, borderWidth:2, borderColor:COLORS.brand, borderRadius: SIZES.font, marginBottom: SIZES.extraLarge, margin: SIZES.base,...SHADOWS.dark}}>
          <View style={{ width: "100%",height: 250,}}>
-            <Image source={{uri: data.nft_image}} resizeMode="cover" style={{width: "100%",height: "100%", borderTopLeftRadius: SIZES.font, borderTopRightRadius: SIZES.font,}}/>
+            <Image source={{uri: data.nft_image}} resizeMode="cover" style={{width: "100%",height: "100%", borderTopLeftRadius: SIZES.small, borderTopRightRadius: SIZES.small,}}/>
             <CircleButton imgUrl={assets.heart} right={10} top={10} handleAddNftToWishList={handleAddNftToWishList}/>   
         </View>
 

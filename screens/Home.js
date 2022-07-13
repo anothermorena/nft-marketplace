@@ -1,13 +1,13 @@
-import {useState, useEffect} from 'react';
-import {View, SafeAreaView, FlatList,ActivityIndicator} from 'react-native';
-import {COLORS} from "../constants";
-import { HomeHeader,NFTCard, FocusedStatusBar } from '../components';
+//1. import all requred packages,hooks and components
+//===================================================
 import axios from '../api/axios';
+import {COLORS} from "../constants";
 import * as Network from 'expo-network';
-
+import {useState, useEffect} from 'react';
+import { HomeHeader,NFTCard, FocusedStatusBar } from '../components';
+import {View, SafeAreaView, FlatList,ActivityIndicator} from 'react-native';
 
 const Home = ({navigation}) => {
-
     const [nftData, setNftData] = useState(null);
     const [searchResults, setSearchResults] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -32,9 +32,7 @@ const Home = ({navigation}) => {
 
         getUserIpAddress();
         
-    
     },[]);
-
 
     //search nft's
     const handleSearch = value => {
@@ -61,9 +59,7 @@ const Home = ({navigation}) => {
 
             {loading && <ActivityIndicator size="large" color={COLORS.brand} style={{marginVertical:200}}/>}
 
-            {/* This view is going to act as a background color. It will be displayed behind out nft list*/}
             <View style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: -1}}>
-                {/* These two view components splits our screen into two. The firstone with a purple (the brand color) background and the second one with a white background */}
                 <View style={{ height: 300, backgroundColor: COLORS.brand }} />
                 <View style={{ flex: 1, backgroundColor: COLORS.white }} />
             </View>

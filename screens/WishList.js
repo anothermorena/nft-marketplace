@@ -1,14 +1,14 @@
-import {useState, useEffect} from 'react';
-import {View, SafeAreaView, FlatList,ActivityIndicator, Text} from 'react-native';
-import {COLORS} from "../constants";
-import { HomeHeader,NFTCard, FocusedStatusBar } from '../components';
+//1. import all requred packages,hooks and components
+//===================================================
 import axios from '../api/axios';
+import {COLORS} from "../constants";
 import * as Network from 'expo-network';
+import {useState, useEffect} from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import { HomeHeader,NFTCard, FocusedStatusBar } from '../components';
+import {View, SafeAreaView, FlatList,ActivityIndicator, Text} from 'react-native';
 
 const WishList = ({navigation}) => {
-
     const [wishList, setWishList] = useState(null);
     const [wishListSearchResults, setWishListSearchResults] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -45,8 +45,6 @@ const WishList = ({navigation}) => {
       if (filteredData.length !== 0) setWishListSearchResults(filteredData);
     };  
 
-
-
   return (
     <SafeAreaView style={{flex:1}}>
         <FocusedStatusBar background={COLORS.primary}/>
@@ -67,10 +65,7 @@ const WishList = ({navigation}) => {
               </>
             )}
             {loading && <ActivityIndicator size="large" color={COLORS.brand} style={{marginVertical:200}}/>}
-
-            {/* This view is going to act as a background color. It will be displayed behind out nft list*/}
             <View style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: -1}}>
-                {/* These two view components splits our sscreen into two. The firstone with a dark background and the second one with a white background */}
                 <View style={{ height: 300, backgroundColor: COLORS.brand }} />
                 <View style={{ flex: 1, backgroundColor: COLORS.white }} />
             </View>

@@ -1,12 +1,14 @@
-import { View, Text, SafeAreaView, Image, StatusBar, FlatList, TextInput,ActivityIndicator,StyleSheet } from "react-native";
-import { COLORS, SIZES, assets, FONTS } from "../constants";
-import { CircleButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
-import { Formik } from 'formik';
+//1. import all requred packages,hooks and components
+//===================================================
 import * as yup from 'yup';
+import { Formik } from 'formik';
 import {useContext} from "react";
-import {StyledButton,ButtonText} from './../components/StyledComponents';
-import { CredentialsContext } from './../context/CredentialsContext';
 import axios from './../api/axios';
+import { COLORS, SIZES, assets, FONTS, Constants } from "../constants";
+import { CredentialsContext } from './../context/CredentialsContext';
+import {StyledButton,ButtonText} from './../components/StyledComponents';
+import { CircleButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
+import { View, Text, SafeAreaView, Image,  FlatList, TextInput,ActivityIndicator,StyleSheet } from "react-native";
 
 const DetailsHeader = ({ data, navigation }) => (
     <View style={{ width: "100%", height: 373 }}>
@@ -20,13 +22,13 @@ const DetailsHeader = ({ data, navigation }) => (
         imgUrl={assets.left}
         handlePress={() => navigation.goBack()}
         left={15}
-        top={StatusBar.currentHeight + 10}
+        top={Constants.statusBarHeight + 10}
       />
   
       <CircleButton
         imgUrl={assets.heart}
         right={15}
-        top={StatusBar.currentHeight + 10}
+        top={Constants.statusBarHeight + 10}
       />
     </View>
   );
@@ -34,11 +36,9 @@ const DetailsHeader = ({ data, navigation }) => (
 const Details = ({route, navigation}) => {
   //get the nft data from the route parameters  
   const { data } = route.params;
-
-  // credentials context
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
-  //bid amount validation
+  //bid amount validation schema
   const bidAmountValidationSchema = yup.object().shape({
     bidAmount: yup
     .number()
@@ -48,10 +48,10 @@ const Details = ({route, navigation}) => {
     
   });
 
-  //make a request to place a bid for the current nft
+  //makes a request to place a bid for the current nft
   const handlePlaceABid = async (formValues, setSubmitting) => {
     if(!storedCredentials) {
-      alert("You must be logged in to bid for nfts");
+      alert("You must be logged in to bid for nfts.");
       } else {
         //Place the bid
         const config = {
@@ -70,15 +70,12 @@ const Details = ({route, navigation}) => {
           } else {
             //tell the user the bid was placed successfully
             alert(message);
-
-            //rediect the user to the home screen
             navigation.navigate('Home');
           }  
         } catch (error) {
           alert('An error occurred. Check your network and try again');
         }
-        setSubmitting(false);
-        
+        setSubmitting(false);      
       }
   }
 
@@ -161,16 +158,16 @@ const Details = ({route, navigation}) => {
              <DetailsHeader data={data} navigation={navigation} />
              <SubInfo biddingDeadline={data.bidding_deadline}/>
              <View style={{ padding: SIZES.font }}>
-             <DetailsDesc data={data} />
-             <Text
-                style={{
-                  fontSize: SIZES.font,
-                  fontFamily: FONTS.semiBold,
-                  color: COLORS.primary,
-                }}
-              >
-                Current Bids
-              </Text>
+                <DetailsDesc data={data} />
+                <Text
+                    style={{
+                      fontSize: SIZES.font,
+                      fontFamily: FONTS.semiBold,
+                      color: COLORS.primary,
+                    }}
+                  >
+                    Current Bids
+                  </Text>
              </View>
            </>
          )}
@@ -198,12 +195,11 @@ const Details = ({route, navigation}) => {
       <View style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: -1}}>
           <View style={{ flex: 1, backgroundColor: COLORS.white }} />
       </View>
-
     </SafeAreaView>
   )
 }
 
-//extra styles for the submit button
+//extra styles for the submit button to keep our code dry
 const styles = StyleSheet.create ({
   styledButtonExtraStyles: {
     height:48, 
