@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 
+import { FocusedStatusBar } from './../components';
+
 // formik
 import { Formik } from 'formik';
 
@@ -107,7 +109,7 @@ const Signup = ({ navigation }) => {
   return (
     <KeyboardAvoidingWrapper>
       <View style={{flex:1,padding: 25, paddingTop: StatusBarHeight + 10, backgroundColor: COLORS.white}}>
-        <StatusBar style="dark" />
+        <FocusedStatusBar background={COLORS.primary}/>
         <View style={{flex:1, width:'100%', alignItems:'center'}}>
           <Text style={{fontSize:30, textAlign:'center',fontWeight:'bold', color: COLORS.brand}}>NFT Market Place</Text>
           <Text style={{fontSize: 18, marginBottom:20, letterSpacing: 1, fontWeight: 'bold', color:COLORS.tertiary}}>Create Account</Text>

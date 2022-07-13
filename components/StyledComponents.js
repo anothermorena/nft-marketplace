@@ -21,11 +21,6 @@ export const InnerContainer = styled.View`
   align-items: center;
 `;
 
-export const WelcomeContainer = styled(InnerContainer)`
-  padding: 25px;
-  padding-top: 10px;
-  justify-content: center;
-`;
 
 export const PageLogo = styled.Image`
   width: 250px;
@@ -43,10 +38,6 @@ export const Avatar = styled.Image`
   margin-top: 10px;
 `;
 
-export const WelcomeImage = styled.Image`
-  height: 50%;
-  min-width: 100%;
-`;
 
 export const CodeInput = styled.View`
   border-color: ${COLORS.lightGreen};
@@ -114,13 +105,11 @@ export const SubTitle = styled.Text`
   letter-spacing: 1px;
   font-weight: bold;
   color: ${COLORS.tertiary};
+`;
 
-  ${(props) =>
-    props.welcome &&
-    `
-    margin-bottom: 5px;
-    font-weight: normal;
-  `}
+export const FormikError = styled.Text`
+  font-size: 10px;
+  color: ${COLORS.red};
 `;
 
 export const StyledTextInput = styled.TextInput`

@@ -11,6 +11,7 @@ import {
   SubTitle,
   RightIcon,
   ButtonText,
+  FormikError,
   StyledButton,
   InnerContainer,
   StyledFormArea,
@@ -21,7 +22,7 @@ import {
 import { useState,useContext } from 'react';
 import { COLORS,assets } from "./../constants";
 import * as SecureStore from 'expo-secure-store';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { FocusedStatusBar,CircleButton } from './../components';
 import { Octicons, Ionicons, FontAwesome} from '@expo/vector-icons';
 import { CredentialsContext } from './../context/CredentialsContext';
@@ -72,14 +73,11 @@ const ChangePassword = ({navigation}) => {
           handleUserLogout();
           alert("Your password was changed successfully. Please login again to continue managing your account");
           navigation.navigate('Home');
-
         }
-      
       } catch (error) {
         handleMessage('An error occurred. Check your network and try again');
       }
       setSubmitting(false);
-
     };
 
     const handleMessage = (message, type = 'FAILED') => {
@@ -142,10 +140,10 @@ const ChangePassword = ({navigation}) => {
                     setHidePassword={setHidePassword}
                   />
                    {touched.currentPassword && errors.currentPassword &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.currentPassword}</Text>
+                   <FormikError>{errors.currentPassword}</FormikError>
                   }
                   <MyTextInput
-                    label="Password"
+                    label="New Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
                     onChangeText={handleChange('password')}
@@ -158,11 +156,11 @@ const ChangePassword = ({navigation}) => {
                     setHidePassword={setHidePassword}
                   />
                    {touched.password && errors.password &&
-                    <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                   <FormikError>{errors.password}</FormikError>
                   }
 
                   <MyTextInput
-                    label="Confirm Password"
+                    label="Confirm New Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
                     onChangeText={handleChange('confirmPassword')}
