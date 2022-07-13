@@ -15,7 +15,7 @@ const HomeHeader = ({ onSearch, navigation,searchBarPlaceHolderText }) => {
     const {profileImage} = storedCredentials;
   } 
 
-  const {profileImage} = storedCredentials;
+  //const {profileImage} = storedCredentials;
   
   return (
     <View style={{backgroundColor: COLORS.brand,padding: SIZES.font}}>

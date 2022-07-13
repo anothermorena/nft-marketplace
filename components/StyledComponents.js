@@ -94,6 +94,14 @@ export const FormikError = styled.Text`
   color: ${COLORS.red};
 `;
 
+export const StyledText = styled.Text`
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: ${COLORS.brand};
+  padding: 10px;
+`;
+
 export const StyledTextInput = styled.TextInput`
   background-color: ${COLORS.secondaryLight};
   padding: 15px;
@@ -225,7 +233,6 @@ export const EmphasizeText = styled.Text`
 
 export const InlineGroup = styled.View`
     flex-direction:row;
-    padding:10px;
     justify-content:center;
     align-items:center;
 `;

@@ -23,7 +23,7 @@ const CustomDrawer = props => {
    
   }
 
-  const {firstName,lastName,profileImage} = storedCredentials;
+  //const {firstName,lastName,profileImage} = storedCredentials;
   const nftsCount = 20;
   
 
