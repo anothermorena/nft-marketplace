@@ -5,7 +5,7 @@ import {FontAwesome5, AntDesign } from '@expo/vector-icons';
 import { COLORS, assets } from "../constants";
 
 // credentials context
-import { CredentialsContext } from './CredentialsContext';
+import { CredentialsContext } from './../context/CredentialsContext';
 
 //expo async secure local storage.
 import * as SecureStore from 'expo-secure-store';

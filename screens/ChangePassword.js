@@ -1,46 +1,44 @@
-import { useState,useContext } from 'react';
-import { Formik } from 'formik';
+//1. import all requred packages,hooks and components
+//===================================================
 import * as yup from 'yup';
+import { Formik } from 'formik';
+import axios from './../api/axios';
 import {
-  StyledContainer,
-  SubTitle,
-  StyledInputLabel,
-  StyledFormArea,
-  StyledButton,
-  StyledTextInput,
-  LeftIcon,
-  RightIcon,
-  InnerContainer,
-  ButtonText,
+  IconBg,
   MsgBox,
   TopHalf,
-  IconBg
+  LeftIcon,
+  SubTitle,
+  RightIcon,
+  ButtonText,
+  StyledButton,
+  InnerContainer,
+  StyledFormArea,
+  StyledContainer,
+  StyledTextInput,
+  StyledInputLabel
 } from './../components/StyledComponents';
-import { View, Text, ActivityIndicator } from 'react-native';
-import { COLORS,assets } from "../constants";
-import { Octicons, Ionicons, FontAwesome} from '@expo/vector-icons';
-import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-import axios from './../api/axios';
-import { FocusedStatusBar,CircleButton } from './../components';
-
-//expo async secure local storage.
+import { useState,useContext } from 'react';
+import { COLORS,assets } from "./../constants";
 import * as SecureStore from 'expo-secure-store';
-
-// credentials context
-import { CredentialsContext } from './../components/CredentialsContext';
+import { View, Text, ActivityIndicator } from 'react-native';
+import { FocusedStatusBar,CircleButton } from './../components';
+import { Octicons, Ionicons, FontAwesome} from '@expo/vector-icons';
+import { CredentialsContext } from './../context/CredentialsContext';
+import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
 const ChangePassword = ({navigation}) => {
     const [hidePassword, setHidePassword] = useState(true);
     const [message, setMessage] = useState();
     const [messageType, setMessageType] = useState();
 
-    // credentials context
+    //credentials context
     const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
     //destructure the data stored in the context
     const { accessToken,email} = storedCredentials;
 
-    //Password Validation
+    //password validation
     const passwordValidationSchema = yup.object().shape({
         currentPassword: yup
         .string()
@@ -69,25 +67,19 @@ const ChangePassword = ({navigation}) => {
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
-        } else {
-          //password change was successful: 
+        } else { 
           //Logout the user 
           handleUserLogout();
-
-          //tell the user to login again
           alert("Your password was changed successfully. Please login again to continue managing your account");
-
-          // redirect him or her to the home page
           navigation.navigate('Home');
 
         }
-        setSubmitting(false);
       
       } catch (error) {
-        setSubmitting(false);
         handleMessage('An error occurred. Check your network and try again');
-  
       }
+      setSubmitting(false);
+
     };
 
     const handleMessage = (message, type = 'FAILED') => {
@@ -95,7 +87,7 @@ const ChangePassword = ({navigation}) => {
       setMessageType(type);
     };
 
-    //log out the user
+    //logs out the user
     const handleUserLogout = async () => {
       await SecureStore.deleteItemAsync('nftMarketPlace')
         .then(() => {

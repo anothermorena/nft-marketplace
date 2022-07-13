@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import {useContext} from "react";
 import {StyledButton,ButtonText} from './../components/StyledComponents';
-import { CredentialsContext } from './../components/CredentialsContext';
+import { CredentialsContext } from './../context/CredentialsContext';
 import axios from './../api/axios';
 
 const DetailsHeader = ({ data, navigation }) => (

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { View, Text, TextInput, Pressable } from "react-native";
 import { COLORS, FONTS, SIZES, assets} from "../constants";
 import { EvilIcons } from '@expo/vector-icons';
-import { CredentialsContext } from './../components/CredentialsContext';
+import { CredentialsContext } from './../context/CredentialsContext';
 import {PageLogo} from './../components/StyledComponents';
 
 const HomeHeader = ({ onSearch, navigation,searchBarPlaceHolderText }) => {

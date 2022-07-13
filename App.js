@@ -13,7 +13,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as SecureStore from 'expo-secure-store';
 
 //credentials context
-import { CredentialsContext } from './components/CredentialsContext';
+import { CredentialsContext } from './context/CredentialsContext';
 
 export default function App() {
   //check if the app is ready using this state. Initial is false

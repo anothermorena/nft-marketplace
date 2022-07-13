@@ -14,7 +14,7 @@ import CustomDrawer from '../components/CustomDrawer';
 import TabNavigator from './TabNavigator';
 
 // credentials context
-import { CredentialsContext } from '../components/CredentialsContext';
+import { CredentialsContext } from '../context/CredentialsContext';
 
 const theme = {
     ...DefaultTheme,

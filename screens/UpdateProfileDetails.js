@@ -23,7 +23,7 @@ import { FocusedStatusBar,CircleButton } from './../components';
 import * as ImagePicker from 'expo-image-picker';
 
 // credentials context
-import { CredentialsContext } from './../components/CredentialsContext';
+import { CredentialsContext } from './../context/CredentialsContext';
 
 const UpdateProfileDetails = ({navigation}) => {
     const [message, setMessage] = useState();

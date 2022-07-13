@@ -39,7 +39,7 @@ import axios from './../api/axios';
 import * as SecureStore from 'expo-secure-store';
 
 // credentials context
-import { CredentialsContext } from './../components/CredentialsContext';
+import { CredentialsContext } from './../context/CredentialsContext';
 
 
 const Login = ({ navigation }) => {

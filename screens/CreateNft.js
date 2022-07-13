@@ -23,7 +23,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 import { FocusedStatusBar,CircleButton } from './../components';
-import { CredentialsContext } from './../components/CredentialsContext';
+import { CredentialsContext } from './../context/CredentialsContext';
 
 const CreateNft = ({navigation}) => {
     const [message, setMessage] = useState();
