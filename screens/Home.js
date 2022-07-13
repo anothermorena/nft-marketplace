@@ -1,10 +1,15 @@
 //1. import all requred packages,hooks and components
 //===================================================
-import axios from '../api/axios';
-import {COLORS} from "../constants";
+import axios from './../api/axios';
+import {COLORS} from "./../constants";
 import * as Network from 'expo-network';
+import {
+  TopScreenDivider,
+  BottomScreenDivider,
+  ScreenDividerContainer,
+} from './../components/StyledComponents';
 import {useState, useEffect} from 'react';
-import { HomeHeader,NFTCard, FocusedStatusBar } from '../components';
+import { HomeHeader,NFTCard, FocusedStatusBar } from './../components';
 import {View, SafeAreaView, FlatList,ActivityIndicator} from 'react-native';
 
 const Home = ({navigation}) => {
@@ -58,11 +63,11 @@ const Home = ({navigation}) => {
             </View>
 
             {loading && <ActivityIndicator size="large" color={COLORS.brand} style={{marginVertical:200}}/>}
-
-            <View style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: -1}}>
-                <View style={{ height: 300, backgroundColor: COLORS.brand }} />
-                <View style={{ flex: 1, backgroundColor: COLORS.white }} />
-            </View>
+            
+            <ScreenDividerContainer>
+              <TopScreenDivider />
+              <BottomScreenDivider />
+            </ScreenDividerContainer>
         </View>
     </SafeAreaView>
   )

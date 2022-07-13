@@ -4,10 +4,10 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import {useContext} from "react";
 import axios from './../api/axios';
-import { COLORS, SIZES, assets, FONTS, Constants } from "../constants";
+import { COLORS, SIZES, assets, FONTS, Constants } from "./../constants";
 import { CredentialsContext } from './../context/CredentialsContext';
 import {StyledButton,ButtonText} from './../components/StyledComponents';
-import { CircleButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "../components";
+import { CircleButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "./../components";
 import { View, Text, SafeAreaView, Image,  FlatList, TextInput,ActivityIndicator,StyleSheet } from "react-native";
 
 const DetailsHeader = ({ data, navigation }) => (

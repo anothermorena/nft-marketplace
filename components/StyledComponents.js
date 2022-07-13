@@ -27,18 +27,6 @@ export const PageLogo = styled.Image`
   height: 250px;
 `;
 
-export const Avatar = styled.Image`
-  width: 100px;
-  height: 100px;
-  margin: auto;
-  border-radius: 50px;
-  border-width: 2px;
-  border-color: ${COLORS.secondary};
-  margin-bottom: 10px;
-  margin-top: 10px;
-`;
-
-
 export const CodeInput = styled.View`
   border-color: ${COLORS.lightGreen};
   min-width: 15%;
@@ -91,12 +79,6 @@ export const PageTitle = styled.Text`
   font-weight: bold;
   color: ${COLORS.brand};
   padding: 10px;
-
-  ${(props) =>
-    props.welcome &&
-    `
-    font-size: 35px;
-  `}
 `;
 
 export const SubTitle = styled.Text`
@@ -268,5 +250,24 @@ export const ModalView = styled.View`
   shadow-opacity: 0.25;
   shadow-radius: 4px;
   width: 100%;
+`;
 
+//screen divider styles
+export const ScreenDividerContainer = styled.View`
+  position: absolute; 
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  zIndex: -1;
+`;
+
+export const TopScreenDivider = styled.View`
+  height: 300px;
+  background-color: ${COLORS.brand}; 
+`;
+
+export const BottomScreenDivider = styled.View`
+  flex: 1; 
+  background-color: ${COLORS.white};
 `;
