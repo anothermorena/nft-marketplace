@@ -25,7 +25,7 @@ import {
   TextLinkContent,
   StyledInputLabel,
 } from './../components/StyledComponents';
-import { FocusedStatusBar } from './../components';
+import { FocusedStatusBar,SharedTextInput } from './../components';
 import { View, ActivityIndicator} from 'react-native';
 import { Octicons, Ionicons } from '@expo/vector-icons';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
@@ -116,7 +116,7 @@ const Signup = ({ navigation }) => {
             >
               {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched }) => (
                 <StyledFormArea>
-                  <MyTextInput
+                  <SharedTextInput
                     label="First Name"
                     placeholder="Otsogile "
                     placeholderTextColor={COLORS.darkLight}
@@ -127,7 +127,7 @@ const Signup = ({ navigation }) => {
                   />
                   {touched.firstName && errors.firstName && <FormikError>{errors.firstName}</FormikError>}
 
-                  <MyTextInput
+                  <SharedTextInput
                     label="Last Name"
                     placeholder="Onalepelo "
                     placeholderTextColor={COLORS.darkLight}
@@ -138,7 +138,7 @@ const Signup = ({ navigation }) => {
                   />
                   {touched.lastName && errors.lastName && <FormikError>{errors.lastName}</FormikError>}
 
-                  <MyTextInput
+                  <SharedTextInput
                     label="Email Address"
                     placeholder="hireme@morena.com"
                     placeholderTextColor={COLORS.darkLight}
@@ -150,7 +150,7 @@ const Signup = ({ navigation }) => {
                   />
                   {touched.email && errors.email && <FormikError>{errors.email}</FormikError>}
 
-                  <MyTextInput
+                  <SharedTextInput
                     label="Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
@@ -164,7 +164,7 @@ const Signup = ({ navigation }) => {
                     setHidePassword={setHidePassword}
                   />
                   {touched.password && errors.password && <FormikError>{errors.password}</FormikError>}
-                  <MyTextInput
+                  <SharedTextInput
                     label="Confirm Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
@@ -208,22 +208,5 @@ const Signup = ({ navigation }) => {
   );
 };
 
-const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
-  return (
-    <View>
-      <LeftIcon>
-          <Octicons name={icon} size={30} color={COLORS.brand} />
-      </LeftIcon>
-      <StyledInputLabel>{label}</StyledInputLabel>
-      <StyledTextInput {...props} />
-
-      {isPassword && (
-        <RightIcon onPress={() => {setHidePassword(!hidePassword);}}>
-          <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={COLORS.darkLight} />
-        </RightIcon>
-      )}
-    </View>
-  );
-};
 
 export default Signup;

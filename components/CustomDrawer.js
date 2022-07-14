@@ -7,7 +7,7 @@ import {PageLogo} from './../components/StyledComponents';
 import {FontAwesome5, AntDesign } from '@expo/vector-icons';
 import { CredentialsContext } from './../context/CredentialsContext';
 import {DrawerContentScrollView,DrawerItemList} from '@react-navigation/drawer';
-import {View,Text,ImageBackground,Image,TouchableOpacity,StyleSheet} from 'react-native';
+import {View,Text,ImageBackground,TouchableOpacity,StyleSheet} from 'react-native';
 
 const CustomDrawer = props => {
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);

@@ -5,6 +5,7 @@ import { SubInfo } from "./SubInfo";
 import HomeHeader from "./HomeHeader";
 import BidDetails from "./BidDetails";
 import DetailsDesc from "./DetailsDesc";
+import SharedTextInput from "./SharedTextInput";
 import FocusedStatusBar from "./FocusedStatusBar";
 import { RectButton, CircleButton } from "./Button";
 import {
@@ -58,6 +59,7 @@ export {
     TextLinkContent,
     StyledContainer,
     StyledTextInput,
+    SharedTextInput,
     FocusedStatusBar,
     StyledInputLabel,
     CodeInputsContainer,

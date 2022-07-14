@@ -10,7 +10,6 @@ import {
   MsgBox,
   PageLogo,
   TextLink,
-  LeftIcon,
   SubTitle,
   PageTitle,
   ButtonText,
@@ -21,15 +20,11 @@ import {
   InnerContainer,
   StyledFormArea,
   TextLinkContent,
-  StyledTextInput,
-  StyledContainer,
-  StyledInputLabel
+  StyledContainer
 } from './../components/StyledComponents';
-import { Octicons } from '@expo/vector-icons';
-import { FocusedStatusBar } from "./../components";
-import { View, ActivityIndicator, Text } from 'react-native';
+import { ActivityIndicator } from 'react-native';
+import { FocusedStatusBar,SharedTextInput } from "./../components";
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-
 
 const ResetPasswordRequest = ({ navigation }) => {
     //request password reset input validation
@@ -97,7 +92,7 @@ const ResetPasswordRequest = ({ navigation }) => {
             >
                 {({ handleChange, handleBlur, handleSubmit, values, isSubmitting,errors,touched }) => (
                 <StyledFormArea>
-                  <MyTextInput
+                  <SharedTextInput
                     label="Email Address"
                     placeholder="enter your email"
                     placeholderTextColor={COLORS.darkLight}
@@ -138,11 +133,9 @@ const ResetPasswordRequest = ({ navigation }) => {
                     <TextLink onPress={() => navigation.navigate('Login')}>
                       <TextLinkContent>Login</TextLinkContent>
                     </TextLink>
-                  </ExtraView>
-              
+                  </ExtraView>     
                 </StyledFormArea>
-              )}
-            
+              )}    
             </Formik>
           </InnerContainer>
         </StyledContainer>
@@ -150,19 +143,5 @@ const ResetPasswordRequest = ({ navigation }) => {
     
   )
 }
-
-
-const MyTextInput = ({ label, icon, ...props }) => {
-    return (
-      <View>
-        <LeftIcon>
-          <Octicons name={icon} size={30} color={COLORS.brand} />
-        </LeftIcon>
-        <StyledInputLabel>{label}</StyledInputLabel>
-        <StyledTextInput {...props} />
-
-      </View>
-    );
-  };
 
 export default ResetPasswordRequest;

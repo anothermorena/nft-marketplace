@@ -10,25 +10,21 @@ import {
   IconBg,
   MsgBox,
   TopHalf,
-  LeftIcon,
   TextLink,
   SubTitle,
   ExtraView,
   ExtraText,
-  RightIcon,
   ButtonText,
   FormikError,
   StyledButton,
   StyledFormArea,
   InnerContainer,
   TextLinkContent,
-  StyledTextInput,
-  StyledContainer,
-  StyledInputLabel,
+  StyledContainer
 } from './../components/StyledComponents';
-import {  FocusedStatusBar } from './../components';
-import { View, ActivityIndicator } from 'react-native';
-import { Octicons, Ionicons , MaterialCommunityIcons} from '@expo/vector-icons';
+import { ActivityIndicator } from 'react-native';
+import { MaterialCommunityIcons} from '@expo/vector-icons';
+import {  FocusedStatusBar,SharedTextInput } from './../components';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
 const ResetPasswordInput = ({ route, navigation }) => {
@@ -111,7 +107,7 @@ const ResetPasswordInput = ({ route, navigation }) => {
                 {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
                 <StyledFormArea>
                 
-                  <MyTextInput
+                  <SharedTextInput
                     label="Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
@@ -128,7 +124,7 @@ const ResetPasswordInput = ({ route, navigation }) => {
                     <FormikError>{errors.password}</FormikError>
                   }
 
-                  <MyTextInput
+                  <SharedTextInput
                     label="Confirm Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
@@ -179,26 +175,5 @@ const ResetPasswordInput = ({ route, navigation }) => {
     
   )
 }
-
-
-const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
-    return (
-      <View>
-        <LeftIcon>
-          <Octicons name={icon} size={30} color={COLORS.brand} />
-        </LeftIcon>
-        <StyledInputLabel>{label}</StyledInputLabel>
-        <StyledTextInput {...props} />
-          <RightIcon
-            onPress={() => {
-              //toggle the value of the hide password on press
-              setHidePassword(!hidePassword);
-            }}
-          >
-            <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={COLORS.darkLight} />
-          </RightIcon>
-      </View>
-    );
-  };
 
 export default ResetPasswordInput;

@@ -8,11 +8,9 @@ import {
   Line,
   MsgBox,
   PageLogo,
-  LeftIcon,
   TextLink,
   SubTitle,
   ExtraText,
-  RightIcon,
   PageTitle,
   ExtraView,
   ButtonText,
@@ -20,14 +18,11 @@ import {
   StyledFormArea,
   InnerContainer,
   TextLinkContent,
-  StyledTextInput,
-  StyledContainer,
-  StyledInputLabel,
+  StyledContainer
 } from './../components/StyledComponents';
+import { ActivityIndicator } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import {  FocusedStatusBar } from './../components';
-import { View, ActivityIndicator } from 'react-native';
-import { Octicons, Ionicons } from '@expo/vector-icons';
+import {  FocusedStatusBar, SharedTextInput } from './../components';
 import { CredentialsContext } from './../context/CredentialsContext';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
@@ -131,7 +126,7 @@ const Login = ({ navigation }) => {
             >
                 {({ handleChange, handleBlur, handleSubmit, values, isSubmitting }) => (
                 <StyledFormArea>
-                  <MyTextInput
+                  <SharedTextInput
                     label="Email Address"
                     placeholder="hireme@morena.com"
                     placeholderTextColor={COLORS.darkLight}
@@ -141,7 +136,7 @@ const Login = ({ navigation }) => {
                     keyboardType="email-address"
                     icon="mail"
                   />
-                  <MyTextInput
+                  <SharedTextInput
                     label="Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
@@ -191,27 +186,5 @@ const Login = ({ navigation }) => {
     
   )
 }
-
-const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
-    return (
-      <View>
-        <LeftIcon>
-          <Octicons name={icon} size={30} color={COLORS.brand} />
-        </LeftIcon>
-        <StyledInputLabel>{label}</StyledInputLabel>
-        <StyledTextInput {...props} />
-        {isPassword && (
-          <RightIcon
-            onPress={() => {
-              //toggle the value of the hide password on press
-              setHidePassword(!hidePassword);
-            }}
-          >
-            <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={COLORS.darkLight} />
-          </RightIcon>
-        )}
-      </View>
-    );
-  };
 
 export default Login;
