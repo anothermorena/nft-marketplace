@@ -1,20 +1,19 @@
-//packages
-import { COLORS } from "./../constants";
-import {Ionicons } from '@expo/vector-icons';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { getFocusedRouteNameFromRoute,useNavigation } from '@react-navigation/native';
-
-//screens
+//1. import all required packages, hooks, constants and components
+//===============================================
 import Home from './../screens/Home';
 import Login from './../screens/Login';
+import { COLORS } from "./../constants";
 import Signup from './../screens/Signup';
 import Details from './../screens/Details';
 import WishList from './../screens/WishList';
+import {Ionicons } from '@expo/vector-icons';
 import Verification from './../screens/OtpVerificationMsg';
+import {createStackNavigator} from '@react-navigation/stack';
 import ResetPasswordInput from './../screens/ResetPasswordInput';
 import ResetPasswordRequest from './../screens/ResetPasswordRequest';
 import OtpVerificationInput from './../screens/OtpVerificationInput';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { getFocusedRouteNameFromRoute,useNavigation } from '@react-navigation/native';
 
 
 //navigators
@@ -46,7 +45,6 @@ const RootStack = () => {
             <Stack.Screen name="Details" component={Details}/>
             <Stack.Screen name="Verification" component={Verification}/>
             <Stack.Screen name="OtpVerificationInput" component={OtpVerificationInput}/>
-
          </Stack.Navigator>
      )}
 
