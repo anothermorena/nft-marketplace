@@ -238,14 +238,6 @@ export const InlineGroup = styled.View`
     align-items:center;
 `;
 
-
-//modal styles
-export const ModalContainer = styled(StyledContainer)`
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0,0,0,0.7);
-`;
-
 export const ModalView = styled.View`
   margin: 20px;
   background-color: white;

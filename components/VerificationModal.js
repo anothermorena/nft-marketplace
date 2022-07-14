@@ -1,11 +1,17 @@
-import { Modal, View, Text, TouchableOpacity} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-// our theme config and other constants
-import { COLORS, Constants } from "../constants";
-//icons
+//1. import all required constants and components
+//===============================================
+import {
+    InfoText,
+    PageTitle,
+    ModalView,
+    ButtonText,
+    StyledButton
+} from './../components/StyledComponents';
+import { Modal, View} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
+import { COLORS, Constants } from "./../constants";
+import  FocusedStatusBar  from './FocusedStatusBar';
 
-// get status bar height
 const StatusBarHeight = Constants.statusBarHeight;
 
 const VerificationModal = ({modalVisible, setModalVisible,successful,message, navigation}) => {
@@ -19,48 +25,44 @@ const VerificationModal = ({modalVisible, setModalVisible,successful,message, na
   
 return (
    <Modal animationType='slide' visible={modalVisible} transparent={true}>
-        <View style={{flex:1,padding: 25, paddingTop: StatusBarHeight + 30, justifyContent:'center',alignItems:'center', backgroundColor: 'rgba(0,0,0,0.7)'}}>
-            {!successful && <FailContent buttonHandler={buttonHandler} errorMsg={message}/> }
-            {successful && <SuccessContent buttonHandler={buttonHandler}/> }
-        </View>
+            <View style={{flex:1,padding: 25, paddingTop: StatusBarHeight + 30, justifyContent:'center',alignItems:'center', backgroundColor: 'rgba(0,0,0,0.7)'}}>
+                {!successful && <FailContent buttonHandler={buttonHandler} errorMsg={message}/> }
+                {successful && <SuccessContent buttonHandler={buttonHandler}/> }
+            </View>
    </Modal>
   )
 }
 
-//content for the modal
-const SuccessContent = ({buttonHandler}) => { 
+//content for the modals
+ const SuccessContent = ({buttonHandler}) => { 
     return (
-        <View style={{margin:20, backgroundColor:COLORS.white, borderRadius: 20, padding:35,alignItems:'center',elevation:5,shadowColor:'black', shadowOffset: {width: 0, height: 2}, shadowOpacity: 0.25,shadowRadius:4,width:'100%'}}>
-            <StatusBar style="dark"/>
+        <ModalView>
+            <FocusedStatusBar background={COLORS.primary}/>
              <Ionicons name="checkmark-circle" size={100} color={COLORS.green} />
-             <Text style={{fontSize: 25, color:COLORS.tertiary, marginBottom:10, textAlign:'center',fontWeight:'bold', padding:10}}>Verified!</Text>
-                <Text style={{color:COLORS.tertiary, marginBottom: 15, fontSize: 15, textAlign:'center'}}>
-                    You have successfully verified your account. 😎
-                </Text>
+             <PageTitle style={{fontSize: 25, color:COLORS.tertiary, marginBottom:10}}>Verified</PageTitle>
+             <InfoText style={{color:COLORS.tertiary, marginBottom: 15}}>You have successfully verified your account. 😎</InfoText>
 
-                <TouchableOpacity style={{backgroundColor:COLORS.green, flexDirection:'row', padding:15,justifyContent:'center', alignItems:'center', borderRadius:5, marginVertical:5, height:60}} onPress={buttonHandler}>
-                    <Text style={{color:COLORS.white, fontSize:16}}>Continue to App </Text>
-                    <Ionicons name="arrow-forward-circle" size={25} color={COLORS.white} />
-                </TouchableOpacity>
-        </View>
+             <StyledButton style={{backgroundColor:COLORS.green, flexDirection:'row'}} onPress={buttonHandler}>
+                <ButtonText>Continue to App</ButtonText>
+                <Ionicons name="arrow-forward-circle" size={25} color={COLORS.white} />
+             </StyledButton>
+        </ModalView>
     );
 };
 
 const FailContent = ({errorMsg, buttonHandler}) => { 
     return (
-        <View style={{margin:20, backgroundColor:COLORS.white, borderRadius: 20, padding:35,alignItems:'center',elevation:5,shadowColor:'black', shadowOffset: {width: 0, height: 2}, shadowOpacity: 0.25,shadowRadius:4,width:'100%'}}>
-            <StatusBar style="dark"/>
+        <ModalView>
+            <FocusedStatusBar background={COLORS.primary}/>
              <Ionicons name="close-circle" size={100} color={COLORS.red} />
-             <Text style={{fontSize: 25, color:COLORS.tertiary, marginBottom:10, textAlign:'center',fontWeight:'bold', padding:10}}>Failed!</Text>
-             <Text style={{color:COLORS.tertiary, marginBottom: 15, fontSize: 15, textAlign:'center'}}>
-                    {`Oh Oh 😶! Account verification failed. ${errorMsg}.`}
-            </Text>
+             <PageTitle style={{fontSize: 25, color:COLORS.tertiary, marginBottom:10}}>Failed</PageTitle>
+             <InfoText style={{color:COLORS.tertiary, marginBottom: 15}}>{`Oh Oh 😶! Account verification failed. ${errorMsg}.`}</InfoText>
 
-            <TouchableOpacity style={{backgroundColor:COLORS.red, flexDirection:'row', padding:15,justifyContent:'center', alignItems:'center', borderRadius:5, marginVertical:5, height:60}} onPress={buttonHandler}>
-                <Text style={{color:COLORS.white, fontSize:16}}>Try Again</Text>
-                    <Ionicons name="arrow-redo-circle" size={25} color={COLORS.white} />
-            </TouchableOpacity>
-        </View>
+            <StyledButton style={{backgroundColor:COLORS.red, flexDirection:'row'}} onPress={buttonHandler}>
+                <ButtonText>Try Again</ButtonText>
+                <Ionicons name="arrow-redo-circle" size={25} color={COLORS.white} />
+             </StyledButton>
+        </ModalView>
     );
 };
 
