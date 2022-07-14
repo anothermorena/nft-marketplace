@@ -1,8 +1,7 @@
-import React from 'react';
-// keyboard avoiding view
-import { KeyboardAvoidingView, Keyboard, ScrollView, TouchableWithoutFeedback } from 'react-native';
-
+//1. import all requred constants and components
+//==============================================
 import { COLORS} from "./../constants";
+import { KeyboardAvoidingView, Keyboard, ScrollView, TouchableWithoutFeedback } from 'react-native';
 
 const KeyboardAvoidingWrapper = ({ children }) => {
   return (
