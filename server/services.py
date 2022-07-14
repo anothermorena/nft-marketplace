@@ -115,7 +115,7 @@ async def new_password(password:str, current_user:dict, db: orm.Session):
 
 #13. create a token
 #==================
-async def create_token(user: models.User):
+async def create_token(user: models.User,db: orm.Session):
     #13.1. take in our user model and map it to a user schema e.g. id->id
     #====================================================================
     user_obj = schemas.User.from_orm(user)
@@ -123,10 +123,14 @@ async def create_token(user: models.User):
     #13.2. create the auth access token 
     #==================================
     token = jwt.encode(user_obj.dict(), JWT_SECRET)
+    
+    #13.3. count users nfts
+    #======================
+    user_nft_count = await count_users_nfts(user_obj.user_id, db)
 
-    #13.3. send this token when a user needs to access any area in our app that requires authentication
+    #13.4. send this token when a user needs to access any area in our app that requires authentication
     #==================================================================================================
-    return dict(access_token=token,user=user_obj, status="SUCCESS", message="User was successfully authenticated")
+    return dict(access_token=token,user=user_obj, nft_count=user_nft_count, status="SUCCESS", message="User was successfully authenticated")
 
 
 #14. get the current logged in user
@@ -256,6 +260,11 @@ async def create_nft_bid(user_id: int, nft_id:int, bid_amount: float, db: orm.Se
     db.add(bid_obj)
     db.commit()
     db.refresh(bid_obj)
+    
+#28. count users nfts
+#====================
+async def count_users_nfts(user_id: int, db: orm.Session):
+    return db.query(models.Nft).filter(models.Nft.user_id == user_id).count()
    
 
 

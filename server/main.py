@@ -87,7 +87,7 @@ async def verify_otp(user: schemas.VerifyOtp, db: orm.Session = fastapi.Depends(
 @app.post("/api/login",status_code=200)
 async def user_login(form_data: security.OAuth2PasswordRequestForm = fastapi.Depends(), db: orm.Session = fastapi.Depends(services.get_db)):
     user = await services.authenticate_user(form_data.username, form_data.password, db)
-    return await services.create_token(user)
+    return await services.create_token(user,db)
 
 #8. reset password end point
 #===========================
