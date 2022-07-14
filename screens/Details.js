@@ -5,10 +5,10 @@ import { Formik } from 'formik';
 import {useContext} from "react";
 import axios from './../api/axios';
 import { CredentialsContext } from './../context/CredentialsContext';
-import {StyledButton,ButtonText} from './../components/StyledComponents';
 import { COLORS, SIZES, assets, FONTS, Constants } from "./../constants";
 import { CircleButton, SubInfo, DetailsDesc, BidDetails, FocusedStatusBar } from "./../components";
 import { View, Text, SafeAreaView, Image,  FlatList, TextInput,ActivityIndicator,StyleSheet } from "react-native";
+import {StyledButton,ButtonText,ScreenDividerContainer,BottomScreenDivider} from './../components/StyledComponents';
 
 const DetailsHeader = ({ data, navigation }) => (
     <View style={{ width: "100%", height: 373 }}>
@@ -192,9 +192,9 @@ const Details = ({route, navigation}) => {
       </>
       )} 
         
-      <View style={{position: "absolute", top: 0, bottom: 0, right: 0, left: 0, zIndex: -1}}>
-          <View style={{ flex: 1, backgroundColor: COLORS.white }} />
-      </View>
+      <ScreenDividerContainer>
+          <BottomScreenDivider />
+      </ScreenDividerContainer>
     </SafeAreaView>
   )
 }
