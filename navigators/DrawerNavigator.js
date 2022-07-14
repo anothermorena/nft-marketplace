@@ -1,20 +1,17 @@
-import { NavigationContainer, DefaultTheme,useIsFocused } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-
+//1. import all required packages, constants and components
+//===============================================
 import {useFonts } from 'expo-font';
-//colors
 import { COLORS } from "../constants";
-import {Ionicons, MaterialCommunityIcons, FontAwesome5} from '@expo/vector-icons';
-
-import ChangePassword from '../screens/ChangePassword';
-import UpdateProfileDetails from '../screens/UpdateProfileDetails';
-import CreateNft from '../screens/CreateNft';
-import WishList from '../screens/WishList';
-import CustomDrawer from '../components/CustomDrawer';
 import TabNavigator from './TabNavigator';
-
-// credentials context
+import WishList from '../screens/WishList';
+import CreateNft from '../screens/CreateNft';
+import ChangePassword from '../screens/ChangePassword';
+import CustomDrawer from '../components/CustomDrawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { CredentialsContext } from '../context/CredentialsContext';
+import UpdateProfileDetails from '../screens/UpdateProfileDetails';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import {Ionicons, MaterialCommunityIcons, FontAwesome5} from '@expo/vector-icons';
 
 const theme = {
     ...DefaultTheme,
