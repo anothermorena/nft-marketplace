@@ -1,6 +1,8 @@
+//1. import all requred constants, hooks and components
+//===================================================
 import {useState, useRef,useEffect} from 'react';
 import {Pressable, TextInput, View, Text} from 'react-native';
-import { COLORS } from '../constants';
+import { COLORS } from './../constants';
 import { CodeInput, CodeInputFocused } from './StyledComponents';
 
 const CodeInputField = ({setPinReady, code, setCode, maxLength}) => {
