@@ -4,10 +4,10 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import {useContext} from "react";
 import axios from './../api/axios';
-import { COLORS, SIZES, assets, FONTS, Constants } from "./../constants";
 import { CredentialsContext } from './../context/CredentialsContext';
 import {StyledButton,ButtonText} from './../components/StyledComponents';
-import { CircleButton, SubInfo, DetailsDesc, DetailsBid, FocusedStatusBar } from "./../components";
+import { COLORS, SIZES, assets, FONTS, Constants } from "./../constants";
+import { CircleButton, SubInfo, DetailsDesc, BidDetails, FocusedStatusBar } from "./../components";
 import { View, Text, SafeAreaView, Image,  FlatList, TextInput,ActivityIndicator,StyleSheet } from "react-native";
 
 const DetailsHeader = ({ data, navigation }) => (
@@ -147,7 +147,7 @@ const Details = ({route, navigation}) => {
       {data.bids.length > 0 && (
         <FlatList 
         data={data.bids}
-        renderItem={({ item }) => <DetailsBid bid={item} />}
+        renderItem={({ item }) => <BidDetails bid={item} />}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{

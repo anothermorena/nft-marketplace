@@ -1,14 +1,13 @@
+//1. import all requred packages,constants, hooks and components
+//==============================================================
 import { useContext } from 'react';
+import { COLORS, assets } from "../constants";
+import * as SecureStore from 'expo-secure-store';
+import {FontAwesome5, AntDesign } from '@expo/vector-icons';
+import { CredentialsContext } from './../context/CredentialsContext';
 import {View,Text,ImageBackground,Image,TouchableOpacity} from 'react-native';
 import {DrawerContentScrollView,DrawerItemList} from '@react-navigation/drawer';
-import {FontAwesome5, AntDesign } from '@expo/vector-icons';
-import { COLORS, assets } from "../constants";
 
-// credentials context
-import { CredentialsContext } from './../context/CredentialsContext';
-
-//expo async secure local storage.
-import * as SecureStore from 'expo-secure-store';
 
 const CustomDrawer = props => {
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);

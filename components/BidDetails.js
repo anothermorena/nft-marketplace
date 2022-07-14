@@ -1,9 +1,10 @@
-import { View, Text, Image } from "react-native";
+//1. import all requred constants and components
+//==============================================
 import { EthPrice } from "./SubInfo";
-import { COLORS, SIZES, FONTS } from "../constants";
+import { View, Text, Image } from "react-native";
+import { COLORS, SIZES, FONTS } from "./../constants";
 
-const DetailsBid = ({ bid }) => {
-
+const BidDetails = ({ bid }) => {
   return (
     <View
       style={{
@@ -55,4 +56,4 @@ const DetailsBid = ({ bid }) => {
   );
 };
 
-export default DetailsBid;
+export default BidDetails;
