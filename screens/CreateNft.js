@@ -23,7 +23,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { CredentialsContext } from './../context/CredentialsContext';
 import { Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-import { FocusedStatusBar,CircleButton,SharedTextInput } from './../components';
+import { FocusedStatusBar,CircleButton,SharedTextInput} from './../components';
 
 const CreateNft = ({navigation}) => {
   const [show, setShow] = useState(false);
@@ -224,6 +224,7 @@ const CreateNft = ({navigation}) => {
                     onBlur={handleBlur('nftTitle')}
                     value={values.nftTitle}
                     icon="title"
+                    createNft={true}
                   />
                 {touched.nftTitle && errors.nftTitle &&
                 <FormikError>{errors.nftTitle}</FormikError>
@@ -240,6 +241,7 @@ const CreateNft = ({navigation}) => {
                     numberOfLines={20}
                     textAlignVertical= "top"
                     height={200}
+                    createNft={true}
                   />
                   {touched.nftDescription && errors.nftDescription &&
                   <FormikError>{errors.nftDescription}</FormikError>
@@ -253,6 +255,7 @@ const CreateNft = ({navigation}) => {
                     value={values.nftPrice}
                     keyboardType="number-pad"
                     icon="attach-money"
+                    createNft={true}
                   />
                    {touched.nftPrice && errors.nftPrice &&
                     <FormikError>{errors.nftPrice}</FormikError>
@@ -268,6 +271,7 @@ const CreateNft = ({navigation}) => {
                     editable={false}
                     isTime={true}
                     showTimepicker={showTimepicker}
+                    createNft={true}
                   />
                    {touched.biddingDeadline && errors.biddingDeadline &&
                    <FormikError>{errors.biddingDeadline}</FormikError>
