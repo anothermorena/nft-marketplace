@@ -7,7 +7,7 @@ import sqlalchemy.orm as orm
 import services, schemas, models
 from typing import Optional,List
 import fastapi.security as security
-from fastapi import status, HTTPException,File, UploadFile,Form
+from fastapi import HTTPException,File, UploadFile,Form
 
 #2. create the app object
 #========================
@@ -44,7 +44,7 @@ async def send_otp(otp_request: schemas.Otp, db: orm.Session = fastapi.Depends(s
    db_user = await services.get_user_by_email(otp_request.email, db)
 
    if not db_user:
-       return dict(message="User with that email address does not exist", status="FAILED")
+       return dict(status_code=404,message="User with that email address does not exist", status="FAILED")
 
    otp_code = await services.create_otp(otp_request.email,db)
    subject = "New OTP"
@@ -119,7 +119,7 @@ async def change_password(change_password: schemas.ChangePassword, current_user:
     db_user = await services.get_user_by_email(current_user.email, db)
  
     if not db_user:
-        return dict(status_code= status.HTTP_404_NOT_FOUND, message="User not found", status="FAILED")
+        return dict(status_code=404, message="User not found", status="FAILED")
 
     if not hash.bcrypt.verify(change_password.current_password, db_user.hashed_password):
         return dict(message="Your current password is incorrect", status="FAILED")
