@@ -1,7 +1,7 @@
 //1. import all required packages constants and components
 //==============================================
 import styled from 'styled-components';
-import { COLORS, Constants } from "../constants";
+import { COLORS, Constants } from "./../constants";
 import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
 
 

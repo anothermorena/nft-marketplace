@@ -1,13 +1,13 @@
 //1. import all requred packages,constants, hooks and components
 //==============================================================
 import { useContext } from 'react';
-import { COLORS, assets } from "../constants";
+import { COLORS, assets, SIZES} from "../constants";
 import * as SecureStore from 'expo-secure-store';
+import {PageLogo} from './../components/StyledComponents';
 import {FontAwesome5, AntDesign } from '@expo/vector-icons';
 import { CredentialsContext } from './../context/CredentialsContext';
-import {View,Text,ImageBackground,Image,TouchableOpacity} from 'react-native';
 import {DrawerContentScrollView,DrawerItemList} from '@react-navigation/drawer';
-
+import {View,Text,ImageBackground,Image,TouchableOpacity,StyleSheet} from 'react-native';
 
 const CustomDrawer = props => {
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
@@ -22,7 +22,7 @@ const CustomDrawer = props => {
    
   }
 
-  //const {firstName,lastName,profileImage} = storedCredentials;
+  const {firstName,lastName,profileImage} = storedCredentials;
   const nftsCount = 20;
   
 
@@ -40,7 +40,7 @@ const CustomDrawer = props => {
       <DrawerContentScrollView {...props} contentContainerStyle={{backgroundColor: COLORS.brand}}>
       {storedCredentials == null ? (<ImageBackground source={assets.drawerBg} style={{padding: 20,height: 160}}/>): (
         <ImageBackground source={assets.drawerBg} style={{padding: 20}}>
-        <Image source={{uri: profileImage}} style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}/>
+        <PageLogo resizeMode="cover" source={{uri: profileImage}}  style={{width: 80, height: 80,borderRadius: 40, marginBottom: 10}}/>
         <Text style={{color: COLORS.white, fontSize: 18, fontFamily: 'InterMedium', marginBottom: 5}}>
           {`${firstName} ` + `${lastName}`}
         </Text>
@@ -58,22 +58,22 @@ const CustomDrawer = props => {
     </DrawerContentScrollView>
         
       {storedCredentials ? (
-      <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
-        <TouchableOpacity onPress={handleUserLogout} style={{paddingVertical: 15}}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={handleUserLogout} style={styles.touchableOpacityPadding}>
+        <View style={styles.bottomView}>
             <AntDesign  name="logout" size={22}  color={COLORS.brand}/>
-            <Text style={{fontSize: 15, fontFamily: 'InterRegular', marginLeft: 5}}>
+            <Text style={styles.bottomText}>
               Logout
             </Text>
           </View>
         </TouchableOpacity>
       </View>
       ) : (
-        <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Login')} style={{paddingVertical: 15}}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={styles.container}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Login')} style={styles.touchableOpacityPadding}>
+          <View style={styles.bottomView}>
             <AntDesign name="login" size={22}  color={COLORS.brand}/>
-            <Text style={{fontSize: 15, fontFamily: 'InterRegular', marginLeft: 5}}>
+            <Text style={styles.bottomText}>
               Login
             </Text>
           </View>
@@ -83,5 +83,26 @@ const CustomDrawer = props => {
     </View>
   );
 };
+
+//component styles
+const styles = StyleSheet.create ({
+  bottomText: {
+    marginLeft:5, 
+    fontSize: SIZES.font,
+    fontFamily: 'InterRegular'
+  },
+  bottomView: {
+    flexDirection : 'row',
+    alignItems:'center'
+  },
+  container: {
+    padding: 20,
+    borderTopWidth: 1, 
+    borderTopColor: '#ccc'
+  },
+  touchableOpacityPadding: {
+    paddingVertical: 15
+  }
+});
 
 export default CustomDrawer;

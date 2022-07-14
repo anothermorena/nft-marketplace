@@ -1,4 +1,5 @@
 //1. import all requred constants, hooks and components
+//=====================================================
 import { useContext } from 'react';
 import { EvilIcons } from '@expo/vector-icons';
 import { COLORS, FONTS, SIZES} from "../constants";
@@ -15,7 +16,7 @@ const HomeHeader = ({ onSearch, navigation,searchBarPlaceHolderText }) => {
     const {profileImage} = storedCredentials;
   } 
 
-  //const {profileImage} = storedCredentials;
+  const {profileImage} = storedCredentials;
   
   return (
     <View style={{backgroundColor: COLORS.brand,padding: SIZES.font}}>
