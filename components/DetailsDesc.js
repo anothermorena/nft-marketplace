@@ -1,7 +1,8 @@
+//1. import all requred hooks, constants and components
 import { useState } from "react";
 import { View, Text } from "react-native";
 import { EthPrice, NFTTitle } from "./SubInfo";
-import { COLORS, SIZES, FONTS } from "../constants";
+import { COLORS, SIZES, FONTS } from "./../constants";
 
 const DetailsDesc = ({ data }) => {
   const [text, setText] = useState(data.nft_description.slice(0, 100));
