@@ -7,26 +7,23 @@ import {
   IconBg,
   MsgBox,
   PageLogo,
-  LeftIcon,
   SubTitle,
   ButtonText,
   FormikError,
   StyledButton,
   StyledFormArea,
-  StyledTextInput,
   InnerContainer,
-  StyledContainer,
-  StyledInputLabel,
+  StyledContainer
 } from './../components/StyledComponents';
 import { COLORS,assets } from "../constants";
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState,useContext } from 'react';
-import {Feather, MaterialIcons,Entypo } from '@expo/vector-icons';
+import {Feather,Entypo } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
-import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-import { FocusedStatusBar,CircleButton } from './../components';
 import { CredentialsContext } from './../context/CredentialsContext';
+import { Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
+import { FocusedStatusBar,CircleButton,SharedTextInput } from './../components';
 
 const CreateNft = ({navigation}) => {
   const [show, setShow] = useState(false);
@@ -220,7 +217,7 @@ const CreateNft = ({navigation}) => {
                 {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
                 <StyledFormArea>
                 
-                <MyTextInput
+                <SharedTextInput
                     label="Nft Title"
                     placeholderTextColor={COLORS.darkLight}
                     onChangeText={handleChange('nftTitle')}
@@ -232,7 +229,7 @@ const CreateNft = ({navigation}) => {
                 <FormikError>{errors.nftTitle}</FormikError>
                 }
                   
-                <MyTextInput
+                <SharedTextInput
                     label="Nft Description"
                     placeholderTextColor={COLORS.darkLight}
                     onChangeText={handleChange('nftDescription')}
@@ -248,7 +245,7 @@ const CreateNft = ({navigation}) => {
                   <FormikError>{errors.nftDescription}</FormikError>
                   }
 
-                  <MyTextInput
+                  <SharedTextInput
                     label="Nft Price"
                     placeholderTextColor={COLORS.darkLight}
                     onChangeText={handleChange('nftPrice')}
@@ -261,7 +258,7 @@ const CreateNft = ({navigation}) => {
                     <FormikError>{errors.nftPrice}</FormikError>
                   }
 
-                  <MyTextInput
+                  <SharedTextInput
                     label="Bidding Deadline"
                     placeholderTextColor={COLORS.darkLight}
                     onChangeText={handleChange('biddingDeadline')}
@@ -297,23 +294,5 @@ const CreateNft = ({navigation}) => {
     
   )
 }
-
-const MyTextInput = ({ label, icon, isTime,showTimepicker,...props }) => {
-    return (
-      <View>
-        <LeftIcon>
-          <MaterialIcons  name={icon} size={30} color={COLORS.brand} />
-        </LeftIcon>
-        <StyledInputLabel>{label}</StyledInputLabel>
-          {isTime && (
-          <TouchableOpacity onPress={showTimepicker}>
-            <StyledTextInput {...props} />
-          </TouchableOpacity>
-         )}
-
-        {!isTime && <StyledTextInput {...props} />}
-      </View>
-    );
-  };
 
 export default CreateNft;

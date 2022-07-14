@@ -8,16 +8,15 @@ import {
 } from './StyledComponents';
 import { View } from 'react-native';
 import { COLORS } from "./../constants";
-import { Octicons, Ionicons } from '@expo/vector-icons';
+import { Octicons, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-const SharedTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
+const SharedTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword,isTime,showTimepicker, ...props }) => {
     return (
       <View>
         <LeftIcon>
-          <Octicons name={icon} size={30} color={COLORS.brand} />
+          {isTime ? (<MaterialIcons  name={icon} size={30} color={COLORS.brand} />) : (<Octicons name={icon} size={30} color={COLORS.brand} />)}
         </LeftIcon>
         <StyledInputLabel>{label}</StyledInputLabel>
-        <StyledTextInput {...props} />
         {isPassword && (
           <RightIcon
             onPress={() => {
@@ -28,6 +27,14 @@ const SharedTextInput = ({ label, icon, isPassword, hidePassword, setHidePasswor
             <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={COLORS.darkLight} />
           </RightIcon>
         )}
+
+        {isTime && (
+          <TouchableOpacity onPress={showTimepicker}>
+            <StyledTextInput {...props} />
+          </TouchableOpacity>
+         )}
+
+        {!isTime && <StyledTextInput {...props} />}
       </View>
     );
   };
