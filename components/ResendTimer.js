@@ -1,19 +1,15 @@
-import { View, Text,ActivityIndicator, TouchableOpacity} from 'react-native';
-import React from 'react';
-
-// our theme config and other constants
+//1. import all requred constants and components
+//==============================================
 import { COLORS } from "./../constants";
-
+import { View, Text,ActivityIndicator, TouchableOpacity} from 'react-native';
 
 const ResendTimer = ({activeResend,resendingEmail,resendStatus,timeLeft,targetTime,resendEmail}) => {
   return (
     <View>
     <View style={{flexDirection:'row', padding:10,justifyContent:'center',alignItems:'center'}}>
- 
          <Text style={{color:COLORS.gray,fontSize:15,textAlign:'center'}}>Did'nt receive the email?</Text>
-        
-         {!resendingEmail && (
-            
+
+         {!resendingEmail && (   
         <TouchableOpacity  
             style={{opacity: !activeResend ? 0.5 : 1, justifyContent:'center', alignItems:'center'}}
             disabled={!activeResend} 
@@ -25,7 +21,8 @@ const ResendTimer = ({activeResend,resendingEmail,resendStatus,timeLeft,targetTi
              </Text>
          </TouchableOpacity>
          )}
-    {/* If resend email is true disable the link completely because you are already in the process to resend the email*/}
+
+        {/* If resend email is true disable the link completely because you are already in the process to resend the email*/}
         {resendingEmail && (
         <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} disabled>
              <Text 
@@ -41,8 +38,7 @@ const ResendTimer = ({activeResend,resendingEmail,resendStatus,timeLeft,targetTi
         <Text style={{color: COLORS.gray, fontSize:15,textAlign:'center'}}>
             in <Text style={{fontWeight:'bold', fontStyle:'italic'}}>{timeLeft || targetTime}</Text> second(s)
         </Text>
-    )}
-   
+    )} 
 </View>
   )
 }
