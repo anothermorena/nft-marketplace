@@ -1,52 +1,64 @@
-import HomeHeader from "./HomeHeader";
+//1. import all components
+//========================
 import NFTCard from "./NFTCard";
-import FocusedStatusBar from "./FocusedStatusBar";
+import { SubInfo } from "./SubInfo";
+import HomeHeader from "./HomeHeader";
 import BidDetails from "./BidDetails";
 import DetailsDesc from "./DetailsDesc";
+import FocusedStatusBar from "./FocusedStatusBar";
 import { RectButton, CircleButton } from "./Button";
-import { SubInfo } from "./SubInfo";
 import {
-    CodeInput, 
-    CodeInputsContainer, 
-    StyledContainer,
-    PageLogo,
-    PageTitle,
-    SubTitle,
-    StyledInputLabel,
-    StyledFormArea,
-    StyledButton,
-    StyledTextInput,
-    LeftIcon,
-    RightIcon,
-    InnerContainer,
-    ButtonText,
-    MsgBox,
     Line,
+    MsgBox,
+    LeftIcon,
+    TextLink,
+    PageLogo,
+    SubTitle,
+    CodeInput, 
+    PageTitle,
     ExtraView,
     ExtraText,
-    TextLink,
-    TextLinkContent
+    RightIcon,
+    ButtonText,
+    StyledButton,
+    InnerContainer,
+    StyledFormArea,
+    TextLinkContent,
+    StyledTextInput,
+    StyledContainer,
+    StyledInputLabel,
+    CodeInputsContainer, 
 
 } from "./StyledComponents";
 
 
 export {
-    HomeHeader, NFTCard, FocusedStatusBar, BidDetails, DetailsDesc, RectButton, CircleButton, SubInfo,CodeInput, CodeInputsContainer,StyledContainer,
-    PageLogo,
-    PageTitle,
-    SubTitle,
-    StyledInputLabel,
-    StyledFormArea,
-    StyledButton,
-    StyledTextInput,
-    LeftIcon,
-    RightIcon,
-    InnerContainer,
-    ButtonText,
-    MsgBox,
     Line,
-    ExtraView,
-    ExtraText,
+    MsgBox,
+    SubInfo,
+    NFTCard,
+    PageLogo,
     TextLink,
-    TextLinkContent
+    LeftIcon,
+    SubTitle,
+    ExtraText,
+    ExtraView,
+    PageTitle,
+    CodeInput,
+    RightIcon,
+    HomeHeader, 
+    RectButton, 
+    ButtonText,
+    BidDetails, 
+    DetailsDesc, 
+    CircleButton, 
+    StyledButton,
+    InnerContainer,
+    StyledFormArea,
+    TextLinkContent,
+    StyledContainer,
+    StyledTextInput,
+    FocusedStatusBar,
+    StyledInputLabel,
+    CodeInputsContainer,
 }

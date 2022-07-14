@@ -1,13 +1,13 @@
+//1. import all requred constants, hooks and components
 import { useContext } from 'react';
-import { View, Text, TextInput, Pressable } from "react-native";
-import { COLORS, FONTS, SIZES, assets} from "../constants";
 import { EvilIcons } from '@expo/vector-icons';
-import { CredentialsContext } from './../context/CredentialsContext';
+import { COLORS, FONTS, SIZES} from "../constants";
 import {PageLogo} from './../components/StyledComponents';
+import { View, Text, TextInput, Pressable } from "react-native";
+import { CredentialsContext } from './../context/CredentialsContext';
 
 const HomeHeader = ({ onSearch, navigation,searchBarPlaceHolderText }) => {
 
-  // credentials context
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
 
   //get the user's profile image from the credentials context
