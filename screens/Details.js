@@ -186,7 +186,7 @@ const Details = ({route, navigation}) => {
             fontFamily: FONTS.semiBold,
             color: COLORS.primary}}
         > 
-            Nft has no Bids
+            Nft has no bids
         </Text>
         </View>
       </>
