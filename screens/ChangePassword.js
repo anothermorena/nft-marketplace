@@ -7,24 +7,20 @@ import {
   IconBg,
   MsgBox,
   TopHalf,
-  LeftIcon,
   SubTitle,
-  RightIcon,
   ButtonText,
   FormikError,
   StyledButton,
   InnerContainer,
   StyledFormArea,
-  StyledContainer,
-  StyledTextInput,
-  StyledInputLabel
+  StyledContainer
 } from './../components/StyledComponents';
 import { useState,useContext } from 'react';
 import { COLORS,assets } from "./../constants";
+import { FontAwesome} from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
-import { View, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { FocusedStatusBar,CircleButton } from './../components';
-import { Octicons, Ionicons, FontAwesome} from '@expo/vector-icons';
 import { CredentialsContext } from './../context/CredentialsContext';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
@@ -126,7 +122,7 @@ const ChangePassword = ({navigation}) => {
                 {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
                 <StyledFormArea>
                 
-                  <MyTextInput
+                  <SharedTextInput
                     label="Current Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
@@ -142,7 +138,7 @@ const ChangePassword = ({navigation}) => {
                    {touched.currentPassword && errors.currentPassword &&
                    <FormikError>{errors.currentPassword}</FormikError>
                   }
-                  <MyTextInput
+                  <SharedTextInput
                     label="New Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
@@ -159,7 +155,7 @@ const ChangePassword = ({navigation}) => {
                    <FormikError>{errors.password}</FormikError>
                   }
 
-                  <MyTextInput
+                  <SharedTextInput
                     label="Confirm New Password"
                     placeholder="* * * * * * * *"
                     placeholderTextColor={COLORS.darkLight}
@@ -193,26 +189,5 @@ const ChangePassword = ({navigation}) => {
     
   )
 }
-
-
-const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, ...props }) => {
-    return (
-      <View>
-        <LeftIcon>
-          <Octicons name={icon} size={30} color={COLORS.brand} />
-        </LeftIcon>
-        <StyledInputLabel>{label}</StyledInputLabel>
-        <StyledTextInput {...props} />
-          <RightIcon
-            onPress={() => {
-              //toggle the value of the hide password on press
-              setHidePassword(!hidePassword);
-            }}
-          >
-            <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={COLORS.darkLight} />
-          </RightIcon>
-      </View>
-    );
-  };
 
 export default ChangePassword;
