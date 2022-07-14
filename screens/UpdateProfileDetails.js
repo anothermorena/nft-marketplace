@@ -9,22 +9,19 @@ import {
   MsgBox,
   PageLogo,
   SubTitle,
-  LeftIcon,
   FormikError,
   ButtonText,
   StyledButton,
   InnerContainer,
   StyledFormArea,
-  StyledTextInput,
-  StyledContainer,
-  StyledInputLabel,
+  StyledContainer
 } from './../components/StyledComponents';
 import * as ImagePicker from 'expo-image-picker';
-import { Octicons, MaterialIcons} from '@expo/vector-icons';
-import { FocusedStatusBar,CircleButton } from './../components';
+import { MaterialIcons} from '@expo/vector-icons';
+import {ActivityIndicator, TouchableOpacity } from 'react-native';
 import { CredentialsContext } from './../context/CredentialsContext';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { FocusedStatusBar,CircleButton,SharedTextInput } from './../components';
 
 const UpdateProfileDetails = ({navigation}) => {
     const [message, setMessage] = useState();
@@ -176,7 +173,7 @@ const UpdateProfileDetails = ({navigation}) => {
                 {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
                 <StyledFormArea>
                 
-                <MyTextInput
+                <SharedTextInput
                     label="First Name"
                     placeholderTextColor={COLORS.darkLight}
                     onChangeText={handleChange('firstName')}
@@ -188,7 +185,7 @@ const UpdateProfileDetails = ({navigation}) => {
                     <FormikError>{errors.firstName}</FormikError>
                   }
                   
-                <MyTextInput
+                <SharedTextInput
                     label="Last Name"
                     placeholderTextColor={COLORS.darkLight}
                     onChangeText={handleChange('lastName')}
@@ -220,17 +217,5 @@ const UpdateProfileDetails = ({navigation}) => {
     </KeyboardAvoidingWrapper>   
   )
 }
-
-const MyTextInput = ({ label, icon, ...props }) => {
-    return (
-      <View>
-        <LeftIcon>
-          <Octicons name={icon} size={30} color={COLORS.brand} />
-        </LeftIcon>
-        <StyledInputLabel>{label}</StyledInputLabel>
-        <StyledTextInput {...props} />
-      </View>
-    );
-  };
 
 export default UpdateProfileDetails;
