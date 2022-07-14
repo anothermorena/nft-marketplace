@@ -1,6 +1,6 @@
 import { View, Image } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
-import { COLORS, SIZES, SHADOWS, assets } from "../constants";
+import { COLORS, SIZES, SHADOWS, assets,FONTS } from "../constants";
 import { RectButton, CircleButton } from "./Button";
 import { SubInfo, EthPrice, NFTTitle } from "./SubInfo";
 import axios from './../api/axios';
@@ -81,6 +81,8 @@ const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, bidForNft
           }}
         >
           <EthPrice price={data.nft_price} />
+
+
           <RectButton
             minWidth={120}
             fontSize={SIZES.font}
