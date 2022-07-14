@@ -1,3 +1,5 @@
+//1. import all required constants and components
+//===============================================
 import { View, Image, Text } from "react-native";
 import { SIZES, FONTS, COLORS, SHADOWS, assets } from "../constants";
 
