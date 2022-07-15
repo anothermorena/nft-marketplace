@@ -20,7 +20,7 @@ import { COLORS,assets } from "./../constants";
 import { FontAwesome} from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
 import { ActivityIndicator } from 'react-native';
-import { CredentialsContext } from './../context/CredentialsContext';
+import { CredentialsContext } from '../contexts/CredentialsContext';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 import { FocusedStatusBar,CircleButton,SharedTextInput } from './../components';
 

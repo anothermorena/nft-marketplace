@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import {useContext} from "react";
 import axios from './../api/axios';
-import { CredentialsContext } from './../context/CredentialsContext';
+import { CredentialsContext } from '../contexts/CredentialsContext';
 import { COLORS, SIZES, assets, FONTS, Constants } from "./../constants";
 import { CircleButton, SubInfo, DetailsDesc, BidDetails, FocusedStatusBar } from "./../components";
 import { View, Text, SafeAreaView, Image,  FlatList, TextInput,ActivityIndicator,StyleSheet } from "react-native";

@@ -10,8 +10,6 @@ import {
   MsgBox,
   SubTitle,
   TextLink,
-  LeftIcon,
-  RightIcon,
   ExtraView,
   PageTitle,
   ExtraText,
@@ -20,14 +18,11 @@ import {
   StyledButton,
   InnerContainer,
   StyledFormArea,
-  StyledTextInput,
   StyledContainer,
-  TextLinkContent,
-  StyledInputLabel,
+  TextLinkContent
 } from './../components/StyledComponents';
+import {  ActivityIndicator} from 'react-native';
 import { FocusedStatusBar,SharedTextInput } from './../components';
-import { View, ActivityIndicator} from 'react-native';
-import { Octicons, Ionicons } from '@expo/vector-icons';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
 const Signup = ({ navigation }) => {

@@ -5,7 +5,7 @@ import { EvilIcons } from '@expo/vector-icons';
 import { COLORS, FONTS, SIZES} from "../constants";
 import {PageLogo} from './../components/StyledComponents';
 import { View, Text, TextInput, Pressable } from "react-native";
-import { CredentialsContext } from './../context/CredentialsContext';
+import { CredentialsContext } from './../contexts/CredentialsContext';
 
 const HomeHeader = ({ onSearch, navigation,searchBarPlaceHolderText }) => {
 

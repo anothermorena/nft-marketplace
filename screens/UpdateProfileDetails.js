@@ -19,7 +19,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialIcons} from '@expo/vector-icons';
 import {ActivityIndicator, TouchableOpacity } from 'react-native';
-import { CredentialsContext } from './../context/CredentialsContext';
+import { CredentialsContext } from './../contexts/CredentialsContext';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 import { FocusedStatusBar,CircleButton,SharedTextInput } from './../components';
 

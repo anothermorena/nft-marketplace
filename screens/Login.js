@@ -23,7 +23,7 @@ import {
 import { ActivityIndicator } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {  FocusedStatusBar, SharedTextInput } from './../components';
-import { CredentialsContext } from './../context/CredentialsContext';
+import { CredentialsContext } from '../contexts/CredentialsContext';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
 

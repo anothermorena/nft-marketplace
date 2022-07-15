@@ -5,7 +5,7 @@ import { COLORS, assets, SIZES} from "../constants";
 import * as SecureStore from 'expo-secure-store';
 import {PageLogo} from './../components/StyledComponents';
 import {FontAwesome5, AntDesign } from '@expo/vector-icons';
-import { CredentialsContext } from './../context/CredentialsContext';
+import { CredentialsContext } from './../contexts/CredentialsContext';
 import {DrawerContentScrollView,DrawerItemList} from '@react-navigation/drawer';
 import {View,Text,ImageBackground,TouchableOpacity,StyleSheet} from 'react-native';
 

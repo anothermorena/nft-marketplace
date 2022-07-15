@@ -8,7 +8,7 @@ import CreateNft from '../screens/CreateNft';
 import ChangePassword from '../screens/ChangePassword';
 import CustomDrawer from '../components/CustomDrawer';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { CredentialsContext } from '../context/CredentialsContext';
+import { CredentialsContext } from '../contexts/CredentialsContext';
 import UpdateProfileDetails from '../screens/UpdateProfileDetails';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import {Ionicons, MaterialCommunityIcons, FontAwesome5} from '@expo/vector-icons';

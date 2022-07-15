@@ -272,3 +272,10 @@ async def place_bid(bid: schemas.PlaceBid,current_user:schemas.User = fastapi.De
     
     return dict(message="Your bid was successfully placed", status="SUCCESS")
 
+
+#17. fetch users nft wishlist count
+#==================================
+@app.get("/api/get_users_wish_list_count/",status_code=200)
+async def get_users_wish_list(user_ip_address: str, db: orm.Session = fastapi.Depends(services.get_db)):
+    wish_list_nft_count = await services.count_nfts_in_users_wish_list(user_ip_address=user_ip_address,db=db)
+    return dict(wish_list_nft_count=wish_list_nft_count, status="SUCCESS")

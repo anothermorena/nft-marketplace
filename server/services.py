@@ -265,6 +265,11 @@ async def create_nft_bid(user_id: int, nft_id:int, bid_amount: float, db: orm.Se
 #====================
 async def count_users_nfts(user_id: int, db: orm.Session):
     return db.query(models.Nft).filter(models.Nft.user_id == user_id).count()
+
+#29. count nfts in users wish list
+#================================
+async def count_nfts_in_users_wish_list(user_ip_address: str, db: orm.Session):
+    return db.query(models.Wishlist).filter(models.Wishlist.user_ip_address == user_ip_address).count()
    
 
 

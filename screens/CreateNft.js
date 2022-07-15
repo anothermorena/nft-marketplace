@@ -20,7 +20,7 @@ import * as ImagePicker from 'expo-image-picker';
 import React, { useState,useContext } from 'react';
 import {Feather,Entypo } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker'
-import { CredentialsContext } from './../context/CredentialsContext';
+import { CredentialsContext } from '../contexts/CredentialsContext';
 import { Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 import { FocusedStatusBar,CircleButton,SharedTextInput} from './../components';
@@ -34,7 +34,7 @@ const CreateNft = ({navigation}) => {
     const [messageType, setMessageType] = useState();
     const [nftBiddingDeadline, setNftBiddingDeadline] = useState();
     const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
-    const { accessToken} = storedCredentials;
+    const { accessToken, nftCount} = storedCredentials;
 
     //create Nft form fields validation
     const createNftValidationSchema = yup.object().shape({
@@ -100,9 +100,17 @@ const CreateNft = ({navigation}) => {
             handleMessage(message, status);
           } else {
             alert("Your nft was created successfully.");
-            navigation.navigate('Home');
+            
+            //update nft count in the context
+            const newStoredCredentials = {
+              ...storedCredentials,
+              nftCount: nftCount + 1    
+          }
+          setStoredCredentials(newStoredCredentials);
+          navigation.navigate('Home');
           }  
         } catch (error) {
+          console.log(error);
           handleMessage('An error occurred. Check your network and try again');
         }
         setSubmitting(false);

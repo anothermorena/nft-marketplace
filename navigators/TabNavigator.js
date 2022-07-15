@@ -1,8 +1,11 @@
 //1. import all required packages, hooks, constants and components
-//===============================================
+//================================================================
+import axios from './../api/axios';
 import Home from './../screens/Home';
 import Login from './../screens/Login';
+import * as Network from 'expo-network';
 import { COLORS } from "./../constants";
+import {useEffect,useState} from 'react';
 import Signup from './../screens/Signup';
 import Details from './../screens/Details';
 import WishList from './../screens/WishList';
@@ -15,12 +18,11 @@ import OtpVerificationInput from './../screens/OtpVerificationInput';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { getFocusedRouteNameFromRoute,useNavigation } from '@react-navigation/native';
 
-
 //navigators
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const RootStack = () => {
+const RootStack = ({wishListCount,setWishListCount}) => {
    return (
          <Stack.Navigator
            screenOptions={{
@@ -42,7 +44,7 @@ const RootStack = () => {
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="ResetPasswordRequest" component={ResetPasswordRequest} />
             <Stack.Screen name="ResetPasswordInput" component={ResetPasswordInput} />
-            <Stack.Screen name="Details" component={Details}/>
+            <Stack.Screen name="Details" component={Details} />
             <Stack.Screen name="Verification" component={Verification}/>
             <Stack.Screen name="OtpVerificationInput" component={OtpVerificationInput}/>
          </Stack.Navigator>
@@ -50,8 +52,32 @@ const RootStack = () => {
 
      
 
-const TabNavigator = () => {
+const TabNavigator =  () => {
   const navigation = useNavigation();
+  const [wishListCount, setWishListCount] = useState(0);
+  const [userIpAddress, setUserIpAddress] = useState(null);
+
+     //get users internet protocol address
+     const getUserIpAddress = async () => {
+      let ip = await Network.getIpAddressAsync();
+      setUserIpAddress(ip);
+    } 
+
+    getUserIpAddress();
+
+    useEffect(() => {
+      //get users wish list nft count from the database
+      const fetchNftWishListCount = async (userIpAddress) => {
+        const result = await axios.get(`/api/get_users_wish_list_count/?user_ip_address=${userIpAddress}`);
+        setWishListCount(result.data.wish_list_nft_count);
+      };   
+   
+      fetchNftWishListCount(userIpAddress); 
+
+  },[userIpAddress]);
+
+
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -63,7 +89,7 @@ const TabNavigator = () => {
       }}>
       <Tab.Screen
         name="Home2"
-        component={RootStack}
+        children={() => <RootStack wishListCount={wishListCount} setWishListCount={setWishListCount} />}
         options={({route}) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
@@ -77,9 +103,9 @@ const TabNavigator = () => {
 
       <Tab.Screen
         name="WishList"
-        component={WishList}
+        children={() => <WishList wishListCount={wishListCount} setWishListCount={setWishListCount}/>}
         options={{
-          tabBarBadge: 3,
+          tabBarBadge: wishListCount,
           tabBarBadgeStyle: {backgroundColor: 'yellow'},
           tabBarIcon: ({color, size}) => (
             <Ionicons name="heart-outline" color={color} size={size} />
