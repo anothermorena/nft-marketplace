@@ -57,19 +57,11 @@ const NFTCard = ({data,buttonText,buttonBackgroundColor, bidForNft,refreshWishLi
           alert("Successfully deleted nft from your wish list 😎");
           //remove the nft from the displayed users wish list
           refreshWishList(wishList.filter(nft => nft.nft_id !== data.nft_id))
-
-          //keep track of count to avoind having negative values for the badge
-          let new_count;
-
-          if(nftWishListCount  <= 0 ){
-            let new_count = 0;
-          } else {
-            let new_count = nftWishListCount -1;
-          }
+         
           //update the wish list context with the new nft count
          const newWishListData = {
            ...wishListData,
-           nftWishListCount: new_count    
+           nftWishListCount: nftWishListCount - 1    
          }
          setWishListData(newWishListData);
 

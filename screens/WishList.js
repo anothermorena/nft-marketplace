@@ -17,8 +17,8 @@ const WishList = ({navigation}) => {
     const [wishList, setWishList] = useState(null);
     const [wishListSearchResults, setWishListSearchResults] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { wishListData, setWishListData } = useContext(WishListDataContext);
-    const { userIpAddress } = wishListData;
+    const {wishListData, setWishListData } = useContext(WishListDataContext);
+    const {nftWishListCount,userIpAddress } = wishListData;
   
     useEffect(() => {
         //get users wish list from the database
@@ -31,7 +31,7 @@ const WishList = ({navigation}) => {
      
         fetchNftWishListData(userIpAddress); 
 
-    },[]);
+    },[wishList]);
 
 
     //search users wishlist
@@ -56,7 +56,7 @@ const WishList = ({navigation}) => {
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search your nft wish list"/>}
                 />
             </View>
-            {!wishList && (
+            {nftWishListCount == 0 && (
               <>
               <MaterialCommunityIcons name="cart-heart" size={64} color={COLORS.brand} style={{marginVertical:250, marginHorizontal:150}}/>
               <Text style={{textAlign:"center", position:"absolute", bottom:180, left:120}}> Your wish list empty. </Text>
