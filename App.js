@@ -1,18 +1,11 @@
-import 'react-native-gesture-handler';
-import {useState, useEffect, useCallback} from 'react';
-
+//1. import all required packages, hooks and components
+//=====================================================
 import { View } from 'react-native';
-
-//react navigation stack
-import DrawerNavigator from './navigators/DrawerNavigator';
-
-//app loading
-import * as SplashScreen from 'expo-splash-screen';
-
-//expo secure local storage.
+import 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
-
-//credentials context
+import * as SplashScreen from 'expo-splash-screen';
+import {useState, useEffect, useCallback} from 'react';
+import DrawerNavigator from './navigators/DrawerNavigator';
 import { CredentialsContext } from './contexts/CredentialsContext';
 
 export default function App() {
