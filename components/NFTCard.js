@@ -1,14 +1,18 @@
 //1. import all requred packages, hooks, constants and components
 //==============================================================
 import axios from './../api/axios';
+import {useContext} from 'react';
 import { View, Image } from 'react-native';
 import { RectButton, CircleButton } from "./Button";
 import { SubInfo, EthPrice, NFTTitle } from "./SubInfo";
 import { useNavigation } from "@react-navigation/native";
 import { COLORS, SIZES, SHADOWS, assets } from "./../constants";
+import { WishListDataContext } from './../contexts/WishListDataContext';
 
-const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, bidForNft,refreshWishList,wishList}) => {
+const NFTCard = ({data,buttonText,buttonBackgroundColor, bidForNft,refreshWishList,wishList}) => {
     const navigation = useNavigation();
+    const { wishListData, setWishListData } = useContext(WishListDataContext);
+    const { nftWishListCount, userIpAddress } = wishListData;
 
     //add nft to wish list
     handleAddNftToWishList = async () => {
@@ -23,6 +27,13 @@ const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, bidForNft
         const { message } = response.data;
         //give the user feedback
         alert(message);
+
+        //update the wish list context with the new nft count
+        const newWishListData = {
+          ...wishListData,
+          nftWishListCount: nftWishListCount + 1     
+      }
+      setWishListData(newWishListData);
 
       } catch (error) {
         alert('An error occurred. Check your network and try again');
@@ -44,9 +55,24 @@ const NFTCard = ({data,userIpAddress,buttonText,buttonBackgroundColor, bidForNft
             }
           });
           alert("Successfully deleted nft from your wish list 😎");
-
           //remove the nft from the displayed users wish list
           refreshWishList(wishList.filter(nft => nft.nft_id !== data.nft_id))
+
+          //keep track of count to avoind having negative values for the badge
+          let new_count;
+
+          if(nftWishListCount  <= 0 ){
+            let new_count = 0;
+          } else {
+            let new_count = nftWishListCount -1;
+          }
+          //update the wish list context with the new nft count
+         const newWishListData = {
+           ...wishListData,
+           nftWishListCount: new_count    
+         }
+         setWishListData(newWishListData);
+
         } catch (error) {
           alert("An error occurred. Check your network and try again");
         }

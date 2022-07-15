@@ -19,7 +19,6 @@ const WishList = ({navigation}) => {
     const [loading, setLoading] = useState(true);
     const { wishListData, setWishListData } = useContext(WishListDataContext);
     const { userIpAddress } = wishListData;
-
   
     useEffect(() => {
         //get users wish list from the database

@@ -18,8 +18,6 @@ export default function App() {
   const [storedCredentials, setStoredCredentials] = useState(""); 
   const [wishListData, setWishListData] = useState(""); 
   const [nftWishListCount, setNftWishListCount] = useState(0);
-  const [userIpAddress, setUserIpAddress] = useState(null);
-
  
   //check if user is authenticated
   const checkLoginCredentials = async () => {
