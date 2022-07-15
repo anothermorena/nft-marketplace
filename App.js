@@ -1,19 +1,25 @@
 //1. import all required packages, hooks and components
 //=====================================================
+import axios from './api/axios';
 import { View } from 'react-native';
 import 'react-native-gesture-handler';
+import * as Network from 'expo-network';
 import * as SecureStore from 'expo-secure-store';
 import * as SplashScreen from 'expo-splash-screen';
 import {useState, useEffect, useCallback} from 'react';
 import DrawerNavigator from './navigators/DrawerNavigator';
 import { CredentialsContext } from './contexts/CredentialsContext';
+import { WishListDataContext } from './contexts/WishListDataContext';
 
 export default function App() {
   //check if the app is ready using this state. Initial is false
   //this is to monitor our app readiness
   const [appIsReady, setAppIsReady] = useState(false);
-
   const [storedCredentials, setStoredCredentials] = useState(""); 
+  const [wishListData, setWishListData] = useState(""); 
+  const [nftWishListCount, setNftWishListCount] = useState(0);
+  const [userIpAddress, setUserIpAddress] = useState(null);
+
  
   //check if user is authenticated
   const checkLoginCredentials = async () => {
@@ -29,13 +35,32 @@ export default function App() {
       .catch((error) => console.log(error));
   };
 
+  //get users wish list nft count from the database
+  const fetchNftWishListCount = async (userIpAddress) => {
+    const result = await axios.get(`/api/get_users_wish_list_count/?user_ip_address=${userIpAddress}`);
+    setNftWishListCount(result.data.wish_list_nft_count);
+
+    const wishListDataObj = {
+      nftWishListCount,
+      userIpAddress
+    }
+    setWishListData(wishListDataObj);
+  
+  }; 
+
   //if the app is not ready, return the app loading splash screen
   useEffect(() => {
     async function prepare() {
       try {
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync();
-        // check if user has stored login credentials in local storage
+
+        //get users internet protocol address
+        let ip = await Network.getIpAddressAsync();
+ 
+        fetchNftWishListCount(ip);
+
+        //check if user has stored login credentials in local storage
         checkLoginCredentials();
       } catch (e) {
         console.warn(e);
@@ -65,14 +90,10 @@ export default function App() {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      {/*
-      
-        //to be able to pass the values that are stored with context we make use of the provider that comes with context
-        //once the above is done we can then set the initial values of the context 
-
-      */}
       <CredentialsContext.Provider value={{ storedCredentials, setStoredCredentials }}>
-        <DrawerNavigator />
+        <WishListDataContext.Provider value={{ wishListData, setWishListData }}>
+            <DrawerNavigator />
+        </WishListDataContext.Provider>
       </CredentialsContext.Provider>
     </View>
  

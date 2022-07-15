@@ -1,11 +1,9 @@
 //1. import all required packages, hooks, constants and components
 //================================================================
-import axios from './../api/axios';
 import Home from './../screens/Home';
 import Login from './../screens/Login';
-import * as Network from 'expo-network';
+import {useContext} from 'react';
 import { COLORS } from "./../constants";
-import {useEffect,useState} from 'react';
 import Signup from './../screens/Signup';
 import Details from './../screens/Details';
 import WishList from './../screens/WishList';
@@ -16,13 +14,14 @@ import ResetPasswordInput from './../screens/ResetPasswordInput';
 import ResetPasswordRequest from './../screens/ResetPasswordRequest';
 import OtpVerificationInput from './../screens/OtpVerificationInput';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { WishListDataContext } from './../contexts/WishListDataContext';
 import { getFocusedRouteNameFromRoute,useNavigation } from '@react-navigation/native';
 
 //navigators
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const RootStack = ({wishListCount,setWishListCount}) => {
+const RootStack = () => {
    return (
          <Stack.Navigator
            screenOptions={{
@@ -54,29 +53,8 @@ const RootStack = ({wishListCount,setWishListCount}) => {
 
 const TabNavigator =  () => {
   const navigation = useNavigation();
-  const [wishListCount, setWishListCount] = useState(0);
-  const [userIpAddress, setUserIpAddress] = useState(null);
-
-     //get users internet protocol address
-     const getUserIpAddress = async () => {
-      let ip = await Network.getIpAddressAsync();
-      setUserIpAddress(ip);
-    } 
-
-    getUserIpAddress();
-
-    useEffect(() => {
-      //get users wish list nft count from the database
-      const fetchNftWishListCount = async (userIpAddress) => {
-        const result = await axios.get(`/api/get_users_wish_list_count/?user_ip_address=${userIpAddress}`);
-        setWishListCount(result.data.wish_list_nft_count);
-      };   
-   
-      fetchNftWishListCount(userIpAddress); 
-
-  },[userIpAddress]);
-
-
+  const { wishListData, setWishListData } = useContext(WishListDataContext);
+  const { nftWishListCount } = wishListData;
 
   return (
     <Tab.Navigator
@@ -89,7 +67,7 @@ const TabNavigator =  () => {
       }}>
       <Tab.Screen
         name="Home2"
-        children={() => <RootStack wishListCount={wishListCount} setWishListCount={setWishListCount} />}
+        component={RootStack}
         options={({route}) => ({
           tabBarStyle: {
             display: getTabBarVisibility(route),
@@ -102,10 +80,10 @@ const TabNavigator =  () => {
       />
 
       <Tab.Screen
-        name="WishList"
-        children={() => <WishList wishListCount={wishListCount} setWishListCount={setWishListCount}/>}
+        name="Wish List"
+        component={WishList}
         options={{
-          tabBarBadge: wishListCount,
+          tabBarBadge: nftWishListCount,
           tabBarBadgeStyle: {backgroundColor: 'yellow'},
           tabBarIcon: ({color, size}) => (
             <Ionicons name="heart-outline" color={color} size={size} />
