@@ -2,7 +2,6 @@
 //===================================================
 import axios from './../api/axios';
 import {COLORS} from "./../constants";
-import * as Network from 'expo-network';
 import {
   TopScreenDivider,
   BottomScreenDivider,
@@ -16,7 +15,6 @@ const Home = ({navigation}) => {
     const [nftData, setNftData] = useState(null);
     const [searchResults, setSearchResults] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [userIpAddress, setUserIpAddress] = useState(null);
 
     useEffect(() => {
         //get nfts from the database
@@ -28,14 +26,6 @@ const Home = ({navigation}) => {
         };
      
         fetchNftData(); 
-
-        //get users internet protocol address
-        const getUserIpAddress = async () => {
-          ip = await Network.getIpAddressAsync();
-          setUserIpAddress(ip);
-        } 
-
-        getUserIpAddress();
         
     },[]);
 
@@ -55,7 +45,7 @@ const Home = ({navigation}) => {
             <View style={{zIndex: 0}}>
                 <FlatList 
                     data={searchResults ? searchResults : nftData}
-                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress} buttonText = "Place a Bid" buttonBackgroundColor={COLORS.brand} bidForNft={true}/>}
+                    renderItem={({item}) => <NFTCard data={item}  buttonText = "Place a Bid" buttonBackgroundColor={COLORS.brand} bidForNft={true}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search Nfts"/>}
