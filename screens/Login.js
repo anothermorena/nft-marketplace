@@ -53,7 +53,7 @@ const Login = ({ navigation }) => {
         const response = await axios.post("/api/login", requestBody, config); 
         const result = response.data;
         //destructure and convert variable names from snake_case to camelCase
-        const { access_token: accessToken, status, message, user: {first_name: firstName, last_name: lastName, email, profile_image: profileImage, user_status: userStatus, user_id: userId}} = result;
+        const { access_token: accessToken, nft_count: nftCount, status, message, user: {first_name: firstName, last_name: lastName, email, profile_image: profileImage, user_status: userStatus, user_id: userId}} = result;
 
         if (status !== 'SUCCESS') {
           handleMessage(message, status);
@@ -67,6 +67,7 @@ const Login = ({ navigation }) => {
             //persist the login
             const userObj = {
               accessToken,
+              nftCount,
               firstName,
               lastName,
               email,
