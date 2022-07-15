@@ -15,16 +15,11 @@ const CustomDrawer = props => {
   //maor todo fix this mess with conditional rendering not wirking
 //get the user's profile details from the credentials context
   if(storedCredentials != null) {
-    const {firstName,lastName,profileImage} = storedCredentials;
-
-    //TODO: get the users nft count from the db
-    const nftsCount = 20;
+    const {firstName,lastName,profileImage,nftCount} = storedCredentials;
    
   }
 
-  const {firstName,lastName,profileImage} = storedCredentials;
-  const nftsCount = 20;
-  
+  const {firstName,lastName,profileImage,nftCount} = storedCredentials;  
 
   //log out the user
   const handleUserLogout = async () => {
@@ -46,7 +41,7 @@ const CustomDrawer = props => {
         </Text>
         <View style={{flexDirection: 'row'}}>
           <Text style={{color: COLORS.white, fontFamily: 'InterMedium', marginRight: 5}}>
-            {`${nftsCount} `}Nft'(s)
+            {`${nftCount} `}Nft'(s)
           </Text>
           <FontAwesome5 name="coins" size={14} color={COLORS.white} />
         </View>
