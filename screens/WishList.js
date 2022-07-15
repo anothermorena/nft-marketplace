@@ -2,30 +2,24 @@
 //===================================================
 import axios from './../api/axios';
 import {COLORS} from "./../constants";
-import * as Network from 'expo-network';
 import {
   TopScreenDivider,
   BottomScreenDivider,
   ScreenDividerContainer,
 } from './../components/StyledComponents';
-import {useState, useEffect} from 'react';
+import {useState, useEffect,useContext} from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { HomeHeader,NFTCard, FocusedStatusBar } from './../components';
+import { WishListDataContext } from './../contexts/WishListDataContext';
 import {View, SafeAreaView, FlatList,ActivityIndicator, Text} from 'react-native';
 
 const WishList = ({navigation}) => {
     const [wishList, setWishList] = useState(null);
     const [wishListSearchResults, setWishListSearchResults] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [userIpAddress, setUserIpAddress] = useState(null);
+    const { wishListData, setWishListData } = useContext(WishListDataContext);
+    const { userIpAddress } = wishListData;
 
-     //get users internet protocol address
-     const getUserIpAddress = async () => {
-      let ip = await Network.getIpAddressAsync();
-      setUserIpAddress(ip);
-    } 
-
-    getUserIpAddress();
   
     useEffect(() => {
         //get users wish list from the database
@@ -38,7 +32,7 @@ const WishList = ({navigation}) => {
      
         fetchNftWishListData(userIpAddress); 
 
-    },[userIpAddress]);
+    },[]);
 
 
     //search users wishlist
@@ -57,7 +51,7 @@ const WishList = ({navigation}) => {
             <View style={{zIndex: 0}}>
                 <FlatList 
                     data={wishListSearchResults ? wishListSearchResults : wishList}
-                    renderItem={({item}) => <NFTCard data={item} userIpAddress={userIpAddress} buttonText = "Delete from wishlist" buttonBackgroundColor={COLORS.red} refreshWishList={setWishList} wishList={wishList}/>}
+                    renderItem={({item}) => <NFTCard data={item} buttonText = "Delete from wishlist" buttonBackgroundColor={COLORS.red} refreshWishList={setWishList} wishList={wishList}/>}
                     keyExtractor={item => item.nft_id}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search your nft wish list"/>}
