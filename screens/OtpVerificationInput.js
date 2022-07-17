@@ -19,8 +19,8 @@ import { FocusedStatusBar } from './../components';
 import ResendTimer from '../components/ResendTimer';
 import {Octicons,Ionicons} from '@expo/vector-icons';
 import CodeInputField from '../components/CodeInputField';
-import {ActivityIndicator, View} from 'react-native';
 import VerificationModal from '../components/VerificationModal';
+import {ActivityIndicator, View,SafeAreaView} from 'react-native';
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
 
 
@@ -147,75 +147,77 @@ const OtpVerification = ({route, navigation}) => {
     }
 
   return (
-    <KeyboardAvoidingWrapper>
-        <StyledContainer style={{alignItems:'center'}}>     
-            <FocusedStatusBar background={COLORS.primary}/>
-            <TopHalf>
-                <IconBg>
-                    <Octicons name="lock" size={125} color={COLORS.brand}/>
-                </IconBg>
-            </TopHalf>
-            <View style={{flex:1, justifyContent:'center',padding:20,justifyContent:'space-around'}}>
-            <StyledText>{title}</StyledText>
-            <InfoText>
-               Please enter the 4 digit code sent to
-              <EmphasizeText>
-                  {` ${email}`} 
-              </EmphasizeText>
-            </InfoText>
+    <SafeAreaView>
+        <KeyboardAvoidingWrapper>
+            <StyledContainer style={{alignItems:'center'}}>     
+                <FocusedStatusBar background={COLORS.primary}/>
+                <TopHalf>
+                    <IconBg>
+                        <Octicons name="lock" size={125} color={COLORS.brand}/>
+                    </IconBg>
+                </TopHalf>
+                <View style={{flex:1, justifyContent:'center',padding:20,justifyContent:'space-around'}}>
+                <StyledText>{title}</StyledText>
+                <InfoText>
+                Please enter the 4 digit code sent to
+                <EmphasizeText>
+                    {` ${email}`} 
+                </EmphasizeText>
+                </InfoText>
 
-            <CodeInputField 
-                setPinReady={setPinReady}
-                code={code}
-                setCode={setCode}
-                maxLength={MAX_CODE_LENGTH}
-            />
-            {!verifying && pinReady && (
-                <StyledButton onPress={submitOTPVerification} style={{backgroundColor:COLORS.green}}>
-                    <InlineGroup>
-                        <ButtonText>Verify</ButtonText>
-                        <Ionicons name="checkmark-circle" size={25} color={COLORS.white}/>
+                <CodeInputField 
+                    setPinReady={setPinReady}
+                    code={code}
+                    setCode={setCode}
+                    maxLength={MAX_CODE_LENGTH}
+                />
+                {!verifying && pinReady && (
+                    <StyledButton onPress={submitOTPVerification} style={{backgroundColor:COLORS.green}}>
+                        <InlineGroup>
+                            <ButtonText>Verify</ButtonText>
+                            <Ionicons name="checkmark-circle" size={25} color={COLORS.white}/>
+                        </InlineGroup>
+                    </StyledButton>
+                )}
+
+                {!verifying && !pinReady && (
+                <StyledButton style={{backgroundColor:COLORS.lightGreen}}>
+                    <InlineGroup> 
+                        <ButtonText style={{color:COLORS.primary, fontSize:16}}>Verify</ButtonText>
+                        <Ionicons name="checkmark-circle" size={25} color={COLORS.primary}/>
                     </InlineGroup>
                 </StyledButton>
-            )}
+                )}
 
-            {!verifying && !pinReady && (
-            <StyledButton style={{backgroundColor:COLORS.lightGreen}}>
-                <InlineGroup> 
-                    <ButtonText style={{color:COLORS.primary, fontSize:16}}>Verify</ButtonText>
-                    <Ionicons name="checkmark-circle" size={25} color={COLORS.primary}/>
-                </InlineGroup>
-            </StyledButton>
-            )}
+                {verifying  && (
+                    <StyledButton style={{backgroundColor:COLORS.green, flexDirection: 'row'}}>
+                        <InlineGroup>
+                            <ActivityIndicator size="large" color={COLORS.white}/>
+                        </InlineGroup>
+                    </StyledButton>
+                )}
 
-            {verifying  && (
-                <StyledButton style={{backgroundColor:COLORS.green, flexDirection: 'row'}}>
-                    <InlineGroup>
-                        <ActivityIndicator size="large" color={COLORS.white}/>
-                    </InlineGroup>
-                </StyledButton>
-            )}
+                {message && <MsgBox>{message}</MsgBox> }
 
-            {message && <MsgBox>{message}</MsgBox> }
-
-            <ResendTimer 
-                activeResend={activeResend}
-                resendStatus={resendStatus}
-                resendingEmail={resendingEmail}
-                timeLeft={timeLeft}
-                targetTime={targetTime}
-                resendEmail={resendEmail}
-            />
-            </View>
-            <VerificationModal 
-                successful = {verificationSuccessful}
-                setModalVisible={setModalVisible}
-                modalVisible={modalVisible}
-                message={message}
-                navigation={navigation}
-            />
-        </StyledContainer>   
-    </KeyboardAvoidingWrapper>
+                <ResendTimer 
+                    activeResend={activeResend}
+                    resendStatus={resendStatus}
+                    resendingEmail={resendingEmail}
+                    timeLeft={timeLeft}
+                    targetTime={targetTime}
+                    resendEmail={resendEmail}
+                />
+                </View>
+                <VerificationModal 
+                    successful = {verificationSuccessful}
+                    setModalVisible={setModalVisible}
+                    modalVisible={modalVisible}
+                    message={message}
+                    navigation={navigation}
+                />
+            </StyledContainer>   
+        </KeyboardAvoidingWrapper>
+    </SafeAreaView>
   )
 }
 

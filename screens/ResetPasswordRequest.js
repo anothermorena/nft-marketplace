@@ -22,7 +22,7 @@ import {
   TextLinkContent,
   StyledContainer
 } from './../components/StyledComponents';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, SafeAreaView } from 'react-native';
 import { FocusedStatusBar,SharedTextInput } from "./../components";
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
@@ -70,76 +70,78 @@ const ResetPasswordRequest = ({ navigation }) => {
     };
 
   return (
-    <KeyboardAvoidingWrapper>
-        <StyledContainer> 
-          <FocusedStatusBar background={COLORS.primary}/>
-          <InnerContainer>
-              <PageLogo resizeMode="cover" source={require("./../assets/images/nft-login-image.png")}/>
-              <PageTitle>NFT Market Place</PageTitle>
-              <SubTitle>Request Password Reset</SubTitle>
-              
-            <Formik
-               initialValues={{ email: ''}}
-               validationSchema={requestPasswordResetValidationSchema}
-               onSubmit={(values, { setSubmitting }) => {
-                 if (values.email == '') {
-                   handleMessage('Please fill in the email field');
-                   setSubmitting(false);
-                 } else {
-                    handlePasswordResetRequest(values, setSubmitting);
-                 }
-               }}
-            >
-                {({ handleChange, handleBlur, handleSubmit, values, isSubmitting,errors,touched }) => (
-                <StyledFormArea>
-                  <SharedTextInput
-                    label="Email Address"
-                    placeholder="enter your email"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    keyboardType="email-address"
-                    icon="mail"
-                  />
-                  {touched.email && errors.email &&
-                    <FormikError style={{marginBottom:40 }}>{errors.email}</FormikError>
+    <SafeAreaView>
+      <KeyboardAvoidingWrapper>
+          <StyledContainer> 
+            <FocusedStatusBar background={COLORS.primary}/>
+            <InnerContainer>
+                <PageLogo resizeMode="cover" source={require("./../assets/images/nft-login-image.png")}/>
+                <PageTitle>NFT Market Place</PageTitle>
+                <SubTitle>Request Password Reset</SubTitle>
+                
+              <Formik
+                initialValues={{ email: ''}}
+                validationSchema={requestPasswordResetValidationSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                  if (values.email == '') {
+                    handleMessage('Please fill in the email field');
+                    setSubmitting(false);
+                  } else {
+                      handlePasswordResetRequest(values, setSubmitting);
                   }
+                }}
+              >
+                  {({ handleChange, handleBlur, handleSubmit, values, isSubmitting,errors,touched }) => (
+                  <StyledFormArea>
+                    <SharedTextInput
+                      label="Email Address"
+                      placeholder="enter your email"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                      keyboardType="email-address"
+                      icon="mail"
+                    />
+                    {touched.email && errors.email &&
+                      <FormikError style={{marginBottom:40 }}>{errors.email}</FormikError>
+                    }
 
-                  <MsgBox type={messageType}>{message}</MsgBox>
-                 
-                  {!isSubmitting && (
-                    <StyledButton onPress={handleSubmit}>
-                      <ButtonText>Request Password Reset</ButtonText>
-                    </StyledButton>
-                  )}
-                  {isSubmitting && (
-                    <StyledButton disabled={true}>
-                      <ActivityIndicator size="large" color={COLORS.white} />
-                    </StyledButton>
-                  )}
-              
-                  <Line />
+                    <MsgBox type={messageType}>{message}</MsgBox>
+                  
+                    {!isSubmitting && (
+                      <StyledButton onPress={handleSubmit}>
+                        <ButtonText>Request Password Reset</ButtonText>
+                      </StyledButton>
+                    )}
+                    {isSubmitting && (
+                      <StyledButton disabled={true}>
+                        <ActivityIndicator size="large" color={COLORS.white} />
+                      </StyledButton>
+                    )}
+                
+                    <Line />
 
-                  <ExtraView>
-                    <ExtraText>Don't have an account already? </ExtraText>
-                    <TextLink onPress={() => navigation.navigate('Signup')}>
-                      <TextLinkContent>Signup</TextLinkContent>
-                    </TextLink>
-                  </ExtraView>
+                    <ExtraView>
+                      <ExtraText>Don't have an account already? </ExtraText>
+                      <TextLink onPress={() => navigation.navigate('Signup')}>
+                        <TextLinkContent>Signup</TextLinkContent>
+                      </TextLink>
+                    </ExtraView>
 
-                  <ExtraView>
-                  <ExtraText> Or </ExtraText>
-                    <TextLink onPress={() => navigation.navigate('Login')}>
-                      <TextLinkContent>Login</TextLinkContent>
-                    </TextLink>
-                  </ExtraView>     
-                </StyledFormArea>
-              )}    
-            </Formik>
-          </InnerContainer>
-        </StyledContainer>
-    </KeyboardAvoidingWrapper>
+                    <ExtraView>
+                    <ExtraText> Or </ExtraText>
+                      <TextLink onPress={() => navigation.navigate('Login')}>
+                        <TextLinkContent>Login</TextLinkContent>
+                      </TextLink>
+                    </ExtraView>     
+                  </StyledFormArea>
+                )}    
+              </Formik>
+            </InnerContainer>
+          </StyledContainer>
+      </KeyboardAvoidingWrapper>
+    </SafeAreaView>
     
   )
 }

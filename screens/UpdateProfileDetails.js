@@ -18,9 +18,9 @@ import {
 } from './../components/StyledComponents';
 import * as ImagePicker from 'expo-image-picker';
 import { MaterialIcons} from '@expo/vector-icons';
-import {ActivityIndicator, TouchableOpacity } from 'react-native';
 import { CredentialsContext } from './../contexts/CredentialsContext';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
+import {ActivityIndicator, TouchableOpacity,SafeAreaView } from 'react-native';
 import { FocusedStatusBar,CircleButton,SharedTextInput } from './../components';
 
 const UpdateProfileDetails = ({navigation}) => {
@@ -128,93 +128,95 @@ const UpdateProfileDetails = ({navigation}) => {
     }
 
   return (
-    <KeyboardAvoidingWrapper>
-        <StyledContainer style={{paddingBottom:140}}> 
-        <FocusedStatusBar background={COLORS.primary}/>
-          <CircleButton imgUrl={assets.whiteLeft} handlePress={() => navigation.goBack()} left={15} top={15}  backgroundColor= {COLORS.brand}/>
-          <InnerContainer style={{marginVertical: -40}}> 
-          <SubTitle style={{marginTop:40}}>Update Your Profile Details</SubTitle>
-          <TouchableOpacity onPress={pickImage}>
+    <SafeAreaView>
+      <KeyboardAvoidingWrapper>
+          <StyledContainer style={{paddingBottom:140}}> 
+          <FocusedStatusBar background={COLORS.primary}/>
+            <CircleButton imgUrl={assets.whiteLeft} handlePress={() => navigation.goBack()} left={15} top={15}  backgroundColor= {COLORS.brand}/>
+            <InnerContainer style={{marginVertical: -40}}> 
+            <SubTitle style={{marginTop:40}}>Update Your Profile Details</SubTitle>
+            <TouchableOpacity onPress={pickImage}>
 
-          {!image && !profileImage && (
-              <>
-                <PageLogo resizeMode="cover" source={assets.profileAvatar}/>
-                <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 150,right: 20}}/> 
-              </>
-            )}
-
-          {image && (
-              <>
-                <PageLogo resizeMode="cover" source={{ uri: image }} style={{borderRadius: 160}}/>
-                <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/> 
-              </>
-            )}
-            
-            {!image && profileImage && (
-              <>
-                <PageLogo resizeMode="cover" source={{uri: profileImage}} style={{borderRadius: 200}}/>
-                <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/>
-              </>
-            )}
-   
-          </TouchableOpacity> 
-            <Formik
-               initialValues={{firstName: firstName,lastName: lastName, profileImage: profileImage}}
-               validationSchema={profileDetailsValidationSchema}
-               onSubmit={(values, { setSubmitting }) => {
-                 if (values.firstName == '' || values.lastName == '') {
-                   handleMessage('Please fill in all fields');
-                   setSubmitting(false);
-                 }   else {
-                   handleUpdateProfileDetails(values, setSubmitting);
-                 }
-               }}
-            >
-                {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
-                <StyledFormArea>
-                
-                <SharedTextInput
-                    label="First Name"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('firstName')}
-                    onBlur={handleBlur('firstName')}
-                    value={values.firstName}
-                    icon="person"
-                  />
-                   {touched.firstName && errors.firstName &&
-                    <FormikError>{errors.firstName}</FormikError>
-                  }
-                  
-                <SharedTextInput
-                    label="Last Name"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('lastName')}
-                    onBlur={handleBlur('lastName')}
-                    value={values.lastName}
-                    icon="person"
-                  />
-                   {touched.lastName && errors.lastName &&
-                    <FormikError>{errors.lastName}</FormikError>
-                  }
-                  
-                  <MsgBox type={messageType}>{message}</MsgBox>
-
-                  {!isSubmitting && (
-                    <StyledButton onPress={handleSubmit}>
-                      <ButtonText>Update Profile</ButtonText>
-                    </StyledButton>
-                  )}
-                  {isSubmitting && (
-                    <StyledButton disabled={true}>
-                      <ActivityIndicator size="large" color={COLORS.white} />
-                    </StyledButton>
-                  )}
-                </StyledFormArea>
+            {!image && !profileImage && (
+                <>
+                  <PageLogo resizeMode="cover" source={assets.profileAvatar}/>
+                  <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 150,right: 20}}/> 
+                </>
               )}
-            </Formik>
-          </InnerContainer>
-        </StyledContainer>
-    </KeyboardAvoidingWrapper>   
+
+            {image && (
+                <>
+                  <PageLogo resizeMode="cover" source={{ uri: image }} style={{borderRadius: 160}}/>
+                  <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/> 
+                </>
+              )}
+              
+              {!image && profileImage && (
+                <>
+                  <PageLogo resizeMode="cover" source={{uri: profileImage}} style={{borderRadius: 200}}/>
+                  <MaterialIcons name="edit" size={30} color={COLORS.brand} style={{position: "absolute",bottom: 200,right: 0}}/>
+                </>
+              )}
+    
+            </TouchableOpacity> 
+              <Formik
+                initialValues={{firstName: firstName,lastName: lastName, profileImage: profileImage}}
+                validationSchema={profileDetailsValidationSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                  if (values.firstName == '' || values.lastName == '') {
+                    handleMessage('Please fill in all fields');
+                    setSubmitting(false);
+                  }   else {
+                    handleUpdateProfileDetails(values, setSubmitting);
+                  }
+                }}
+              >
+                  {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
+                  <StyledFormArea>
+                  
+                  <SharedTextInput
+                      label="First Name"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('firstName')}
+                      onBlur={handleBlur('firstName')}
+                      value={values.firstName}
+                      icon="person"
+                    />
+                    {touched.firstName && errors.firstName &&
+                      <FormikError>{errors.firstName}</FormikError>
+                    }
+                    
+                  <SharedTextInput
+                      label="Last Name"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('lastName')}
+                      onBlur={handleBlur('lastName')}
+                      value={values.lastName}
+                      icon="person"
+                    />
+                    {touched.lastName && errors.lastName &&
+                      <FormikError>{errors.lastName}</FormikError>
+                    }
+                    
+                    <MsgBox type={messageType}>{message}</MsgBox>
+
+                    {!isSubmitting && (
+                      <StyledButton onPress={handleSubmit}>
+                        <ButtonText>Update Profile</ButtonText>
+                      </StyledButton>
+                    )}
+                    {isSubmitting && (
+                      <StyledButton disabled={true}>
+                        <ActivityIndicator size="large" color={COLORS.white} />
+                      </StyledButton>
+                    )}
+                  </StyledFormArea>
+                )}
+              </Formik>
+            </InnerContainer>
+          </StyledContainer>
+      </KeyboardAvoidingWrapper>  
+    </SafeAreaView> 
   )
 }
 

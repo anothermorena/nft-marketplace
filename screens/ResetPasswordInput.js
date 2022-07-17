@@ -22,8 +22,8 @@ import {
   TextLinkContent,
   StyledContainer
 } from './../components/StyledComponents';
-import { ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons} from '@expo/vector-icons';
+import { ActivityIndicator, SafeAreaView } from 'react-native';
 import {  FocusedStatusBar,SharedTextInput } from './../components';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 
@@ -78,100 +78,102 @@ const ResetPasswordInput = ({ route, navigation }) => {
     };
 
   return (
-    <KeyboardAvoidingWrapper>
-        <StyledContainer> 
-          <FocusedStatusBar background={COLORS.primary}/>
-          <InnerContainer>
-          <TopHalf>
-                <IconBg>
-                    <MaterialCommunityIcons name="lock-reset" size={125} color={COLORS.brand}/>
-                </IconBg>
-            </TopHalf>
-            <SubTitle>Reset Password</SubTitle>
-              
-            <Formik
-               initialValues={{password: '', confirmPassword: ''}}
-               validationSchema={passwordValidationSchema}
-               onSubmit={(values, { setSubmitting }) => {
-                 if (values.password == '' || values.confirmPassword == '') {
-                   handleMessage('Please fill in all fields');
-                   setSubmitting(false);
-                 }  else if (values.password !== values.confirmPassword) {
-                    handleMessage('Passwords do not match');
+    <SafeAreaView>
+      <KeyboardAvoidingWrapper>
+          <StyledContainer> 
+            <FocusedStatusBar background={COLORS.primary}/>
+            <InnerContainer>
+            <TopHalf>
+                  <IconBg>
+                      <MaterialCommunityIcons name="lock-reset" size={125} color={COLORS.brand}/>
+                  </IconBg>
+              </TopHalf>
+              <SubTitle>Reset Password</SubTitle>
+                
+              <Formik
+                initialValues={{password: '', confirmPassword: ''}}
+                validationSchema={passwordValidationSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                  if (values.password == '' || values.confirmPassword == '') {
+                    handleMessage('Please fill in all fields');
                     setSubmitting(false);
-                  } else {
-                    handleResetPassword(values, setSubmitting);
-                 }
-               }}
-            >
-                {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
-                <StyledFormArea>
-                
-                  <SharedTextInput
-                    label="Password"
-                    placeholder="* * * * * * * *"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    secureTextEntry={hidePassword}
-                    icon="lock"
-                    isPassword={true}
-                    hidePassword={hidePassword}
-                    setHidePassword={setHidePassword}
-                  />
-                   {touched.password && errors.password &&
-                    <FormikError>{errors.password}</FormikError>
+                  }  else if (values.password !== values.confirmPassword) {
+                      handleMessage('Passwords do not match');
+                      setSubmitting(false);
+                    } else {
+                      handleResetPassword(values, setSubmitting);
                   }
+                }}
+              >
+                  {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
+                  <StyledFormArea>
+                  
+                    <SharedTextInput
+                      label="Password"
+                      placeholder="* * * * * * * *"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                      secureTextEntry={hidePassword}
+                      icon="lock"
+                      isPassword={true}
+                      hidePassword={hidePassword}
+                      setHidePassword={setHidePassword}
+                    />
+                    {touched.password && errors.password &&
+                      <FormikError>{errors.password}</FormikError>
+                    }
 
-                  <SharedTextInput
-                    label="Confirm Password"
-                    placeholder="* * * * * * * *"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('confirmPassword')}
-                    onBlur={handleBlur('confirmPassword')}
-                    value={values.confirmPassword}
-                    secureTextEntry={hidePassword}
-                    icon="lock"
-                    isPassword={true}
-                    hidePassword={hidePassword}
-                    setHidePassword={setHidePassword}
-                  />
-                  <MsgBox type={messageType}>{message}</MsgBox>
+                    <SharedTextInput
+                      label="Confirm Password"
+                      placeholder="* * * * * * * *"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('confirmPassword')}
+                      onBlur={handleBlur('confirmPassword')}
+                      value={values.confirmPassword}
+                      secureTextEntry={hidePassword}
+                      icon="lock"
+                      isPassword={true}
+                      hidePassword={hidePassword}
+                      setHidePassword={setHidePassword}
+                    />
+                    <MsgBox type={messageType}>{message}</MsgBox>
 
-                  {!isSubmitting && (
-                    <StyledButton onPress={handleSubmit}>
-                      <ButtonText>Reset Password</ButtonText>
-                    </StyledButton>
-                  )}
-                  {isSubmitting && (
-                    <StyledButton disabled={true}>
-                      <ActivityIndicator size="large" color={COLORS.white} />
-                    </StyledButton>
-                  )}
-              
-                  <Line />
-
-                  <ExtraView>
-                    <ExtraText>Don't have an account already? </ExtraText>
-                    <TextLink onPress={() => navigation.navigate('Signup')}>
-                      <TextLinkContent>Signup</TextLinkContent>
-                    </TextLink>
-                  </ExtraView>
-
-                  <ExtraView>
-                  <ExtraText> Or </ExtraText>
-                    <TextLink onPress={() => navigation.navigate('Login')}>
-                      <TextLinkContent>Login</TextLinkContent>
-                    </TextLink>
-                  </ExtraView>
+                    {!isSubmitting && (
+                      <StyledButton onPress={handleSubmit}>
+                        <ButtonText>Reset Password</ButtonText>
+                      </StyledButton>
+                    )}
+                    {isSubmitting && (
+                      <StyledButton disabled={true}>
+                        <ActivityIndicator size="large" color={COLORS.white} />
+                      </StyledButton>
+                    )}
                 
-                </StyledFormArea>
-              )}
-            </Formik>
-          </InnerContainer>
-        </StyledContainer>
-    </KeyboardAvoidingWrapper>
+                    <Line />
+
+                    <ExtraView>
+                      <ExtraText>Don't have an account already? </ExtraText>
+                      <TextLink onPress={() => navigation.navigate('Signup')}>
+                        <TextLinkContent>Signup</TextLinkContent>
+                      </TextLink>
+                    </ExtraView>
+
+                    <ExtraView>
+                    <ExtraText> Or </ExtraText>
+                      <TextLink onPress={() => navigation.navigate('Login')}>
+                        <TextLinkContent>Login</TextLinkContent>
+                      </TextLink>
+                    </ExtraView>
+                  
+                  </StyledFormArea>
+                )}
+              </Formik>
+            </InnerContainer>
+          </StyledContainer>
+      </KeyboardAvoidingWrapper>
+    </SafeAreaView>
     
   )
 }

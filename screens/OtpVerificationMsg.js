@@ -16,6 +16,7 @@ import {
   StyledContainer
 } from './../components/StyledComponents';
 import {useState, useEffect} from 'react';
+import { SafeAreaView } from 'react-native';
 import {Ionicons } from '@expo/vector-icons';
 import { FocusedStatusBar } from './../components';
 import ResendTimer from './../components/ResendTimer';
@@ -104,38 +105,40 @@ const Verification = ({route, navigation}) => {
     }
 
   return (
-    <StyledContainer style={{alignItems: 'center'}}>
-      <FocusedStatusBar background={COLORS.primary}/>
-      <InnerContainer>
-          <TopHalf>
-              <IconBg>
-                  <Ionicons name="mail-open-outline" size={125} color={COLORS.brand} />
-              </IconBg>
-          </TopHalf>
-          <StyledText>Account Created Successfully</StyledText>
-          <InfoText>
-              Please verify your account using the OTP sent to 
-              <EmphasizeText>
-                  {` ${email}`} 
-              </EmphasizeText>
-          </InfoText>
-          <StyledButton onPress={otpInputScreen}>
-            <InlineGroup>
-              <ButtonText>Proceed</ButtonText>
-              <Ionicons name="arrow-forward-circle" size={25} color={COLORS.white} />
-            </InlineGroup> 
-          </StyledButton>
-          {message && <MsgBox>{message}</MsgBox> }
-          <ResendTimer 
-              activeResend={activeResend}
-              resendStatus={resendStatus}
-              resendingEmail={resendingEmail}
-              timeLeft={timeLeft}
-              targetTime={targetTime}
-              resendEmail={resendEmail}
-          />
-        </InnerContainer>
-    </StyledContainer>
+    <SafeAreaView>
+      <StyledContainer style={{alignItems: 'center'}}>
+        <FocusedStatusBar background={COLORS.primary}/>
+        <InnerContainer>
+            <TopHalf>
+                <IconBg>
+                    <Ionicons name="mail-open-outline" size={125} color={COLORS.brand} />
+                </IconBg>
+            </TopHalf>
+            <StyledText>Account Created Successfully</StyledText>
+            <InfoText>
+                Please verify your account using the OTP sent to 
+                <EmphasizeText>
+                    {` ${email}`} 
+                </EmphasizeText>
+            </InfoText>
+            <StyledButton onPress={otpInputScreen}>
+              <InlineGroup>
+                <ButtonText>Proceed</ButtonText>
+                <Ionicons name="arrow-forward-circle" size={25} color={COLORS.white} />
+              </InlineGroup> 
+            </StyledButton>
+            {message && <MsgBox>{message}</MsgBox> }
+            <ResendTimer 
+                activeResend={activeResend}
+                resendStatus={resendStatus}
+                resendingEmail={resendingEmail}
+                timeLeft={timeLeft}
+                targetTime={targetTime}
+                resendEmail={resendEmail}
+            />
+          </InnerContainer>
+      </StyledContainer>
+    </SafeAreaView>
   )
 }
 

@@ -19,7 +19,7 @@ import { useState,useContext } from 'react';
 import { COLORS,assets } from "./../constants";
 import { FontAwesome} from '@expo/vector-icons';
 import * as SecureStore from 'expo-secure-store';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator,SafeAreaView } from 'react-native';
 import { CredentialsContext } from '../contexts/CredentialsContext';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 import { FocusedStatusBar,CircleButton,SharedTextInput } from './../components';
@@ -92,100 +92,102 @@ const ChangePassword = ({navigation}) => {
   
 
   return (
-    <KeyboardAvoidingWrapper>
-        <StyledContainer> 
-        <FocusedStatusBar background={COLORS.primary}/>
-          <CircleButton imgUrl={assets.whiteLeft} handlePress={() => navigation.goBack()} left={15} top={15}  backgroundColor= {COLORS.brand}/>
-          <InnerContainer style={{marginVertical: -40}}>
-          <SubTitle style={{marginTop: 40}}>Change Your Password</SubTitle>
-          <TopHalf>
-                <IconBg>
-                    <FontAwesome name="exchange" size={125} color={COLORS.brand}/>
-                </IconBg>
-            </TopHalf>
-            
-            <Formik
-               initialValues={{currentPassword: '',password: '', confirmPassword: ''}}
-               validationSchema={passwordValidationSchema}
-               onSubmit={(values, { setSubmitting }) => {
-                 if (values.currentPassword == '' || values.password == '' || values.confirmPassword == '') {
-                   handleMessage('Please fill in all fields');
-                   setSubmitting(false);
-                 }  else if (values.password !== values.confirmPassword) {
-                    handleMessage('Passwords do not match');
+    <SafeAreaView>
+      <KeyboardAvoidingWrapper>
+          <StyledContainer> 
+          <FocusedStatusBar background={COLORS.primary}/>
+            <CircleButton imgUrl={assets.whiteLeft} handlePress={() => navigation.goBack()} left={15} top={15}  backgroundColor= {COLORS.brand}/>
+            <InnerContainer style={{marginVertical: -40}}>
+            <SubTitle style={{marginTop: 40}}>Change Your Password</SubTitle>
+            <TopHalf>
+                  <IconBg>
+                      <FontAwesome name="exchange" size={125} color={COLORS.brand}/>
+                  </IconBg>
+              </TopHalf>
+              
+              <Formik
+                initialValues={{currentPassword: '',password: '', confirmPassword: ''}}
+                validationSchema={passwordValidationSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                  if (values.currentPassword == '' || values.password == '' || values.confirmPassword == '') {
+                    handleMessage('Please fill in all fields');
                     setSubmitting(false);
-                  } else {
-                    handleChangePassword(values, setSubmitting);
-                 }
-               }}
-            >
-                {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
-                <StyledFormArea>
-                
-                  <SharedTextInput
-                    label="Current Password"
-                    placeholder="* * * * * * * *"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('currentPassword')}
-                    onBlur={handleBlur('currentPassword')}
-                    value={values.currentPassword}
-                    secureTextEntry={hidePassword}
-                    icon="lock"
-                    isPassword={true}
-                    hidePassword={hidePassword}
-                    setHidePassword={setHidePassword}
-                  />
-                   {touched.currentPassword && errors.currentPassword &&
-                   <FormikError>{errors.currentPassword}</FormikError>
+                  }  else if (values.password !== values.confirmPassword) {
+                      handleMessage('Passwords do not match');
+                      setSubmitting(false);
+                    } else {
+                      handleChangePassword(values, setSubmitting);
                   }
-                  <SharedTextInput
-                    label="New Password"
-                    placeholder="* * * * * * * *"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    secureTextEntry={hidePassword}
-                    icon="lock"
-                    isPassword={true}
-                    hidePassword={hidePassword}
-                    setHidePassword={setHidePassword}
-                  />
-                   {touched.password && errors.password &&
-                   <FormikError>{errors.password}</FormikError>
-                  }
+                }}
+              >
+                  {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
+                  <StyledFormArea>
+                  
+                    <SharedTextInput
+                      label="Current Password"
+                      placeholder="* * * * * * * *"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('currentPassword')}
+                      onBlur={handleBlur('currentPassword')}
+                      value={values.currentPassword}
+                      secureTextEntry={hidePassword}
+                      icon="lock"
+                      isPassword={true}
+                      hidePassword={hidePassword}
+                      setHidePassword={setHidePassword}
+                    />
+                    {touched.currentPassword && errors.currentPassword &&
+                    <FormikError>{errors.currentPassword}</FormikError>
+                    }
+                    <SharedTextInput
+                      label="New Password"
+                      placeholder="* * * * * * * *"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                      secureTextEntry={hidePassword}
+                      icon="lock"
+                      isPassword={true}
+                      hidePassword={hidePassword}
+                      setHidePassword={setHidePassword}
+                    />
+                    {touched.password && errors.password &&
+                    <FormikError>{errors.password}</FormikError>
+                    }
 
-                  <SharedTextInput
-                    label="Confirm New Password"
-                    placeholder="* * * * * * * *"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('confirmPassword')}
-                    onBlur={handleBlur('confirmPassword')}
-                    value={values.confirmPassword}
-                    secureTextEntry={hidePassword}
-                    icon="lock"
-                    isPassword={true}
-                    hidePassword={hidePassword}
-                    setHidePassword={setHidePassword}
-                  />
-                  <MsgBox type={messageType}>{message}</MsgBox>
+                    <SharedTextInput
+                      label="Confirm New Password"
+                      placeholder="* * * * * * * *"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('confirmPassword')}
+                      onBlur={handleBlur('confirmPassword')}
+                      value={values.confirmPassword}
+                      secureTextEntry={hidePassword}
+                      icon="lock"
+                      isPassword={true}
+                      hidePassword={hidePassword}
+                      setHidePassword={setHidePassword}
+                    />
+                    <MsgBox type={messageType}>{message}</MsgBox>
 
-                  {!isSubmitting && (
-                    <StyledButton onPress={handleSubmit}>
-                      <ButtonText>Update</ButtonText>
-                    </StyledButton>
-                  )}
-                  {isSubmitting && (
-                    <StyledButton disabled={true}>
-                      <ActivityIndicator size="large" color={COLORS.white} />
-                    </StyledButton>
-                  )}
-                </StyledFormArea>
-              )}
-            </Formik>
-          </InnerContainer>
-        </StyledContainer>
-    </KeyboardAvoidingWrapper>
+                    {!isSubmitting && (
+                      <StyledButton onPress={handleSubmit}>
+                        <ButtonText>Update</ButtonText>
+                      </StyledButton>
+                    )}
+                    {isSubmitting && (
+                      <StyledButton disabled={true}>
+                        <ActivityIndicator size="large" color={COLORS.white} />
+                      </StyledButton>
+                    )}
+                  </StyledFormArea>
+                )}
+              </Formik>
+            </InnerContainer>
+          </StyledContainer>
+      </KeyboardAvoidingWrapper>
+    </SafeAreaView>
     
   )
 }

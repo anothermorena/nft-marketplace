@@ -21,9 +21,9 @@ import React, { useState,useContext } from 'react';
 import {Feather,Entypo } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { CredentialsContext } from '../contexts/CredentialsContext';
-import { Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import KeyboardAvoidingWrapper from './../components/KeyboardAvoidingWrapper';
 import { FocusedStatusBar,CircleButton,SharedTextInput} from './../components';
+import { Text, ActivityIndicator, TouchableOpacity, SafeAreaView } from 'react-native';
 
 const CreateNft = ({navigation}) => {
   const [show, setShow] = useState(false);
@@ -173,136 +173,138 @@ const CreateNft = ({navigation}) => {
       };
 
   return (
-    <KeyboardAvoidingWrapper>
-        <StyledContainer style={{paddingBottom:140}}> 
-        <FocusedStatusBar background={COLORS.primary}/>
-          <CircleButton imgUrl={assets.whiteLeft} handlePress={() => navigation.goBack()} left={15} top={15}  backgroundColor= {COLORS.brand}/>
-          <InnerContainer style={{marginVertical: -40}}> 
-          <SubTitle style={{marginTop:40}}>Create an NFT</SubTitle>
-          {image && (
-              <>
-                <PageLogo resizeMode="contain" source={{ uri: image }} style={{width:280, height:280, borderRadius: 10}}/>
-                <Entypo name="circle-with-cross" size={40} color={COLORS.red} style={{position: "absolute",top: 65,right: 5}} onPress={deleteUploadedImage}/> 
-              </>
-            )}
-
-           {!image && (
-          <TouchableOpacity onPress={pickImage}>
-                <IconBg>
-                    <Feather name="upload-cloud" size={125} color={COLORS.brand}/>
-                </IconBg>
-                <Text style={{textAlign: "center", marginBottom:10}}>Click here to upload nft image</Text>
-          </TouchableOpacity> 
-           )}
-            {show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-                style={{
-                  backgroundColor: COLORS.brand,
-                  color: COLORS.brand,
-                }}
-              />
-             )}
-
-            <Formik
-               initialValues={{nftTitle: "",nftDescription: "", nftPrice:"", biddingDeadline:""}}
-               validationSchema={createNftValidationSchema}
-               onSubmit={(values, { setSubmitting }) => {
-                values = { ...values, biddingDeadline: nftBiddingDeadline };
-                 if (values.nftTitle == "" || values.nftDescription == "" || values.nftPrice == ""|| values.biddingDeadline == "") {
-                   handleMessage("Please fill in all fields");
-                   setSubmitting(false);
-                 }   else {
-                  handleCreateNft(values, setSubmitting);
-                 }
-               }}
-              >
-                {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
-                <StyledFormArea>
-                
-                <SharedTextInput
-                    label="Nft Title"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('nftTitle')}
-                    onBlur={handleBlur('nftTitle')}
-                    value={values.nftTitle}
-                    icon="title"
-                    createNft={true}
-                  />
-                {touched.nftTitle && errors.nftTitle &&
-                <FormikError>{errors.nftTitle}</FormikError>
-                }
-                  
-                <SharedTextInput
-                    label="Nft Description"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('nftDescription')}
-                    onBlur={handleBlur('nftDescription')}
-                    value={values.nftDescription}
-                    icon="description"
-                    multiline={true}
-                    numberOfLines={20}
-                    textAlignVertical= "top"
-                    height={200}
-                    createNft={true}
-                  />
-                  {touched.nftDescription && errors.nftDescription &&
-                  <FormikError>{errors.nftDescription}</FormikError>
-                  }
-
-                  <SharedTextInput
-                    label="Nft Price"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('nftPrice')}
-                    onBlur={handleBlur('nftPrice')}
-                    value={values.nftPrice}
-                    keyboardType="number-pad"
-                    icon="attach-money"
-                    createNft={true}
-                  />
-                   {touched.nftPrice && errors.nftPrice &&
-                    <FormikError>{errors.nftPrice}</FormikError>
-                  }
-
-                  <SharedTextInput
-                    label="Bidding Deadline"
-                    placeholderTextColor={COLORS.darkLight}
-                    onChangeText={handleChange('biddingDeadline')}
-                    onBlur={handleBlur('biddingDeadline')}
-                    value={nftBiddingDeadline}
-                    icon="timer"
-                    editable={false}
-                    isTime={true}
-                    showTimepicker={showTimepicker}
-                    createNft={true}
-                  />
-                   {touched.biddingDeadline && errors.biddingDeadline &&
-                   <FormikError>{errors.biddingDeadline}</FormikError>
-                  }
-                  
-                  <MsgBox type={messageType}>{message}</MsgBox>
-
-                  {!isSubmitting && (
-                    <StyledButton onPress={handleSubmit}>
-                      <ButtonText>Create Nft</ButtonText>
-                    </StyledButton>
-                  )}
-                  {isSubmitting && (
-                    <StyledButton disabled={true}>
-                      <ActivityIndicator size="large" color={COLORS.white} />
-                    </StyledButton>
-                  )}
-                </StyledFormArea>
+    <SafeAreaView>
+      <KeyboardAvoidingWrapper>
+          <StyledContainer style={{paddingBottom:140}}> 
+          <FocusedStatusBar background={COLORS.primary}/>
+            <CircleButton imgUrl={assets.whiteLeft} handlePress={() => navigation.goBack()} left={15} top={15}  backgroundColor= {COLORS.brand}/>
+            <InnerContainer style={{marginVertical: -40}}> 
+            <SubTitle style={{marginTop:40}}>Create an NFT</SubTitle>
+            {image && (
+                <>
+                  <PageLogo resizeMode="contain" source={{ uri: image }} style={{width:280, height:280, borderRadius: 10}}/>
+                  <Entypo name="circle-with-cross" size={40} color={COLORS.red} style={{position: "absolute",top: 65,right: 5}} onPress={deleteUploadedImage}/> 
+                </>
               )}
-            </Formik>
-          </InnerContainer>
-        </StyledContainer>
-    </KeyboardAvoidingWrapper>
+
+            {!image && (
+            <TouchableOpacity onPress={pickImage}>
+                  <IconBg>
+                      <Feather name="upload-cloud" size={125} color={COLORS.brand}/>
+                  </IconBg>
+                  <Text style={{textAlign: "center", marginBottom:10}}>Click here to upload nft image</Text>
+            </TouchableOpacity> 
+            )}
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                  style={{
+                    backgroundColor: COLORS.brand,
+                    color: COLORS.brand,
+                  }}
+                />
+              )}
+
+              <Formik
+                initialValues={{nftTitle: "",nftDescription: "", nftPrice:"", biddingDeadline:""}}
+                validationSchema={createNftValidationSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                  values = { ...values, biddingDeadline: nftBiddingDeadline };
+                  if (values.nftTitle == "" || values.nftDescription == "" || values.nftPrice == ""|| values.biddingDeadline == "") {
+                    handleMessage("Please fill in all fields");
+                    setSubmitting(false);
+                  }   else {
+                    handleCreateNft(values, setSubmitting);
+                  }
+                }}
+                >
+                  {({ handleChange, handleBlur, handleSubmit, values, isSubmitting, errors, touched}) => (
+                  <StyledFormArea>
+                  
+                  <SharedTextInput
+                      label="Nft Title"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('nftTitle')}
+                      onBlur={handleBlur('nftTitle')}
+                      value={values.nftTitle}
+                      icon="title"
+                      createNft={true}
+                    />
+                  {touched.nftTitle && errors.nftTitle &&
+                  <FormikError>{errors.nftTitle}</FormikError>
+                  }
+                    
+                  <SharedTextInput
+                      label="Nft Description"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('nftDescription')}
+                      onBlur={handleBlur('nftDescription')}
+                      value={values.nftDescription}
+                      icon="description"
+                      multiline={true}
+                      numberOfLines={20}
+                      textAlignVertical= "top"
+                      height={200}
+                      createNft={true}
+                    />
+                    {touched.nftDescription && errors.nftDescription &&
+                    <FormikError>{errors.nftDescription}</FormikError>
+                    }
+
+                    <SharedTextInput
+                      label="Nft Price"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('nftPrice')}
+                      onBlur={handleBlur('nftPrice')}
+                      value={values.nftPrice}
+                      keyboardType="number-pad"
+                      icon="attach-money"
+                      createNft={true}
+                    />
+                    {touched.nftPrice && errors.nftPrice &&
+                      <FormikError>{errors.nftPrice}</FormikError>
+                    }
+
+                    <SharedTextInput
+                      label="Bidding Deadline"
+                      placeholderTextColor={COLORS.darkLight}
+                      onChangeText={handleChange('biddingDeadline')}
+                      onBlur={handleBlur('biddingDeadline')}
+                      value={nftBiddingDeadline}
+                      icon="timer"
+                      editable={false}
+                      isTime={true}
+                      showTimepicker={showTimepicker}
+                      createNft={true}
+                    />
+                    {touched.biddingDeadline && errors.biddingDeadline &&
+                    <FormikError>{errors.biddingDeadline}</FormikError>
+                    }
+                    
+                    <MsgBox type={messageType}>{message}</MsgBox>
+
+                    {!isSubmitting && (
+                      <StyledButton onPress={handleSubmit}>
+                        <ButtonText>Create Nft</ButtonText>
+                      </StyledButton>
+                    )}
+                    {isSubmitting && (
+                      <StyledButton disabled={true}>
+                        <ActivityIndicator size="large" color={COLORS.white} />
+                      </StyledButton>
+                    )}
+                  </StyledFormArea>
+                )}
+              </Formik>
+            </InnerContainer>
+          </StyledContainer>
+      </KeyboardAvoidingWrapper>
+    </SafeAreaView>
     
   )
 }
