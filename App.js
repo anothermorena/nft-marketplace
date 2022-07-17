@@ -17,7 +17,6 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [storedCredentials, setStoredCredentials] = useState(""); 
   const [wishListData, setWishListData] = useState(""); 
-  const [nftWishListCount, setNftWishListCount] = useState(0);
  
   //check if user is authenticated
   const checkLoginCredentials = async () => {
@@ -36,14 +35,12 @@ export default function App() {
   //get users wish list nft count from the database
   const fetchNftWishListCount = async (userIpAddress) => {
     const result = await axios.get(`/api/get_users_wish_list_count/?user_ip_address=${userIpAddress}`);
-    setNftWishListCount(result.data.wish_list_nft_count);
 
     const wishListDataObj = {
-      nftWishListCount,
+      nftWishListCount:result.data.wish_list_nft_count,
       userIpAddress
     }
     setWishListData(wishListDataObj);
-  
   }; 
 
   //if the app is not ready, return the app loading splash screen
