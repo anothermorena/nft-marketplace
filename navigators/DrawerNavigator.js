@@ -13,6 +13,7 @@ import UpdateProfileDetails from '../screens/UpdateProfileDetails';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import {Ionicons, MaterialCommunityIcons, FontAwesome5} from '@expo/vector-icons';
 
+
 const theme = {
     ...DefaultTheme,
     colors: {
@@ -25,7 +26,6 @@ const theme = {
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
-  //const isFocused = useIsFocused();
 
     //load the fonts we will be using and all other assets our app will use
    const [loaded] = useFonts({

@@ -56,7 +56,7 @@ export default function App() {
         //get users internet protocol address
         let ip = await Network.getIpAddressAsync();
  
-        fetchNftWishListCount(ip);
+        await fetchNftWishListCount(ip);
 
         //check if user has stored login credentials in local storage
         checkLoginCredentials();

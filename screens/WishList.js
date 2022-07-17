@@ -56,13 +56,14 @@ const WishList = ({navigation}) => {
                     ListHeaderComponent={<HomeHeader onSearch={handleSearch} navigation={navigation} searchBarPlaceHolderText="Search your nft wish list"/>}
                 />
             </View>
-            {nftWishListCount == 0 && (
+            {loading && <ActivityIndicator size="large" color={COLORS.brand} style={{marginVertical:200}}/>}
+
+            {nftWishListCount == 0 && !loading && (
               <>
               <MaterialCommunityIcons name="cart-heart" size={64} color={COLORS.brand} style={{marginVertical:250, marginHorizontal:150}}/>
               <Text style={{textAlign:"center", position:"absolute", bottom:180, left:120}}> Your wish list empty. </Text>
               </>
             )}
-            {loading && <ActivityIndicator size="large" color={COLORS.brand} style={{marginVertical:200}}/>}
 
             <ScreenDividerContainer>
               <TopScreenDivider />
