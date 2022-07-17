@@ -224,11 +224,11 @@ async def add_nft_to_wish_list(wishlist: schemas.WishlistBase,db: orm.Session = 
     nft = await services.check_wish_list_for_nft(wishlist.user_ip_address, wishlist.nft_id, db)
     
     if nft:
-        return dict(message="This nft already in your wish list. 😒") 
+        return dict(message="This nft already in your wish list. 😒", status="FAILED") 
     
     await services.add_nft_to_wish_list(wishlist.user_ip_address, wishlist.nft_id, db)
     
-    return dict(message="Nft was successfully added to your wish list. 😋")
+    return dict(message="Nft was successfully added to your wish list. 😋", status="SUCCESS")
 
 
 #14. fetch users nft wishlist  from the database
