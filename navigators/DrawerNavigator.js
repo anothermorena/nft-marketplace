@@ -68,8 +68,8 @@ const DrawerNavigator = () => {
           </> 
         ) : (
           <>
-          <Drawer.Screen name="Home" component={TabNavigator}  options={{drawerIcon: () => (<Ionicons name="home-outline" size={22} color={COLORS.white} />)}}/>
-          <Drawer.Screen name="My Wishlist" component={WishList}  options={{drawerIcon: () => (<Ionicons name="heart" size={22} color={COLORS.brand} />)}}/>
+          <Drawer.Screen name="Home" component={TabNavigator}  options={{drawerIcon: ({focused}) => (<Ionicons name="home" size={22} color={focused ? COLORS.white : COLORS.brand} />)}}/>
+          <Drawer.Screen name="My Wishlist" component={WishList}  options={{drawerIcon: ({focused}) => (<Ionicons name="heart" size={22} color={focused ? COLORS.white : COLORS.brand} />)}}/>
           </>
         )}
       </Drawer.Navigator>
