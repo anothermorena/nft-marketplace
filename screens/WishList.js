@@ -31,7 +31,7 @@ const WishList = ({navigation}) => {
      
         fetchNftWishListData(userIpAddress); 
 
-    },[wishList]);
+    },[]);
 
 
     //search users wishlist

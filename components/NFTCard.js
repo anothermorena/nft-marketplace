@@ -24,17 +24,23 @@ const NFTCard = ({data,buttonText,buttonBackgroundColor, bidForNft,refreshWishLi
 
       try {
         const response = await axios.post("/api/add_nft_to_wish_list/", JSON.stringify({ user_ip_address: userIpAddress, nft_id: data.nft_id }), config);
-        const { message } = response.data;
-        //give the user feedback
-        alert(message);
+        const { message, status } = response.data;
 
-        //update the wish list context with the new nft count
-        const newWishListData = {
-          ...wishListData,
-          nftWishListCount: nftWishListCount + 1     
-      }
-      setWishListData(newWishListData);
+        if (status !== 'SUCCESS') { 
+          //give the user feedback
+          alert(message);
+        } else {
+          //give the user feedback
+          alert(message);
+          
+          //update the wish list context with the new nft count
+          const newWishListData = {
+            ...wishListData,
+            nftWishListCount: nftWishListCount + 1     
+          }
+          setWishListData(newWishListData);
 
+        }
       } catch (error) {
         alert('An error occurred. Check your network and try again');
       }
