@@ -106,7 +106,7 @@ const Login = ({ navigation }) => {
     };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1}}>
       <KeyboardAvoidingWrapper>
           <StyledContainer> 
             <FocusedStatusBar background={COLORS.primary}/>

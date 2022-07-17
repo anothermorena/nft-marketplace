@@ -147,7 +147,7 @@ const OtpVerification = ({route, navigation}) => {
     }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1}}>
         <KeyboardAvoidingWrapper>
             <StyledContainer style={{alignItems:'center'}}>     
                 <FocusedStatusBar background={COLORS.primary}/>

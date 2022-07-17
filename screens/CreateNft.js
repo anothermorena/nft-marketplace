@@ -173,7 +173,7 @@ const CreateNft = ({navigation}) => {
       };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1}}>
       <KeyboardAvoidingWrapper>
           <StyledContainer style={{paddingBottom:140}}> 
           <FocusedStatusBar background={COLORS.primary}/>

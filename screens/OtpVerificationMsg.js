@@ -105,7 +105,7 @@ const Verification = ({route, navigation}) => {
     }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1}}>
       <StyledContainer style={{alignItems: 'center'}}>
         <FocusedStatusBar background={COLORS.primary}/>
         <InnerContainer>
