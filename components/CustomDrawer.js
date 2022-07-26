@@ -41,7 +41,7 @@ const CustomDrawer = props => {
       </DrawerContentScrollView>
       <View style={{padding: 20,borderTopWidth: 1,borderTopColor: '#ccc'}}>
         <TouchableOpacity onPress={storedCredentials ? handleUserLogout : () => props.navigation.navigate('Login')} style={{flexDirection : 'row',alignItems:'center',paddingVertical: 15}}>
-            <AntDesign  name="logout" size={22}  color={COLORS.brand}/>
+            <AntDesign  name={storedCredentials ? 'logout' : 'login'} size={22}  color={COLORS.brand}/>
             <Text style={{marginLeft:5,fontSize: SIZES.font,fontFamily: 'InterRegular'}}> {storedCredentials ? 'Logout' : 'Login'}</Text>
         </TouchableOpacity>   
       </View>
