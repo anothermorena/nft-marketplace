@@ -1,7 +1,15 @@
 # NFT MARKET PLACE
 
-A non-fungible token is a financial security consisting of digital data stored in a blockchain, a form of distributed ledger. The ownership of an NFT is recorded in the blockchain, and can be transferred by the owner, allowing NFTs to be sold and traded.
-A marketplace is a platform where vendors can come together to sell their products or services to a curated customer base. This app is a react native market place where users can create nfts and bid on nft's created by other users.
+A non-fungible token is a financial security consisting of digital data stored on a blockchain, a form of distributed ledger. The ownership of an NFT is recorded in the blockchain and can be transferred by the owner, allowing NFTs to be sold and traded. A marketplace is a platform where vendors can come together to sell their products or services to a curated customer base. This app is a react native market place where users can create NFTs and bid on other users' NFTs.
+
+# APP SCREENSHOTS 1
+![app-screen-samples-collage-1](https://user-images.githubusercontent.com/20603329/181029252-8395cff3-0498-4bcf-9bbe-4406d4ea1981.png)
+
+# APP SCREENSHOTS 2
+![app-screen-samples-collage-2](https://user-images.githubusercontent.com/20603329/181029335-f715831b-e8b7-432a-a04f-618e1afa724d.png)
+
+# APP SCREENSHOTS 3
+![app-screen-samples-collage-3](https://user-images.githubusercontent.com/20603329/181029422-09fab029-8ec3-4649-9d1f-0d6a3882a00b.png)
 
 
 # FUNCTIONAL REQUIREMENTS
