@@ -13,7 +13,7 @@ const HomeHeader = ({ onSearch, navigation,searchBarPlaceHolderText }) => {
 
   return (
     <View style={{backgroundColor: COLORS.brand,padding: SIZES.font}}>
-      {storedCredentials == null ? ( 
+      {storedCredentials.accessToken === undefined ? ( 
           <View style={{flexDirection: "row",justifyContent: "center",alignItems: "center"}}>
               <Text style={{fontFamily: FONTS.bold,fontSize: SIZES.extraLarge,color: COLORS.white, textAlign:'center'}}>NFT Market Place</Text>
           </View>
