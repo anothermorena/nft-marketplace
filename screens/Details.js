@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import {useContext} from "react";
 import axios from './../api/axios';
 import { CredentialsContext } from '../contexts/CredentialsContext';
+import { WishListDataContext } from './../contexts/WishListDataContext';
 import { COLORS, SIZES, assets, FONTS, Constants } from "./../constants";
 import { CircleButton, SubInfo, DetailsDesc, BidDetails, FocusedStatusBar } from "./../components";
 import { View, Text, SafeAreaView, Image,  FlatList, TextInput,ActivityIndicator,StyleSheet } from "react-native";
@@ -28,6 +29,7 @@ const DetailsHeader = ({ data, navigation }) => (
       <CircleButton
         imgUrl={assets.heart}
         right={15}
+        handlePress={handleAddNftToWishList}
         top={Constants.statusBarHeight + 10}
       />
     </View>
@@ -37,6 +39,8 @@ const Details = ({route, navigation}) => {
   //get the nft data from the route parameters  
   const { data } = route.params;
   const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+  const { wishListData, setWishListData } = useContext(WishListDataContext);
+  const { nftWishListCount, userIpAddress } = wishListData;
 
   //bid amount validation schema
   const bidAmountValidationSchema = yup.object().shape({
@@ -77,6 +81,39 @@ const Details = ({route, navigation}) => {
         }
         setSubmitting(false);      
       }
+  }
+
+  //add nft to wish list
+  handleAddNftToWishList = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
+    try {
+      const response = await axios.post("/api/add_nft_to_wish_list/", JSON.stringify({ user_ip_address: userIpAddress, nft_id: data.nft_id }), config);
+      const { message, status } = response.data;
+
+      if (status !== 'SUCCESS') { 
+        //give the user feedback
+        alert(message);
+      } else {
+        //give the user feedback
+        alert(message);
+        
+        //update the wish list context with the new nft count
+        const newWishListData = {
+          ...wishListData,
+          nftWishListCount: nftWishListCount + 1     
+        }
+        setWishListData(newWishListData);
+
+      }
+    } catch (error) {
+      alert('An error occurred. Check your network and try again');
+    }
+
   }
 
   return (
