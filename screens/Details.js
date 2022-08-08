@@ -190,6 +190,7 @@ const Details = ({route, navigation}) => {
         contentContainerStyle={{
           paddingBottom: SIZES.extraLarge * 3,
         }}
+        key={data.bids.bid_id}
         ListHeaderComponent={() => (
            <>
              <DetailsHeader data={data} navigation={navigation} />
