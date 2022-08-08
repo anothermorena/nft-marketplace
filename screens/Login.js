@@ -130,7 +130,7 @@ const Login = ({ navigation }) => {
                   <StyledFormArea>
                     <SharedTextInput
                       label="Email Address"
-                      placeholder="hireme@morena.com"
+                      placeholder="hireme@morena.dev"
                       placeholderTextColor={COLORS.darkLight}
                       onChangeText={handleChange('email')}
                       onBlur={handleBlur('email')}

@@ -24,15 +24,19 @@ const CustomDrawer = props => {
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props} contentContainerStyle={{backgroundColor: COLORS.brand}}>
-          {storedCredentials.accessToken === undefined && <ImageBackground source={assets.drawerBg} style={{padding: 20,height: 160}}/>}
-          {storedCredentials.accessToken !== undefined && (
+          {storedCredentials === null && <ImageBackground source={assets.drawerBg} style={{padding: 20,height: 160}}/>}
+          {storedCredentials !== null && (
             <ImageBackground source={assets.drawerBg} style={{padding: 20}}>
               <PageLogo resizeMode="cover" source={{uri: storedCredentials.profileImage}}  style={{width: 80, height: 80,borderRadius: 40, marginBottom: 10}}/>
-              <Text style={{color: COLORS.white, fontSize: 18, fontFamily: 'InterMedium', marginBottom: 5}}>{`${storedCredentials?.firstName} ${storedCredentials?.lastName}`}</Text>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={{color: COLORS.white, fontFamily: 'InterMedium', marginRight: 5}}>{`${storedCredentials?.nftCount} Nft'(s)`}</Text>
-                <FontAwesome5 name="coins" size={14} color={COLORS.white} />
-              </View>
+              {storedCredentials.accessToken !== undefined && (
+                <>
+                  <Text style={{color: COLORS.white, fontSize: 18, fontFamily: 'InterMedium', marginBottom: 5}}>{`${storedCredentials.firstName} ${storedCredentials.lastName}`}</Text>
+                  <View style={{flexDirection: 'row'}}>
+                      <Text style={{color: COLORS.white, fontFamily: 'InterMedium', marginRight: 5}}>{`${storedCredentials.nftCount} Nft'(s)`}</Text>
+                      <FontAwesome5 name="coins" size={14} color={COLORS.white} />
+                  </View>
+                </>   
+              )}   
             </ImageBackground>     
           )}
           <View style={{flex: 1, backgroundColor: COLORS.white, paddingTop: 10}}>
