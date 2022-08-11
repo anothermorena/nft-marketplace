@@ -1,6 +1,7 @@
 #1. load the required modules and packages
 #=========================================
 import fastapi
+import uvicorn
 from database import engine
 import passlib.hash as hash
 import sqlalchemy.orm as orm
@@ -279,3 +280,9 @@ async def place_bid(bid: schemas.PlaceBid,current_user:schemas.User = fastapi.De
 async def get_users_wish_list(user_ip_address: str, db: orm.Session = fastapi.Depends(services.get_db)):
     wish_list_nft_count = await services.count_nfts_in_users_wish_list(user_ip_address=user_ip_address,db=db)
     return dict(wish_list_nft_count=wish_list_nft_count, status="SUCCESS")
+
+
+#18. Run the API with uvicorn
+#============================
+if __name__ == '__main__':
+    uvicorn.run(app, host='127.0.0.1', port=8000)
