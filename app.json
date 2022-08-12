@@ -2,6 +2,7 @@
   "expo": {
     "name": "nft-marketplace",
     "slug": "nft-marketplace",
+    "sdkVersion": "45.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
