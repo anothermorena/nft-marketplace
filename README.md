@@ -2,7 +2,7 @@
 
 A non-fungible token is a financial security consisting of digital data stored on a blockchain, a form of distributed ledger. The ownership of an NFT is recorded in the blockchain and can be transferred by the owner, allowing NFTs to be sold and traded. A marketplace is a platform where vendors can come together to sell their products or services to a curated customer base. This app is a react native market place where users can create NFTs and bid on other users' NFTs.
 
-#APP LIVE PREVIEW
+# APP LIVE PREVIEW
 
 To view the app, you first have to [download the expo client on your iOS or Android device](https://expo.dev/tools#client). Then scan the QR Code below with the Expo Go App you just downloaded.
 
