@@ -8,6 +8,11 @@ To view the app, you first have to [download the expo client on your iOS or Andr
 
 ![nft-market-place-preview-qr-code](https://user-images.githubusercontent.com/20603329/184293013-43e1258e-f523-4947-8270-f601237619c6.svg)
 
+For your convenience, please use the following login credentials to test the app: </br>
+
+Email: demo@morena.dev </br>
+Password: demouser
+
 
 # APP SCREENSHOTS 1
 ![app-screen-samples-collage-1](https://user-images.githubusercontent.com/20603329/181029252-8395cff3-0498-4bcf-9bbe-4406d4ea1981.png)
