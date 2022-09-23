@@ -26,7 +26,7 @@ MarkupSafe==2.1.1
 mysql-connector-python==8.0.29
 packaging==21.3
 passlib==1.7.4
-protobuf==4.21.1
+protobuf==4.21.6
 pycparser==2.21
 pydantic==1.9.1
 PyJWT==2.4.0
