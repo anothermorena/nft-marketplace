@@ -47,4 +47,4 @@ wrapt==1.14.1
 gunicorn
 uvloop
 httptools
-cloudinary
+cloudinary==1.30.0
