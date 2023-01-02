@@ -4,8 +4,8 @@ import axios from 'axios';
 
 //2. set the url for the entire application
 //======================================
-const BASE_URL = 'https://another-nft-market-place.herokuapp.com/';
+const BASE_URL = 'https://7b1681.deta.dev/';
 
 export default axios.create({
-    baseURL: BASE_URL
+  baseURL: BASE_URL,
 });

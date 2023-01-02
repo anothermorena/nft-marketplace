@@ -21,3 +21,7 @@ server/venv/
 
 #caches
 server/__pycache__
+
+
+#deta files
+server/.deta
