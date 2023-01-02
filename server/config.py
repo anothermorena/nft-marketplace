@@ -9,7 +9,7 @@ from fastapi_mail import ConnectionConfig
 
 #2. load environment variables from .env
 #=======================================
-load_dotenv('./../.env')
+load_dotenv('./.env')
 
 #3. create environment variables configuration class 
 #===================================================
