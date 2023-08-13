@@ -98,6 +98,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name='heart-outline' color={color} size={size} />
           ),
+          tabBarStyle: { display: 'flex', backgroundColor: COLORS.brand }, // Ensure the tabBar is always visible
         }}
       />
       <Tab.Screen
