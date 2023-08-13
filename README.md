@@ -49,7 +49,7 @@ Password: demouser
 
 
 # USE CASE DIAGRAM
-![use-case-diagram](https://github.com/anothermorena/nft-marketplace/assets/20603329/45d1457a-123d-4337-8a23-f87f2be0bafc)
+![use-case-diagram](https://github.com/anothermorena/nft-marketplace/assets/20603329/f73fd2cc-dbeb-4c6d-8cb6-f1507ca3790d)
 
 
 
