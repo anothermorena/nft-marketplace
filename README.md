@@ -65,4 +65,5 @@ Password: demouser
 ![class-diagram](https://user-images.githubusercontent.com/20603329/173888317-28495e82-e943-46e3-b7ea-f728460089e7.png)
 
 # SYSTEM DESIGN
-![system-design](https://user-images.githubusercontent.com/20603329/173878910-a3948562-7c75-499f-a0af-fd74e52e3c56.png)
+![system-design](https://github.com/anothermorena/nft-marketplace/assets/20603329/76161f03-cfc2-4d1f-b215-f493737dc1e6)
+
