@@ -3,7 +3,6 @@
 import { useFonts } from 'expo-font';
 import { COLORS } from '../constants';
 import TabNavigator from './TabNavigator';
-import WishList from '../screens/WishList';
 import CreateNft from '../screens/CreateNft';
 import ChangePassword from '../screens/ChangePassword';
 import CustomDrawer from '../components/CustomDrawer';
