@@ -88,8 +88,8 @@ const DrawerNavigator = () => {
                   }}
                 />
                 <Drawer.Screen
-                  name='Wish List'
-                  component={WishList}
+                  name='WishlistInTab'
+                  component={TabNavigator}
                   options={{
                     drawerIcon: ({ focused }) => (
                       <Ionicons
@@ -98,7 +98,13 @@ const DrawerNavigator = () => {
                         color={focused ? COLORS.white : COLORS.brand}
                       />
                     ),
+                    title: 'Wish List',
+                    drawerLabel: 'Wish List',
+                    tabBarVisible: true,
                   }}
+                  listeners={({ navigation }) => ({
+                    focus: () => navigation.navigate('Wish List'),
+                  })}
                 />
                 <Drawer.Screen
                   name='Update Profile Details'
