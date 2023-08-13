@@ -1,6 +1,6 @@
 # NFT MARKET PLACE
 
-A non-fungible token is a financial security consisting of digital data stored on a blockchain, a form of distributed ledger. The ownership of an NFT is recorded in the blockchain and can be transferred by the owner, allowing NFTs to be sold and traded. A marketplace is a platform where vendors can come together to sell their products or services to a curated customer base. This app is a react native market place where users can create NFTs and bid on other users' NFTs.
+A non-fungible token (NFT) is a type of digital asset secured on a blockchain, which is a decentralized ledger system. The blockchain keeps a record of an NFT's ownership, and its owner has the ability to transfer or trade it. A marketplace is a platform that enables sellers to offer their goods or services to a select group of buyers. This application is built using React Native and serves as a marketplace where users can generate NFTs and place bids on NFTs listed by others. Additionally, the app employs a content-based filtering recommendation system that suggests NFTs to users based on the characteristics of NFTs they've previously interacted with.
 
 # APP LIVE PREVIEW
 
@@ -42,15 +42,19 @@ Password: demouser
 
 8) View Wishlist
 
-9) Logout 
+9) View Recommended NFT's (Still under development)
+
+10) Logout
+ 
 
 
 # USE CASE DIAGRAM
-![use-case-diagram](https://user-images.githubusercontent.com/20603329/175824946-1e9d266d-6fad-4c1f-a800-abcc88e97e13.png)
+![use-case-diagram](https://github.com/anothermorena/nft-marketplace/assets/20603329/45d1457a-123d-4337-8a23-f87f2be0bafc)
+
 
 
 # ACTIVITY DIAGRAM
-![activity-diagram](https://user-images.githubusercontent.com/20603329/173878759-306034ec-a089-464b-8098-cf29c363c529.png)
+![activity-diagram](https://github.com/anothermorena/nft-marketplace/assets/20603329/e5968688-e617-48ba-834b-0ad6b1ef9837)
 
 
 # ENTITY RELATIONSHIP DIAGRAM
