@@ -1,56 +1,122 @@
-//1. import all requred packages,constants, hooks and components
-//==============================================================
-import { useContext } from 'react';
-import { COLORS, assets, SIZES} from "../constants";
+import React, { useContext } from 'react';
+import { View, Text, ImageBackground, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import {PageLogo} from './../components/StyledComponents';
-import {FontAwesome5, AntDesign } from '@expo/vector-icons';
-import { CredentialsContext } from './../contexts/CredentialsContext';
-import {View,Text,ImageBackground,TouchableOpacity} from 'react-native';
-import {DrawerContentScrollView,DrawerItemList} from '@react-navigation/drawer';
+import { FontAwesome5, AntDesign } from '@expo/vector-icons';
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+} from '@react-navigation/drawer';
 
-const CustomDrawer = props => {
-  const { storedCredentials, setStoredCredentials } = useContext(CredentialsContext);
+import { COLORS, assets, SIZES } from '../constants';
+import { PageLogo } from '../components/StyledComponents';
+import { CredentialsContext } from '../contexts/CredentialsContext';
 
-  //log out the user
+const CustomDrawer = (props) => {
+  const { storedCredentials, setStoredCredentials } =
+    useContext(CredentialsContext);
+
   const handleUserLogout = async () => {
-    await SecureStore.deleteItemAsync('nftMarketPlace')
-      .then(() => {
-        setStoredCredentials("");
-      })
-      .catch((error) => console.log(error));
+    try {
+      await SecureStore.deleteItemAsync('nftMarketPlace');
+      setStoredCredentials('');
+    } catch (error) {
+      console.log(error);
+    }
   };
-  
-  return (
-    <View style={{flex: 1}}>
-      <DrawerContentScrollView {...props} contentContainerStyle={{backgroundColor: COLORS.brand}}>
-          {storedCredentials === null && <ImageBackground source={assets.drawerBg} style={{padding: 20,height: 160}}/>}
-          {storedCredentials !== null && (
-            <ImageBackground source={assets.drawerBg} style={{padding: 20}}>
-              <PageLogo resizeMode="cover" source={{uri: storedCredentials.profileImage}}  style={{width: 80, height: 80,borderRadius: 40, marginBottom: 10}}/>
-              {storedCredentials.accessToken !== undefined && (
-                <>
-                  <Text style={{color: COLORS.white, fontSize: 18, fontFamily: 'InterMedium', marginBottom: 5}}>{`${storedCredentials.firstName} ${storedCredentials.lastName}`}</Text>
-                  <View style={{flexDirection: 'row'}}>
-                      <Text style={{color: COLORS.white, fontFamily: 'InterMedium', marginRight: 5}}>{`${storedCredentials.nftCount} Nft'(s)`}</Text>
-                      <FontAwesome5 name="coins" size={14} color={COLORS.white} />
-                  </View>
-                </>   
-              )}   
-            </ImageBackground>     
-          )}
-          <View style={{flex: 1, backgroundColor: COLORS.white, paddingTop: 10}}>
-            <DrawerItemList {...props} />
+
+  const renderProfile = () => (
+    <ImageBackground source={assets.drawerBg} style={{ padding: 20 }}>
+      <PageLogo
+        resizeMode='cover'
+        source={
+          storedCredentials
+            ? { uri: storedCredentials.profileImage }
+            : require('../assets/images/home-avatar.png')
+        }
+        style={{ width: 80, height: 80, borderRadius: 40, marginBottom: 10 }}
+      />
+      {storedCredentials?.accessToken && (
+        <>
+          <Text style={styles.nameText}>
+            {`${storedCredentials.firstName} ${storedCredentials.lastName}`}
+          </Text>
+          <View style={styles.nftCountContainer}>
+            <Text
+              style={styles.nftCountText}
+            >{`${storedCredentials.nftCount} Nft'(s)`}</Text>
+            <FontAwesome5 name='coins' size={14} color={COLORS.white} />
           </View>
-      </DrawerContentScrollView>
-      <View style={{padding: 20,borderTopWidth: 1,borderTopColor: '#ccc'}}>
-        <TouchableOpacity onPress={storedCredentials ? handleUserLogout : () => props.navigation.navigate('Login')} style={{flexDirection : 'row',alignItems:'center',paddingVertical: 15}}>
-            <AntDesign  name={storedCredentials ? 'logout' : 'login'} size={22}  color={COLORS.brand}/>
-            <Text style={{marginLeft:5,fontSize: SIZES.font,fontFamily: 'InterRegular'}}>{storedCredentials ? 'Logout' : 'Login'}</Text>
-        </TouchableOpacity>   
-      </View>
-   </View>
+        </>
+      )}
+    </ImageBackground>
   );
+
+  return (
+    <View style={{ flex: 1 }}>
+      <DrawerContentScrollView
+        {...props}
+        contentContainerStyle={{ backgroundColor: COLORS.brand }}
+      >
+        {renderProfile()}
+        <View
+          style={{ flex: 1, backgroundColor: COLORS.white, paddingTop: 10 }}
+        >
+          <DrawerItemList {...props} />
+        </View>
+      </DrawerContentScrollView>
+      <View style={styles.footer}>
+        <TouchableOpacity
+          onPress={
+            storedCredentials
+              ? handleUserLogout
+              : () => props.navigation.navigate('Login')
+          }
+          style={styles.footerButton}
+        >
+          <AntDesign
+            name={storedCredentials ? 'logout' : 'login'}
+            size={22}
+            color={COLORS.brand}
+          />
+          <Text style={styles.footerButtonText}>
+            {storedCredentials ? 'Logout' : 'Login'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const styles = {
+  nameText: {
+    color: COLORS.white,
+    fontSize: 18,
+    fontFamily: 'InterMedium',
+    marginBottom: 5,
+  },
+  nftCountContainer: {
+    flexDirection: 'row',
+  },
+  nftCountText: {
+    color: COLORS.white,
+    fontFamily: 'InterMedium',
+    marginRight: 5,
+  },
+  footer: {
+    padding: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+  },
+  footerButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 15,
+  },
+  footerButtonText: {
+    marginLeft: 5,
+    fontSize: SIZES.font,
+    fontFamily: 'InterRegular',
+  },
 };
 
 export default CustomDrawer;
