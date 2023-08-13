@@ -61,7 +61,7 @@ const RootStack = () => {
   );
 };
 
-const TabNavigator = () => {
+const TabNavigator = (props) => {
   const navigation = useNavigation();
   const { wishListData } = useContext(WishListDataContext);
   const { nftWishListCount } = wishListData;
@@ -98,7 +98,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name='heart-outline' color={color} size={size} />
           ),
-          tabBarStyle: { display: 'flex', backgroundColor: COLORS.brand }, // Ensure the tabBar is always visible
+          tabBarStyle: { display: 'flex', backgroundColor: COLORS.brand },
         }}
       />
       <Tab.Screen
